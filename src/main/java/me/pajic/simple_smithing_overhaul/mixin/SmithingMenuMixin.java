@@ -110,27 +110,6 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
                             }
                         }
                     }
-                    /*int counter = 0;
-                    for (Object2IntMap.Entry<Holder<Enchantment>> entry : itemEnchantments.entrySet()) {
-                        counter++;
-                        if (counter == lapisAmount && entry.getIntValue() < entry.getKey().value().getMaxLevel()) {
-
-                            EnchantmentHelper.updateEnchantments(updatedStack, mutable ->
-                                    mutable.upgrade(entry.getKey(), entry.getIntValue() + 1)
-                            );
-
-                            if (Main.CONFIG.enchantmentUpgrading.upgradingHasExperienceCost()) {
-                                int originalRepairCost = stack.get().getOrDefault(DataComponents.REPAIR_COST, 0);
-                                Main.cost = Main.CONFIG.enchantmentUpgrading.upgradingBaseExperienceCost() + originalRepairCost;
-                                if (Main.cost < 1 || (!Main.CONFIG.enchantmentUpgrading.ignoreTooExpensive() && Main.cost >= 40)) break;
-                                updatedStack.set(DataComponents.REPAIR_COST, AnvilMenu.calculateIncreasedRepairCost(originalRepairCost));
-                            }
-
-                            stack.set(updatedStack);
-                            success = true;
-                            break;
-                        }
-                    }*/
                 }
                 if (!success) {
                     resultSlots.setItem(0, ItemStack.EMPTY);
