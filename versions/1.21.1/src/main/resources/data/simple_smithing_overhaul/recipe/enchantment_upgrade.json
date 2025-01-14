@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "simple_smithing_overhaul:enchantment_upgrade"
+    },
+    "L": {
+      "item": "minecraft:lapis_block"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "pattern": [
+    "D#D",
+    "DLD",
+    "DDD"
+  ],
+  "result": {
+    "id": "simple_smithing_overhaul:enchantment_upgrade",
+    "count": 2
+  }
+}

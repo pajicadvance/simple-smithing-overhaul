@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.pajic.simple_smithing_overhaul.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "com.moulberry.mixinconstraints.ConstraintsMixinPlugin",
+  "mixins": [
+    "AnvilMenuMixin",
+    "EnchantmentHelperMixin",
+    "ItemCombinerMenuMixin",
+    "RepairItemRecipeMixin",
+    "SmithingMenuMixin",
+    "compat.emi.EmiAnvilRecipeMixin"
+  ],
+  "client": [
+    "AnvilScreenMixin",
+    "SmithingScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

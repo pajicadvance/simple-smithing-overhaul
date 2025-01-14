@@ -1,0 +1,166 @@
+package me.pajic.simple_smithing_overhaul.util;
+
+import it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair;
+import me.pajic.simple_smithing_overhaul.Main;
+import me.pajic.simple_smithing_overhaul.items.ModItems;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.component.PatchedDataComponentMap;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.AnimalArmorItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+//? if > 1.21.1
+/*import net.minecraft.world.item.enchantment.Repairable;*/
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+public class ModUtil {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger("SimpleSmithingOverhaul-Util");
+
+    public static final List<ObjectObjectImmutablePair<Item, Ingredient>> additionalRepairables = new ArrayList<>();
+
+    public static int determineUnitCost(ItemStack stack) {
+        if (Main.CONFIG.anvilImprovements.modifyAnvilRepairUnitCosts()) {
+
+            if (stack.is(ItemTags.HEAD_ARMOR)) return Main.CONFIG.anvilImprovements.armor.headArmorUnits();
+            if (stack.is(ItemTags.CHEST_ARMOR)) return Main.CONFIG.anvilImprovements.armor.chestArmorUnits();
+            if (stack.is(ItemTags.LEG_ARMOR)) return Main.CONFIG.anvilImprovements.armor.legArmorUnits();
+            if (stack.is(ItemTags.FOOT_ARMOR)) return Main.CONFIG.anvilImprovements.armor.footArmorUnits();
+            if (stack.getItem() instanceof AnimalArmorItem aai) {
+                AnimalArmorItem.BodyType type =
+                        //? if <= 1.21.1
+                        aai.getBodyType();
+                        //? if > 1.21.1
+                        /*aai.bodyType;*/
+                if (type.equals(AnimalArmorItem.BodyType.EQUESTRIAN)) return Main.CONFIG.anvilImprovements.armor.horseArmorUnits();
+                if (type.equals(AnimalArmorItem.BodyType.CANINE)) return Main.CONFIG.anvilImprovements.armor.wolfArmorUnits();
+            }
+
+            if (stack.is(ItemTags.PICKAXES)) return Main.CONFIG.anvilImprovements.tools.pickaxeUnits();
+            if (stack.is(ItemTags.AXES)) return Main.CONFIG.anvilImprovements.tools.axeUnits();
+            if (stack.is(ItemTags.SWORDS)) return Main.CONFIG.anvilImprovements.tools.swordUnits();
+            if (stack.is(ItemTags.HOES)) return Main.CONFIG.anvilImprovements.tools.hoeUnits();
+            if (stack.is(ItemTags.SHOVELS)) return Main.CONFIG.anvilImprovements.tools.shovelUnits();
+
+            if (stack.is(Items.SHIELD)) return Main.CONFIG.anvilImprovements.uniqueItems.shieldUnits();
+            if (stack.is(Items.ELYTRA)) return Main.CONFIG.anvilImprovements.uniqueItems.elytraUnits();
+            if (stack.is(Items.MACE)) return Main.CONFIG.anvilImprovements.uniqueItems.maceUnits();
+            if (stack.is(ModItems.WHETSTONE)) return Main.CONFIG.anvilImprovements.uniqueItems.whetstoneUnits();
+            if (stack.is(Items.BOW)) return Main.CONFIG.anvilImprovements.uniqueItems.bowUnits();
+            if (stack.is(Items.CROSSBOW)) return Main.CONFIG.anvilImprovements.uniqueItems.crossbowUnits();
+            if (stack.is(Items.FLINT_AND_STEEL)) return Main.CONFIG.anvilImprovements.uniqueItems.flintAndSteelUnits();
+            if (stack.is(Items.SHEARS)) return Main.CONFIG.anvilImprovements.uniqueItems.shearsUnits();
+            if (stack.is(Items.TRIDENT)) return Main.CONFIG.anvilImprovements.uniqueItems.tridentUnits();
+            if (stack.is(Items.BRUSH)) return Main.CONFIG.anvilImprovements.uniqueItems.brushUnits();
+            if (stack.is(Items.FISHING_ROD)) return Main.CONFIG.anvilImprovements.uniqueItems.fishingRodUnits();
+            if (stack.is(Items.CARROT_ON_A_STICK)) return Main.CONFIG.anvilImprovements.uniqueItems.carrotOnAStickUnits();
+            if (stack.is(Items.WARPED_FUNGUS_ON_A_STICK)) return Main.CONFIG.anvilImprovements.uniqueItems.warpedFungusOnAStickUnits();
+
+            for (String s : Main.CONFIG.anvilImprovements.modItemUnitCosts()) {
+                String[] split = s.split(";");
+                if (split.length != 2) {
+                    LOGGER.warn("Invalid repair unit cost entry: {}, skipping", s);
+                }
+                else {
+                    try {
+                        if (split[0].startsWith("#")) {
+                            if (stack.is(TagKey.create(Registries.ITEM, ResourceLocation.parse(split[0].replace("#", ""))))) {
+                                return Integer.parseInt(split[1]);
+                            }
+                        }
+                        else if (stack.is(BuiltInRegistries.ITEM.get(ResourceLocation.parse(split[0]))/*? if > 1.21.1 {*//*.orElseThrow()*//*?}*/)) {
+                            return Integer.parseInt(split[1]);
+                        }
+                    } catch (NumberFormatException e) {
+                        LOGGER.warn("Unit cost is not a number in unit cost entry: {}, skipping", s);
+                    } catch (NoSuchElementException e) {
+                        LOGGER.warn("Resource location in unit cost entry does not exist: {}, skipping", s);
+                    }
+                }
+            }
+        }
+
+        return 4;
+    }
+
+    public static void initAdditionalRepairables() {
+        additionalRepairables.add(new ObjectObjectImmutablePair<>(Items.BOW, Ingredient.of(Items.STRING)));
+        additionalRepairables.add(new ObjectObjectImmutablePair<>(Items.CROSSBOW, Ingredient.of(Items.STRING)));
+        additionalRepairables.add(new ObjectObjectImmutablePair<>(Items.FISHING_ROD, Ingredient.of(Items.STRING)));
+        additionalRepairables.add(new ObjectObjectImmutablePair<>(Items.FLINT_AND_STEEL, Ingredient.of(Items.IRON_INGOT)));
+        additionalRepairables.add(new ObjectObjectImmutablePair<>(Items.SHEARS, Ingredient.of(Items.IRON_INGOT)));
+        additionalRepairables.add(new ObjectObjectImmutablePair<>(Items.BRUSH, Ingredient.of(Items.FEATHER)));
+        additionalRepairables.add(new ObjectObjectImmutablePair<>(Items.CARROT_ON_A_STICK, Ingredient.of(Items.CARROT)));
+        additionalRepairables.add(new ObjectObjectImmutablePair<>(Items.WARPED_FUNGUS_ON_A_STICK, Ingredient.of(Items.WARPED_FUNGUS)));
+        if (!FabricLoader.getInstance().isModLoaded("bettertridents"))
+            additionalRepairables.add(new ObjectObjectImmutablePair<>(Items.TRIDENT, Ingredient.of(Items.PRISMARINE_SHARD)));
+        Main.CONFIG.anvilImprovements.modRepairableItems().forEach(entry -> {
+            String[] split = entry.split(";");
+            if (split.length != 2) {
+                LOGGER.warn("Invalid repairable entry: {}, skipping", entry);
+            }
+            else {
+                try {
+                    Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(split[0]))/*? if > 1.21.1 {*//*.orElseThrow().value()*//*?}*/;
+                    if (!item.equals(Items.AIR)){
+                        if (split[1].startsWith("#")) {
+                            //? if <= 1.21.1
+                            additionalRepairables.add(new ObjectObjectImmutablePair<>(item, Ingredient.of(TagKey.create(Registries.ITEM, ResourceLocation.parse(split[1].replace("#", ""))))));
+                            //? if > 1.21.1
+                            /*additionalRepairables.add(new ObjectObjectImmutablePair<>(item, Ingredient.of(BuiltInRegistries.ITEM.get(TagKey.create(Registries.ITEM, ResourceLocation.parse(split[1].replace("#", "")))).orElseThrow())));*/
+                        } else {
+                            Item repairMaterial = BuiltInRegistries.ITEM.get(ResourceLocation.parse(split[1]))/*? if > 1.21.1 {*//*.orElseThrow().value()*//*?}*/;
+                            additionalRepairables.add(new ObjectObjectImmutablePair<>(item, Ingredient.of(repairMaterial)));
+                        }
+                    }
+                } catch (NoSuchElementException e) {
+                    LOGGER.warn("Resource location in repairable entry not exist: {}, skipping", entry);
+                }
+            }
+        });
+        //? if > 1.21.1 {
+        /*BuiltInRegistries.ITEM.forEach(item -> {
+            List<Holder<Item>> items = List.of();
+            for (ObjectObjectImmutablePair<Item, Ingredient> repair : ModUtil.additionalRepairables) {
+                if (repair.left().equals(item)) {
+                    items = repair.right().items()/^? if = 1.21.4 {^//^.toList()^//^?}^/;
+                    break;
+                }
+            }
+            if (!items.isEmpty()) {
+                item.components = PatchedDataComponentMap.fromPatch(item.components, DataComponentPatch.builder().set(DataComponents.REPAIRABLE, new Repairable(HolderSet.direct(items))).build());
+            }
+        });
+        *///?}
+    }
+
+    public static boolean isEnchantedBookOrWhetstoneUpgradeRecipe(NonNullList<Slot> slots) {
+        return slots.get(0).getItem().is(ModItems.ENCHANTMENT_UPGRADE_SMITHING_TEMPLATE) &&
+                (slots.get(1).getItem().is(Items.ENCHANTED_BOOK) || slots.get(1).getItem().is(ModItems.WHETSTONE)) &&
+                slots.get(1).getItem().has(DataComponents.STORED_ENCHANTMENTS);
+    }
+
+    public static boolean isEnchantedItemUpgradeRecipe(NonNullList<Slot> slots) {
+        return slots.get(0).getItem().is(ModItems.ENCHANTMENT_UPGRADE_SMITHING_TEMPLATE) &&
+                slots.get(1).getItem().has(DataComponents.MAX_DAMAGE) &&
+                slots.get(1).getItem().getMaxStackSize() == 1 &&
+                slots.get(1).getItem().has(DataComponents.ENCHANTMENTS);
+    }
+}
