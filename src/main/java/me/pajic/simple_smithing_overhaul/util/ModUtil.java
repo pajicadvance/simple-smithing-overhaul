@@ -37,43 +37,43 @@ public class ModUtil {
     public static final List<ObjectObjectImmutablePair<Item, Ingredient>> additionalRepairables = new ArrayList<>();
 
     public static int determineUnitCost(ItemStack stack) {
-        if (Main.CONFIG.anvilImprovements.modifyAnvilRepairUnitCosts()) {
+        if (Main.CONFIG.streamlinedRepairs.modifyAnvilRepairUnitCosts()) {
 
-            if (stack.is(ItemTags.HEAD_ARMOR)) return Main.CONFIG.anvilImprovements.armor.headArmorUnits();
-            if (stack.is(ItemTags.CHEST_ARMOR)) return Main.CONFIG.anvilImprovements.armor.chestArmorUnits();
-            if (stack.is(ItemTags.LEG_ARMOR)) return Main.CONFIG.anvilImprovements.armor.legArmorUnits();
-            if (stack.is(ItemTags.FOOT_ARMOR)) return Main.CONFIG.anvilImprovements.armor.footArmorUnits();
+            if (stack.is(ItemTags.HEAD_ARMOR)) return Main.CONFIG.streamlinedRepairs.armor.headArmorUnits();
+            if (stack.is(ItemTags.CHEST_ARMOR)) return Main.CONFIG.streamlinedRepairs.armor.chestArmorUnits();
+            if (stack.is(ItemTags.LEG_ARMOR)) return Main.CONFIG.streamlinedRepairs.armor.legArmorUnits();
+            if (stack.is(ItemTags.FOOT_ARMOR)) return Main.CONFIG.streamlinedRepairs.armor.footArmorUnits();
             if (stack.getItem() instanceof AnimalArmorItem aai) {
                 AnimalArmorItem.BodyType type =
                         //? if <= 1.21.1
                         aai.getBodyType();
                         //? if > 1.21.1
                         /*aai.bodyType;*/
-                if (type.equals(AnimalArmorItem.BodyType.EQUESTRIAN)) return Main.CONFIG.anvilImprovements.armor.horseArmorUnits();
-                if (type.equals(AnimalArmorItem.BodyType.CANINE)) return Main.CONFIG.anvilImprovements.armor.wolfArmorUnits();
+                if (type.equals(AnimalArmorItem.BodyType.EQUESTRIAN)) return Main.CONFIG.streamlinedRepairs.armor.horseArmorUnits();
+                if (type.equals(AnimalArmorItem.BodyType.CANINE)) return Main.CONFIG.streamlinedRepairs.armor.wolfArmorUnits();
             }
 
-            if (stack.is(ItemTags.PICKAXES)) return Main.CONFIG.anvilImprovements.tools.pickaxeUnits();
-            if (stack.is(ItemTags.AXES)) return Main.CONFIG.anvilImprovements.tools.axeUnits();
-            if (stack.is(ItemTags.SWORDS)) return Main.CONFIG.anvilImprovements.tools.swordUnits();
-            if (stack.is(ItemTags.HOES)) return Main.CONFIG.anvilImprovements.tools.hoeUnits();
-            if (stack.is(ItemTags.SHOVELS)) return Main.CONFIG.anvilImprovements.tools.shovelUnits();
+            if (stack.is(ItemTags.PICKAXES)) return Main.CONFIG.streamlinedRepairs.tools.pickaxeUnits();
+            if (stack.is(ItemTags.AXES)) return Main.CONFIG.streamlinedRepairs.tools.axeUnits();
+            if (stack.is(ItemTags.SWORDS)) return Main.CONFIG.streamlinedRepairs.tools.swordUnits();
+            if (stack.is(ItemTags.HOES)) return Main.CONFIG.streamlinedRepairs.tools.hoeUnits();
+            if (stack.is(ItemTags.SHOVELS)) return Main.CONFIG.streamlinedRepairs.tools.shovelUnits();
 
-            if (stack.is(Items.SHIELD)) return Main.CONFIG.anvilImprovements.uniqueItems.shieldUnits();
-            if (stack.is(Items.ELYTRA)) return Main.CONFIG.anvilImprovements.uniqueItems.elytraUnits();
-            if (stack.is(Items.MACE)) return Main.CONFIG.anvilImprovements.uniqueItems.maceUnits();
-            if (stack.is(ModItems.WHETSTONE)) return Main.CONFIG.anvilImprovements.uniqueItems.whetstoneUnits();
-            if (stack.is(Items.BOW)) return Main.CONFIG.anvilImprovements.uniqueItems.bowUnits();
-            if (stack.is(Items.CROSSBOW)) return Main.CONFIG.anvilImprovements.uniqueItems.crossbowUnits();
-            if (stack.is(Items.FLINT_AND_STEEL)) return Main.CONFIG.anvilImprovements.uniqueItems.flintAndSteelUnits();
-            if (stack.is(Items.SHEARS)) return Main.CONFIG.anvilImprovements.uniqueItems.shearsUnits();
-            if (stack.is(Items.TRIDENT)) return Main.CONFIG.anvilImprovements.uniqueItems.tridentUnits();
-            if (stack.is(Items.BRUSH)) return Main.CONFIG.anvilImprovements.uniqueItems.brushUnits();
-            if (stack.is(Items.FISHING_ROD)) return Main.CONFIG.anvilImprovements.uniqueItems.fishingRodUnits();
-            if (stack.is(Items.CARROT_ON_A_STICK)) return Main.CONFIG.anvilImprovements.uniqueItems.carrotOnAStickUnits();
-            if (stack.is(Items.WARPED_FUNGUS_ON_A_STICK)) return Main.CONFIG.anvilImprovements.uniqueItems.warpedFungusOnAStickUnits();
+            if (stack.is(Items.SHIELD)) return Main.CONFIG.streamlinedRepairs.uniqueItems.shieldUnits();
+            if (stack.is(Items.ELYTRA)) return Main.CONFIG.streamlinedRepairs.uniqueItems.elytraUnits();
+            if (stack.is(Items.MACE)) return Main.CONFIG.streamlinedRepairs.uniqueItems.maceUnits();
+            if (stack.is(ModItems.WHETSTONE)) return Main.CONFIG.streamlinedRepairs.uniqueItems.whetstoneUnits();
+            if (stack.is(Items.BOW)) return Main.CONFIG.streamlinedRepairs.uniqueItems.bowUnits();
+            if (stack.is(Items.CROSSBOW)) return Main.CONFIG.streamlinedRepairs.uniqueItems.crossbowUnits();
+            if (stack.is(Items.FLINT_AND_STEEL)) return Main.CONFIG.streamlinedRepairs.uniqueItems.flintAndSteelUnits();
+            if (stack.is(Items.SHEARS)) return Main.CONFIG.streamlinedRepairs.uniqueItems.shearsUnits();
+            if (stack.is(Items.TRIDENT)) return Main.CONFIG.streamlinedRepairs.uniqueItems.tridentUnits();
+            if (stack.is(Items.BRUSH)) return Main.CONFIG.streamlinedRepairs.uniqueItems.brushUnits();
+            if (stack.is(Items.FISHING_ROD)) return Main.CONFIG.streamlinedRepairs.uniqueItems.fishingRodUnits();
+            if (stack.is(Items.CARROT_ON_A_STICK)) return Main.CONFIG.streamlinedRepairs.uniqueItems.carrotOnAStickUnits();
+            if (stack.is(Items.WARPED_FUNGUS_ON_A_STICK)) return Main.CONFIG.streamlinedRepairs.uniqueItems.warpedFungusOnAStickUnits();
 
-            for (String s : Main.CONFIG.anvilImprovements.modItemUnitCosts()) {
+            for (String s : Main.CONFIG.streamlinedRepairs.modItemUnitCosts()) {
                 String[] split = s.split(";");
                 if (split.length != 2) {
                     LOGGER.warn("Invalid repair unit cost entry: {}, skipping", s);
@@ -111,7 +111,7 @@ public class ModUtil {
         additionalRepairables.add(new ObjectObjectImmutablePair<>(Items.WARPED_FUNGUS_ON_A_STICK, Ingredient.of(Items.WARPED_FUNGUS)));
         if (!FabricLoader.getInstance().isModLoaded("bettertridents"))
             additionalRepairables.add(new ObjectObjectImmutablePair<>(Items.TRIDENT, Ingredient.of(Items.PRISMARINE_SHARD)));
-        Main.CONFIG.anvilImprovements.modRepairableItems().forEach(entry -> {
+        Main.CONFIG.streamlinedRepairs.modRepairableItems().forEach(entry -> {
             String[] split = entry.split(";");
             if (split.length != 2) {
                 LOGGER.warn("Invalid repairable entry: {}, skipping", entry);

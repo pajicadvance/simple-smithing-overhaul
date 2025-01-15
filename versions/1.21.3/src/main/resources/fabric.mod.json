@@ -10,9 +10,6 @@
   "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
-    "client": [
-      "me.pajic.simple_smithing_overhaul.ClientMain"
-    ],
     "main": [
       "me.pajic.simple_smithing_overhaul.Main"
     ],

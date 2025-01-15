@@ -12,6 +12,7 @@ import java.util.List;
 public class ConfigModel {
     @Nest public EnchantmentUpgrading enchantmentUpgrading = new EnchantmentUpgrading();
     @Nest public Whetstone whetstone = new Whetstone();
+    @Nest public StreamlinedRepairs streamlinedRepairs = new StreamlinedRepairs();
     @Nest public AnvilImprovements anvilImprovements = new AnvilImprovements();
 
     public static class EnchantmentUpgrading {
@@ -29,7 +30,7 @@ public class ConfigModel {
         @RestartRequired public boolean enableWhetstone = true;
     }
 
-    public static class AnvilImprovements {
+    public static class StreamlinedRepairs {
         public boolean modifyAnvilRepairUnitCosts = true;
         @Nest public Armor armor = new Armor();
         @Nest public Tools tools = new Tools();
@@ -109,6 +110,9 @@ public class ConfigModel {
                 "chalk:yellow_chalk;2",
                 "chalk:yellow_glow_chalk;1"
         );
+    }
+
+    public static class AnvilImprovements {
         public boolean modifyDegradationChance = true;
         @RangeConstraint(min = 0.0F, max = 100.0F, decimalPlaces = 1) public float degradationChance = 6.0F;
         public boolean freeUnenchantedRepairs = true;
