@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "Q": {
+      "item": "minecraft:quartz"
+    }
+  },
+  "pattern": [
+    "QQQ",
+    "QQQ"
+  ],
+  "result": {
+    "id": "simple_smithing_overhaul:whetstone",
+    "count": 1
+  }
+}

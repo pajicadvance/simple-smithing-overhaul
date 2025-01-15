@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:lapis_lazuli",
+  "base": "#simple_smithing_overhaul:enchantment_upgradeable",
+  "result": {
+    "count": 1,
+    "id": "minecraft:enchanted_book"
+  },
+  "template": "simple_smithing_overhaul:enchantment_upgrade"
+}

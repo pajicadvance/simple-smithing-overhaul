@@ -1,0 +1,7 @@
+{
+  "values": [
+    "minecraft:enchanted_book",
+    "simple_smithing_overhaul:whetstone",
+    "#minecraft:enchantable/durability"
+  ]
+}

@@ -1,0 +1,121 @@
+plugins {
+    id 'java-library'
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.neoforged.gradle.userdev' version '7.0.178'
+}
+
+version = mod_version + "+" + stonecutter.current.version
+group = mod_group_id
+
+repositories {
+    mavenLocal()
+    maven { url = "https://maven.terraformersmc.com/" }
+}
+
+base {
+    archivesName = mod_id
+}
+
+subsystems {
+    parchment {
+        minecraftVersion = property("neogradle.subsystems.parchment.minecraftVersion")
+        mappingsVersion = property("neogradle.subsystems.parchment.mappingsVersion")
+    }
+}
+
+minecraft {
+    accessTransformers {
+        file('src/main/resources/META-INF/accesstransformer.cfg')
+    }
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+runs {
+
+    configureEach {
+        systemProperty 'forge.logging.markers', 'REGISTRIES'
+
+        systemProperty 'forge.logging.console.level', 'debug'
+
+        modSource project.sourceSets.main
+    }
+
+    client {
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    }
+
+    server {
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+        programArgument '--nogui'
+    }
+
+    gameTestServer {
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    }
+
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
+
+jarJar.enable()
+
+jar {
+    archiveClassifier = "slim"
+}
+
+tasks.named('jarJar') {
+    archiveClassifier = ""
+}
+
+dependencies {
+    implementation "net.neoforged:neoforge:${property("neo_version")}"
+    implementation "com.moulberry:mixinconstraints:${project.mixinconstraints_version}"
+    jarJar(group: 'com.moulberry', name: 'mixinconstraints', version: project.mixinconstraints_version)
+    compileOnly "dev.emi:emi-neoforge:${property("emi_version")}"
+    if (stonecutter.eval(stonecutter.current.version, "1.21.1")) {
+        implementation "dev.emi:emi-neoforge:${property("emi_version")}"
+    }
+}
+
+// This block of code expands all declared replace properties in the specified resource targets.
+// A missing property will result in an error. Properties are expanded using ${} Groovy notation.
+// When "copyIdeResources" is enabled, this will also run before the game launches in IDE environments.
+// See https://docs.gradle.org/current/dsl/org.gradle.language.jvm.tasks.ProcessResources.html
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_version,
+            neo_version_range      : neo_version_range,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : mod_version,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
