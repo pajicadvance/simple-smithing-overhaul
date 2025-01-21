@@ -13,6 +13,8 @@ public class ModServerConfig {
     private static final ModConfigSpec.IntValue UPGRADING_BASE_EXPERIENCE_COST;
     private static final ModConfigSpec.BooleanValue IGNORE_TOO_EXPENSIVE;
 
+    private static final ModConfigSpec.IntValue PINNACLE_EXPERIENCE_COST;
+
     private static final ModConfigSpec.BooleanValue MODIFY_REPAIR_UNIT_COSTS;
     private static final ModConfigSpec.IntValue HEAD_ARMOR_UNITS;
     private static final ModConfigSpec.IntValue CHEST_ARMOR_UNITS;
@@ -60,6 +62,12 @@ public class ModServerConfig {
             IGNORE_TOO_EXPENSIVE = BUILDER
                     .translation("text.config.simple_smithing_overhaul.option.enchantmentUpgrading.ignoreTooExpensive")
                     .define("ignoreTooExpensive", true);
+        BUILDER.pop();
+
+        BUILDER.push("pinnacleEnchantment");
+            PINNACLE_EXPERIENCE_COST = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.pinnacleEnchantment.pinnacleExperienceCost")
+                    .defineInRange("pinnacleExperienceCost", 30, 1, Integer.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("streamlinedRepairs");
@@ -179,6 +187,7 @@ public class ModServerConfig {
     public static boolean upgradingHasExperienceCost;
     public static int upgradingBaseExperienceCost;
     public static boolean ignoreTooExpensive;
+    public static int pinnacleExperienceCost;
     public static boolean modifyAnvilRepairUnitCosts;
     public static int headArmorUnits;
     public static int chestArmorUnits;
@@ -227,6 +236,7 @@ public class ModServerConfig {
             upgradingHasExperienceCost = UPGRADING_HAS_EXPERIENCE_COST.get();
             upgradingBaseExperienceCost = UPGRADING_BASE_EXPERIENCE_COST.get();
             ignoreTooExpensive = IGNORE_TOO_EXPENSIVE.get();
+            pinnacleExperienceCost = PINNACLE_EXPERIENCE_COST.get();
             modifyAnvilRepairUnitCosts = MODIFY_REPAIR_UNIT_COSTS.get();
             headArmorUnits = HEAD_ARMOR_UNITS.get();
             chestArmorUnits = CHEST_ARMOR_UNITS.get();

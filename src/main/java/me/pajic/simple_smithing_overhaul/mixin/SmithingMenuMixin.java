@@ -181,7 +181,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
                 ModCommonConfig.enablePinnacleEnchantment &&
                 ModUtil.isPinnacleEnchantmentRecipe(slots)
         ) {
-            return player.hasInfiniteMaterials() || player.experienceLevel >= 30;
+            return player.hasInfiniteMaterials() || player.experienceLevel >= ModServerConfig.pinnacleExperienceCost;
         }
         return original;
     }
@@ -205,7 +205,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
                 ModUtil.isPinnacleEnchantmentRecipe(slots) &&
                 !player.getAbilities().instabuild
         ) {
-            player.giveExperienceLevels(-30);
+            player.giveExperienceLevels(-ModServerConfig.pinnacleExperienceCost);
         }
     }
 }
