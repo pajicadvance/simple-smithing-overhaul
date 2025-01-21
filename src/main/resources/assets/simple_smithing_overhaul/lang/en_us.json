@@ -9,6 +9,9 @@
   "text.config.simple_smithing_overhaul.option.enchantmentUpgrading.upgradingBaseExperienceCost": "Upgrade base XP level cost",
   "text.config.simple_smithing_overhaul.option.enchantmentUpgrading.ignoreTooExpensive": "Ignore \"Too Expensive\"",
 
+  "text.config.simple_smithing_overhaul.category.pinnacleEnchantment": "Pinnacle enchantment",
+  "text.config.simple_smithing_overhaul.option.pinnacleEnchantment.enablePinnacleEnchantment": "Enable pinnacle enchantment",
+
   "simple_smithing_overhaul.configuration.streamlinedRepairs": "Streamlined repairs",
   "text.config.simple_smithing_overhaul.option.anvilImprovements.modifyRepairUnitCosts": "Enable repair unit cost modification",
   "simple_smithing_overhaul.configuration.armor": "Armor unit costs",
@@ -58,6 +61,14 @@
   "item.minecraft.simple_smithing_overhaul.smithing_template.enchantment_upgrade.ingredients": "Lapis Lazuli",
   "item.minecraft.simple_smithing_overhaul.smithing_template.enchantment_upgrade.base_slot_description": "Add enchanted item",
   "item.minecraft.simple_smithing_overhaul.smithing_template.enchantment_upgrade.additions_slot_description": "Select enchantment to upgrade with Lapis Lazuli",
+
+  "item.simple_smithing_overhaul.pinnacle_enchantment": "Pinnacle Enchantment Smithing Template",
+  "upgrade.minecraft.simple_smithing_overhaul.pinnacle_enchantment": "Pinnacle Enchantment",
+  "item.minecraft.simple_smithing_overhaul.smithing_template.pinnacle_enchantment.applies_to": "Maxed Out Enchanted Items",
+  "item.minecraft.simple_smithing_overhaul.smithing_template.pinnacle_enchantment.ingredients": "Echo Shard",
+  "item.minecraft.simple_smithing_overhaul.smithing_template.pinnacle_enchantment.base_slot_description": "Add maxed out enchanted item",
+  "item.minecraft.simple_smithing_overhaul.smithing_template.pinnacle_enchantment.additions_slot_description": "Add Echo Shard",
+  "text.item.simple_smithing_overhaul.pinnacleCustomName": "Pinnacle Item: +1 Level to Random Enchantment",
 
   "item.simple_smithing_overhaul.whetstone": "Whetstone",
   "item.simple_smithing_overhaul.enchanted_whetstone": "Enchanted Whetstone",

@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair;
 import me.pajic.simple_smithing_overhaul.config.ModCommonConfig;
 import me.pajic.simple_smithing_overhaul.config.ModServerConfig;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.NonNullList;
@@ -12,15 +13,22 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.SmithingMenu;
 import net.minecraft.world.item.AnimalArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.neoforged.fml.ModList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -152,6 +160,21 @@ public class ModUtil {
         *///?}
     }
 
+    public static ItemStack applyPinnacleUpgrade(ItemStack original, Slot slot, AbstractContainerMenu container, NonNullList<Slot> slots) {
+        if (container instanceof SmithingMenu && ModUtil.isPinnacleEnchantmentRecipe(slots) && slot.equals(slots.get(3))) {
+            Component itemName = slots.get(1).getItem().getOrDefault(DataComponents.CUSTOM_NAME, original.getItem().getName(original));
+            original.set(DataComponents.CUSTOM_NAME, itemName.copy().withStyle(ChatFormatting.LIGHT_PURPLE));
+            List<EnchantmentInstance> possibleUpgrades = new ArrayList<>(original.getEnchantments().entrySet()
+                    .stream().map(entry -> new EnchantmentInstance(entry.getKey(), entry.getIntValue())).toList());
+            possibleUpgrades.removeIf(ei -> ei.enchantment.value().getMaxLevel() == 1);
+            EnchantmentInstance toUpgrade = possibleUpgrades.get(Mth.nextInt(RandomSource.create(), 0, possibleUpgrades.size() - 1));
+            EnchantmentHelper.updateEnchantments(original, mutable ->
+                    mutable.upgrade(toUpgrade.enchantment, toUpgrade.level + 1)
+            );
+        }
+        return original;
+    }
+
     public static boolean isEnchantedBookOrWhetstoneUpgradeRecipe(NonNullList<Slot> slots) {
         return slots.get(0).getItem().is(ModItems.ENCHANTMENT_UPGRADE_SMITHING_TEMPLATE) &&
                 (slots.get(1).getItem().is(Items.ENCHANTED_BOOK) || slots.get(1).getItem().is(ModItems.WHETSTONE)) &&
@@ -163,5 +186,13 @@ public class ModUtil {
                 slots.get(1).getItem().has(DataComponents.MAX_DAMAGE) &&
                 slots.get(1).getItem().getMaxStackSize() == 1 &&
                 slots.get(1).getItem().has(DataComponents.ENCHANTMENTS);
+    }
+
+    public static boolean isPinnacleEnchantmentRecipe(NonNullList<Slot> slots) {
+        return slots.get(0).getItem().is(ModItems.PINNACLE_ENCHANTMENT_SMITHING_TEMPLATE) &&
+                slots.get(1).getItem().has(DataComponents.MAX_DAMAGE) &&
+                slots.get(1).getItem().getMaxStackSize() == 1 &&
+                slots.get(1).getItem().has(DataComponents.ENCHANTMENTS) &&
+                slots.get(2).getItem().is(Items.ECHO_SHARD);
     }
 }

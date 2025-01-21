@@ -1,6 +1,5 @@
 package me.pajic.simple_smithing_overhaul.items;
 
-import me.pajic.simple_smithing_overhaul.config.ModCommonConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.flag.FeatureFlag;
@@ -22,16 +21,12 @@ public class SmithingTemplateFoilItem extends SmithingTemplateItem {
     //? if > 1.21.1 {
     /*public SmithingTemplateFoilItem(Component appliesTo, Component ingredients, Component baseSlotDescription, Component additionsSlotDescription, List<ResourceLocation> baseSlotEmptyIcons, List<ResourceLocation> additionalSlotEmptyIcons, Properties properties) {
         super(appliesTo, ingredients, baseSlotDescription, additionsSlotDescription, baseSlotEmptyIcons, additionalSlotEmptyIcons, properties);
+
     }
     *///?}
 
     @Override
     public boolean isFoil(@NotNull ItemStack itemStack) {
         return true;
-    }
-
-    @Override
-    public boolean isEnabled(@NotNull FeatureFlagSet enabledFeatures) {
-        return ModCommonConfig.enableEnchantmentUpgrading;
     }
 }

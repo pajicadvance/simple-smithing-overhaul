@@ -2,6 +2,7 @@ package me.pajic.simple_smithing_overhaul.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.sugar.Local;
 import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.config.ModCommonConfig;
 import me.pajic.simple_smithing_overhaul.config.ModServerConfig;
@@ -10,14 +11,31 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ItemCombinerMenu;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(ItemCombinerMenu.class)
 public abstract class ItemCombinerMenuMixin extends AbstractContainerMenu {
 
     protected ItemCombinerMenuMixin(@Nullable MenuType<?> menuType, int containerId) {
         super(menuType, containerId);
+    }
+
+    @ModifyArg(
+            method = "quickMoveStack",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/inventory/ItemCombinerMenu;moveItemStackTo(Lnet/minecraft/world/item/ItemStack;IIZ)Z",
+                    ordinal = 0
+            ),
+            index = 0
+    )
+    private ItemStack upgradeItemAfterQuickMove(ItemStack original, @Local Slot slot) {
+        return ModUtil.applyPinnacleUpgrade(original, slot, (ItemCombinerMenu) (Object) this, slots);
     }
 
     //? if > 1.21.1 {

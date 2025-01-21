@@ -16,12 +16,14 @@ import dev.emi.emi.recipe.EmiAnvilRecipe;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.*;
@@ -73,6 +75,10 @@ public class EmiCompat implements EmiPlugin {
         emiRegistry.removeRecipes(ResourceLocation.fromNamespaceAndPath(
                 "simple_smithing_overhaul", "enchantment_upgrade_smithing")
         );
+        // Same for pinnacle enchantment smithing recipe
+        emiRegistry.removeRecipes(ResourceLocation.fromNamespaceAndPath(
+                "simple_smithing_overhaul", "pinnacle_enchantment_smithing")
+        );
 
         // Add enchantment upgrade smithing recipes for every enchantable item.
         // See the enchantment_upgradable tag for the list of included items.
@@ -87,6 +93,19 @@ public class EmiCompat implements EmiPlugin {
         input.getEmiStacks().forEach(emiStack -> {
             emiRegistry.addRecipe(new EmiEnchantmentUpgradeSmithingRecipe(
                     ResourceLocation.fromNamespaceAndPath("simple_smithing_overhaul", "/enchantment_upgrade_" + counter[0]),
+                    emiStack.getItemStack()
+            ));
+            counter[0]++;
+        });
+        // Same for pinnacle enchantment smithing recipes
+        EmiIngredient input1 = EmiIngredient.of(Ingredient.of(TagKey.create(
+                Registries.ITEM,
+                ResourceLocation.withDefaultNamespace("enchantable/durability")
+        )));
+        counter[0] = 1;
+        input1.getEmiStacks().forEach(emiStack -> {
+            emiRegistry.addRecipe(new EmiPinnacleEnchantmentSmithingRecipe(
+                    ResourceLocation.fromNamespaceAndPath("simple_smithing_overhaul", "/pinnacle_enchantment_" + counter[0]),
                     emiStack.getItemStack()
             ));
             counter[0]++;
@@ -359,6 +378,84 @@ public class EmiCompat implements EmiPlugin {
                     }
                 }
             }
+            return EmiStack.of(stack);
+        }
+    }
+
+    private class EmiPinnacleEnchantmentSmithingRecipe implements EmiRecipe {
+        protected final ResourceLocation id;
+        protected final EmiStack template;
+        protected final EmiStack input;
+        protected final EmiIngredient addition;
+        private final int uniq;
+        private EmiPinnacleEnchantmentSmithingRecipe(ResourceLocation id, ItemStack input) {
+            this.id = id;
+            this.template = EmiStack.of(ModItems.PINNACLE_ENCHANTMENT_SMITHING_TEMPLATE);
+            this.input = EmiStack.of(input);
+            this.addition = EmiStack.of(Items.ECHO_SHARD);
+            this.uniq = EmiUtil.RANDOM.nextInt();
+        }
+        @Override
+        public EmiRecipeCategory getCategory() {
+            return VanillaEmiRecipeCategories.SMITHING;
+        }
+        @Override
+        public @Nullable ResourceLocation getId() {
+            return this.id;
+        }
+        @Override
+        public List<EmiIngredient> getInputs() {
+            return List.of(this.template, this.input, this.addition);
+        }
+        @Override
+        public List<EmiStack> getOutputs() {
+            return List.of(this.input);
+        }
+        @Override
+        public int getDisplayWidth() {
+            return 112;
+        }
+        @Override
+        public int getDisplayHeight() {
+            return 18;
+        }
+        @Override
+        public void addWidgets(WidgetHolder widgetHolder) {
+            ItemStack inputStack = this.input.getItemStack().copy();
+            ItemEnchantments.Mutable enchantments = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+            EmiPort.getEnchantmentRegistry().holders().forEach(ref -> {
+                if (ref.value().isPrimaryItem(inputStack) && ref.value().exclusiveSet().size() == 0)
+                    enchantments.set(ref, ref.value().getMaxLevel());
+            });
+            EmiPort.getEnchantmentRegistry().getTags().forEach(tag -> {
+                if (tag.getFirst().equals(EnchantmentTags.CURSE)) {
+                    tag.getSecond().forEach(e -> enchantments.removeIf(ie -> ie.is(e)));
+                }
+                else if (tag.getFirst().location().getPath().contains("exclusive_set")) {
+                    List<Holder<Enchantment>> possibleEnchantments = tag.getSecond().stream().filter(e -> e.value().isPrimaryItem(inputStack)).toList();
+                    if (!possibleEnchantments.isEmpty()){
+                        Holder<Enchantment> e = possibleEnchantments.get(EmiUtil.RANDOM.nextInt(possibleEnchantments.size()));
+                        enchantments.set(e, e.value().getMaxLevel());
+                    }
+                }
+            });
+            inputStack.set(DataComponents.ENCHANTMENTS, enchantments.toImmutable());
+            widgetHolder.addTexture(EmiTexture.EMPTY_ARROW, 62, 1);
+            widgetHolder.addSlot(this.template, 0, 0);
+            widgetHolder.addSlot(EmiStack.of(inputStack), 18, 0);
+            widgetHolder.addSlot(this.addition, 36, 0);
+            widgetHolder.addGeneratedSlot(r -> this.getOutput(inputStack, enchantments.toImmutable(), r), this.uniq, 94, 0).recipeContext(this);
+        }
+        private EmiStack getOutput(ItemStack stack, ItemEnchantments enchantments, Random r) {
+            stack.set(DataComponents.CUSTOM_NAME, stack.getItem().getName(stack).copy().withStyle(ChatFormatting.LIGHT_PURPLE));
+            stack.set(DataComponents.ENCHANTMENTS, enchantments);
+            List<EnchantmentInstance> possibleUpgrades = new ArrayList<>(enchantments.entrySet()
+                    .stream().map(entry -> new EnchantmentInstance(entry.getKey(), entry.getIntValue())).toList());
+            possibleUpgrades.removeIf(ei -> ei.enchantment.value().getMaxLevel() == 1);
+            EnchantmentInstance toUpgrade = possibleUpgrades.get(r.nextInt(possibleUpgrades.size()));
+            EnchantmentHelper.updateEnchantments(stack, mutable ->
+                    mutable.upgrade(toUpgrade.enchantment, toUpgrade.level + 1)
+            );
             return EmiStack.of(stack);
         }
     }

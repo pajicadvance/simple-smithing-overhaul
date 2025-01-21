@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:echo_shard"
+  },
+  "base": {
+    "tag": "minecraft:enchantable/durability"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:enchanted_book"
+  },
+  "template": {
+    "item": "simple_smithing_overhaul:pinnacle_enchantment"
+  }
+}

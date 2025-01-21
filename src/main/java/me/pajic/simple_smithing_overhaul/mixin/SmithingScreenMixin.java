@@ -52,6 +52,17 @@ public abstract class SmithingScreenMixin extends ItemCombinerScreen<SmithingMen
                 guiGraphics.drawString(font, component, x, 69, textColor);
             }
         }
+        if (
+                ModCommonConfig.enablePinnacleEnchantment &&
+                ModUtil.isPinnacleEnchantmentRecipe(menu.slots) &&
+                menu.slots.get(3).hasItem()
+        ) {
+            Component component = Component.translatable("container.repair.cost", 30);
+            int textColor = (minecraft.player.hasInfiniteMaterials() || minecraft.player.experienceLevel >= 30) ? 8453920 : 0xFF6060;
+            int x = imageWidth - 8 - font.width(component) - 2;
+            guiGraphics.fill(x - 2, 67, imageWidth - 8, 79, 0x4F000000);
+            guiGraphics.drawString(font, component, x, 69, textColor);
+        }
     }
 
     @ModifyExpressionValue(
@@ -60,8 +71,9 @@ public abstract class SmithingScreenMixin extends ItemCombinerScreen<SmithingMen
     )
     private int nudgeArmorStandUp(int original) {
         if (
-                ModCommonConfig.enableEnchantmentUpgrading &&
-                ModServerConfig.upgradingHasExperienceCost
+                (ModCommonConfig.enableEnchantmentUpgrading &&
+                ModServerConfig.upgradingHasExperienceCost) ||
+                ModCommonConfig.enablePinnacleEnchantment
         ) {
             return original - 10;
         }

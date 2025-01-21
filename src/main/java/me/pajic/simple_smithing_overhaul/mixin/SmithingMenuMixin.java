@@ -8,9 +8,13 @@ import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.config.ModCommonConfig;
 import me.pajic.simple_smithing_overhaul.config.ModServerConfig;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -19,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -30,8 +35,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @Mixin(SmithingMenu.class)
 public abstract class SmithingMenuMixin extends ItemCombinerMenu {
@@ -117,6 +125,43 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
                 }
             }
         }
+        if (ModCommonConfig.enablePinnacleEnchantment) {
+            if (ModUtil.isPinnacleEnchantmentRecipe(slots)) {
+                boolean success = false;
+                ItemStack itemStack = slots.get(1).getItem().copy();
+                Set<EnchantmentInstance> itemEnchantments = itemStack.getEnchantments().entrySet()
+                        .stream().map(entry -> new EnchantmentInstance(entry.getKey(), entry.getIntValue()))
+                        .collect(Collectors.toSet());
+                if (itemEnchantments.stream().allMatch(ei -> ei.level == ei.enchantment.value().getMaxLevel())) {
+                    HolderLookup.RegistryLookup<Enchantment> registry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+                    Set<EnchantmentInstance> maxedOutEnchantments = new HashSet<>();
+                    registry.listElements().forEach(ref -> {
+                        if (ref.value().isPrimaryItem(itemStack))
+                            maxedOutEnchantments.add(new EnchantmentInstance(ref, ref.value().getMaxLevel()));
+                    });
+                    itemEnchantments.forEach(ei -> {
+                        maxedOutEnchantments.removeIf(ei1 -> ei1.enchantment.is(ei.enchantment) && ei1.level == ei.level);
+                        registry.listTags().forEach(tag -> {
+                            if ((tag.key().location().getPath().contains("exclusive_set") && tag.contains(ei.enchantment)) || tag.key().equals(EnchantmentTags.CURSE)) {
+                                registry.get(tag.key()).orElseThrow().forEach(e ->
+                                        maxedOutEnchantments.removeIf(ei1 -> ei1.enchantment.is(e))
+                                );
+                            }
+                        });
+                    });
+                    if (maxedOutEnchantments.isEmpty()) {
+                        success = true;
+                        ItemStack updatedStack = slots.get(1).getItem().copy();
+                        updatedStack.set(DataComponents.CUSTOM_NAME, Component.translatable("text.item.simple_smithing_overhaul.pinnacleCustomName").withStyle(ChatFormatting.LIGHT_PURPLE));
+                        stack.set(updatedStack);
+                    }
+                }
+                if (!success) {
+                    resultSlots.setItem(0, ItemStack.EMPTY);
+                    ci.cancel();
+                }
+            }
+        }
     }
 
     //? if <= 1.21.1 {
@@ -131,6 +176,12 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
                 (ModUtil.isEnchantedBookOrWhetstoneUpgradeRecipe(slots) || ModUtil.isEnchantedItemUpgradeRecipe(slots))
         ) {
             return (player.hasInfiniteMaterials() || player.experienceLevel >= Main.cost) && Main.cost > 0;
+        }
+        if (
+                ModCommonConfig.enablePinnacleEnchantment &&
+                ModUtil.isPinnacleEnchantmentRecipe(slots)
+        ) {
+            return player.hasInfiniteMaterials() || player.experienceLevel >= 30;
         }
         return original;
     }
@@ -148,6 +199,13 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
                 !player.getAbilities().instabuild
         ) {
             player.giveExperienceLevels(-Main.cost);
+        }
+        if (
+                ModCommonConfig.enablePinnacleEnchantment &&
+                ModUtil.isPinnacleEnchantmentRecipe(slots) &&
+                !player.getAbilities().instabuild
+        ) {
+            player.giveExperienceLevels(-30);
         }
     }
 }

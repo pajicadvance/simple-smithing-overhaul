@@ -34,7 +34,7 @@ public class Main {
         modContainer.registerConfig(ModConfig.Type.SERVER, ModServerConfig.SERVER_SPEC);
         modEventBus.addListener(this::registerItems);
         modEventBus.addListener(this::addCreative);
-        NeoForge.EVENT_BUS.addListener(this::addEndCityLoot);
+        NeoForge.EVENT_BUS.addListener(this::addLoot);
         NeoForge.EVENT_BUS.addListener(this::onAnvilUse);
         modEventBus.addListener(this::onInitialize);
     }
@@ -44,6 +44,10 @@ public class Main {
             registry.register(ResourceLocation.parse(
                     "simple_smithing_overhaul:enchantment_upgrade"),
                     ModItems.ENCHANTMENT_UPGRADE_SMITHING_TEMPLATE
+            );
+            registry.register(ResourceLocation.parse(
+                    "simple_smithing_overhaul:pinnacle_enchantment"),
+                    ModItems.PINNACLE_ENCHANTMENT_SMITHING_TEMPLATE
             );
             registry.register(
                     ResourceLocation.parse("simple_smithing_overhaul:whetstone"),
@@ -59,6 +63,11 @@ public class Main {
                     ModItems.ENCHANTMENT_UPGRADE_SMITHING_TEMPLATE.getDefaultInstance(),
                     CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS
             );
+            event.insertAfter(
+                    ModItems.ENCHANTMENT_UPGRADE_SMITHING_TEMPLATE.getDefaultInstance(),
+                    ModItems.PINNACLE_ENCHANTMENT_SMITHING_TEMPLATE.getDefaultInstance(),
+                    CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS
+            );
         }
         else if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.insertAfter(
@@ -69,10 +78,15 @@ public class Main {
         }
     }
 
-    private void addEndCityLoot(LootTableLoadEvent event) {
-        if (event.getName().equals(BuiltInLootTables.END_CITY_TREASURE.location())) {
+    private void addLoot(LootTableLoadEvent event) {
+        if (event.getName().equals(BuiltInLootTables.END_CITY_TREASURE.location()) && ModCommonConfig.enableEnchantmentUpgrading) {
             event.getTable().addPool(LootPool.lootPool()
                     .add(LootItem.lootTableItem(ModItems.ENCHANTMENT_UPGRADE_SMITHING_TEMPLATE).setWeight(10))
+                    .add(EmptyLootItem.emptyItem().setWeight(90)).build());
+        }
+        if (event.getName().equals(BuiltInLootTables.ANCIENT_CITY.location()) && ModCommonConfig.enablePinnacleEnchantment) {
+            event.getTable().addPool(LootPool.lootPool()
+                    .add(LootItem.lootTableItem(ModItems.PINNACLE_ENCHANTMENT_SMITHING_TEMPLATE).setWeight(10))
                     .add(EmptyLootItem.emptyItem().setWeight(90)).build());
         }
     }

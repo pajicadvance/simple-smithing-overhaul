@@ -16,6 +16,10 @@ public class ModCommonConfig {
             .translation("text.config.simple_smithing_overhaul.option.enchantmentUpgrading.enableEnchantmentUpgrading")
             .gameRestart()
             .define("enableEnchantmentUpgrading", true);
+    private static final ModConfigSpec.BooleanValue ENABLE_PINNACLE_ENCHANTMENT = BUILDER
+            .translation("text.config.simple_smithing_overhaul.option.pinnacleEnchantment.enablePinnacleEnchantment")
+            .gameRestart()
+            .define("enablePinnacleEnchantment", true);
     private static final ModConfigSpec.BooleanValue ENABLE_WHETSTONE = BUILDER
             .translation("text.config.simple_smithing_overhaul.option.whetstone.enableWhetstone")
             .gameRestart()
@@ -103,6 +107,7 @@ public class ModCommonConfig {
     public static final ModConfigSpec COMMON_SPEC = BUILDER.build();
 
     public static boolean enableEnchantmentUpgrading;
+    public static boolean enablePinnacleEnchantment;
     public static boolean enableWhetstone;
     public static List<String> modRepairableItems;
     public static List<String> modItemUnitCosts;
@@ -120,6 +125,7 @@ public class ModCommonConfig {
     private static void updateConfig(ModConfigEvent event) {
         if (event.getConfig().getSpec() == COMMON_SPEC) {
             enableEnchantmentUpgrading = ENABLE_ENCHANTMENT_UPGRADING.get();
+            enablePinnacleEnchantment = ENABLE_PINNACLE_ENCHANTMENT.get();
             enableWhetstone = ENABLE_WHETSTONE.get();
             modRepairableItems = new ArrayList<>(MOD_REPAIRABLE_ITEMS.get());
             modItemUnitCosts = new ArrayList<>(MOD_ITEM_UNIT_COSTS.get());
