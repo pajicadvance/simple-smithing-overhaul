@@ -11,6 +11,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class ConfigModel {
     @Nest public EnchantmentUpgrading enchantmentUpgrading = new EnchantmentUpgrading();
+    @Nest public PinnacleEnchantment pinnacleEnchantment = new PinnacleEnchantment();
     @Nest public Whetstone whetstone = new Whetstone();
     @Nest public StreamlinedRepairs streamlinedRepairs = new StreamlinedRepairs();
     @Nest public AnvilImprovements anvilImprovements = new AnvilImprovements();
@@ -26,6 +27,10 @@ public class ConfigModel {
         }
     }
 
+    public static class PinnacleEnchantment {
+        @RestartRequired public boolean enablePinnacleEnchantment = true;
+    }
+
     public static class Whetstone {
         @RestartRequired public boolean enableWhetstone = true;
     }
@@ -37,6 +42,9 @@ public class ConfigModel {
         @Nest public UniqueItems uniqueItems = new UniqueItems();
         public List<String> modRepairableItems = List.of(
                 "another_furniture:furniture_hammer;#minecraft:planks",
+                "guarding:netherite_shield;minecraft:netherite_scrap",
+                "rearm:netherite_bow;minecraft:netherite_scrap",
+                "rearm:netherite_crossbow;minecraft:netherite_scrap",
                 "chalk:black_chalk;minecraft:calcite",
                 "chalk:black_glow_chalk;minecraft:glow_ink_sac",
                 "chalk:blue_chalk;minecraft:calcite",

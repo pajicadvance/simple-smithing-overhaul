@@ -11,11 +11,19 @@ public class ModLootEvents {
 
     public static void init() {
         LootTableEvents.MODIFY.register((resourceKey, builder, lootTableSource, provider) -> {
-            if (lootTableSource.isBuiltin() && BuiltInLootTables.END_CITY_TREASURE.equals(resourceKey)) {
-                builder.pool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.ENCHANTMENT_UPGRADE_SMITHING_TEMPLATE).setWeight(10))
-                        .add(EmptyLootItem.emptyItem().setWeight(90)).build()
-                );
+            if (lootTableSource.isBuiltin()) {
+                if (BuiltInLootTables.END_CITY_TREASURE.equals(resourceKey)) {
+                    builder.pool(LootPool.lootPool()
+                            .add(LootItem.lootTableItem(ModItems.ENCHANTMENT_UPGRADE_SMITHING_TEMPLATE).setWeight(10))
+                            .add(EmptyLootItem.emptyItem().setWeight(90)).build()
+                    );
+                }
+                if (BuiltInLootTables.ANCIENT_CITY.equals(resourceKey)) {
+                    builder.pool(LootPool.lootPool()
+                            .add(LootItem.lootTableItem(ModItems.PINNACLE_ENCHANTMENT_SMITHING_TEMPLATE).setWeight(10))
+                            .add(EmptyLootItem.emptyItem().setWeight(90)).build()
+                    );
+                }
             }
         });
     }

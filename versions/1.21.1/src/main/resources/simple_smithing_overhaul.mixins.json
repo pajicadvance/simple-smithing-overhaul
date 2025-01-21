@@ -5,9 +5,11 @@
   "compatibilityLevel": "JAVA_21",
   "plugin": "com.moulberry.mixinconstraints.ConstraintsMixinPlugin",
   "mixins": [
+    "AbstractContainerMenuMixin",
     "AnvilMenuMixin",
     "ArmorMaterialsMixin",
     "EnchantmentHelperMixin",
+    "EnchantmentMixin",
     "ItemCombinerMenuMixin",
     "ItemMixin",
     "RepairItemRecipeMixin",

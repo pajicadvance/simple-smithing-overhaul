@@ -163,4 +163,12 @@ public class ModUtil {
                 slots.get(1).getItem().getMaxStackSize() == 1 &&
                 slots.get(1).getItem().has(DataComponents.ENCHANTMENTS);
     }
+
+    public static boolean isPinnacleEnchantmentRecipe(NonNullList<Slot> slots) {
+        return slots.get(0).getItem().is(ModItems.PINNACLE_ENCHANTMENT_SMITHING_TEMPLATE) &&
+                slots.get(1).getItem().has(DataComponents.MAX_DAMAGE) &&
+                slots.get(1).getItem().getMaxStackSize() == 1 &&
+                slots.get(1).getItem().has(DataComponents.ENCHANTMENTS) &&
+                slots.get(2).getItem().is(Items.ECHO_SHARD);
+    }
 }
