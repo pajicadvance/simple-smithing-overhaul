@@ -30,6 +30,10 @@ public class ConfigModel {
     public static class PinnacleEnchantment {
         @RestartRequired public boolean enablePinnacleEnchantment = true;
         @PredicateConstraint("greaterThanZero") public int pinnacleExperienceCost = 30;
+
+        public static boolean greaterThanZero(int value) {
+            return value > 0;
+        }
     }
 
     public static class Whetstone {

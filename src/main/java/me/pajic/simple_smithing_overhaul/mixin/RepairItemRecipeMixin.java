@@ -11,6 +11,7 @@ import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RepairItemRecipe;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Mixin(RepairItemRecipe.class)
 public abstract class RepairItemRecipeMixin extends CustomRecipe {
@@ -41,19 +44,16 @@ public abstract class RepairItemRecipeMixin extends CustomRecipe {
                         itemStack.isDamageableItem() && !itemStack.is(ModItems.WHETSTONE)).toList();
                 if (!repairableItems.isEmpty()) {
                     ItemStack itemToRepair = repairableItems.getFirst();
-                    if (
-                            itemToRepair.isDamaged() &&
-                                    itemToRepair.getEnchantments().equals(whetstones.getFirst().getOrDefault(
-                                            DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY)
-                                    )
-                    ) {
-                        int unitCost = ModUtil.determineUnitCost(itemToRepair);
-                        int damageRepairedPerUnit = itemToRepair.getMaxDamage() / unitCost;
-                        int unitsToMaxRepair = itemToRepair.getDamageValue() / damageRepairedPerUnit;
-                        List<ItemStack> repairMaterials = input.items().stream().filter(itemStack ->
-                                //? if <= 1.21.1
-                                itemToRepair.getItem().isValidRepairItem(itemToRepair, itemStack)).toList();
-                                //? if > 1.21.1 {
+                    if (itemToRepair.isDamaged()) {
+                        ItemEnchantments whetstoneEnchantments = whetstones.getFirst().getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY);
+                        if (itemToRepair.getEnchantments().entrySet().stream().allMatch(entry -> whetstoneEnchantments.getLevel(entry.getKey()) >= Math.min(entry.getIntValue(), entry.getKey().value().getMaxLevel()))) {
+                            int unitCost = ModUtil.determineUnitCost(itemToRepair);
+                            int damageRepairedPerUnit = itemToRepair.getMaxDamage() / unitCost;
+                            int unitsToMaxRepair = itemToRepair.getDamageValue() / damageRepairedPerUnit;
+                            List<ItemStack> repairMaterials = input.items().stream().filter(itemStack ->
+                                    //? if <= 1.21.1
+                                    itemToRepair.getItem().isValidRepairItem(itemToRepair, itemStack)).toList();
+                            //? if > 1.21.1 {
                                 /*{
                                     if (itemToRepair.has(DataComponents.REPAIRABLE)) {
                                         return itemToRepair.get(DataComponents.REPAIRABLE).isValidRepairItem(itemStack);
@@ -61,8 +61,9 @@ public abstract class RepairItemRecipeMixin extends CustomRecipe {
                                     return false;
                                 }).toList();
                                 *///?}
-                        if (!repairMaterials.isEmpty() && repairMaterials.size() <= unitsToMaxRepair + 1) {
-                            cir.setReturnValue(true);
+                            if (!repairMaterials.isEmpty() && repairMaterials.size() <= unitsToMaxRepair + 1) {
+                                cir.setReturnValue(true);
+                            }
                         }
                     }
                 }
@@ -83,19 +84,16 @@ public abstract class RepairItemRecipeMixin extends CustomRecipe {
                         itemStack.isDamageableItem() && !itemStack.is(ModItems.WHETSTONE)).toList();
                 if (!repairableItems.isEmpty()) {
                     ItemStack itemToRepair = repairableItems.getFirst();
-                    if (
-                            itemToRepair.isDamaged() &&
-                                    itemToRepair.getEnchantments().equals(whetstones.getFirst().getOrDefault(
-                                            DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY)
-                                    )
-                    ) {
-                        int unitCost = ModUtil.determineUnitCost(itemToRepair);
-                        int damageRepairedPerUnit = itemToRepair.getMaxDamage() / unitCost;
-                        int unitsToMaxRepair = itemToRepair.getDamageValue() / damageRepairedPerUnit;
-                        List<ItemStack> repairMaterials = input.items().stream().filter(itemStack ->
-                                //? if <= 1.21.1
-                                itemToRepair.getItem().isValidRepairItem(itemToRepair, itemStack)).toList();
-                                //? if > 1.21.1 {
+                    if (itemToRepair.isDamaged()) {
+                        ItemEnchantments whetstoneEnchantments = whetstones.getFirst().getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY);
+                        if (itemToRepair.getEnchantments().entrySet().stream().allMatch(entry -> whetstoneEnchantments.getLevel(entry.getKey()) >= Math.min(entry.getIntValue(), entry.getKey().value().getMaxLevel()))) {
+                            int unitCost = ModUtil.determineUnitCost(itemToRepair);
+                            int damageRepairedPerUnit = itemToRepair.getMaxDamage() / unitCost;
+                            int unitsToMaxRepair = itemToRepair.getDamageValue() / damageRepairedPerUnit;
+                            List<ItemStack> repairMaterials = input.items().stream().filter(itemStack ->
+                                    //? if <= 1.21.1
+                                    itemToRepair.getItem().isValidRepairItem(itemToRepair, itemStack)).toList();
+                            //? if > 1.21.1 {
                                 /*{
                                     if (itemToRepair.has(DataComponents.REPAIRABLE)) {
                                         return itemToRepair.get(DataComponents.REPAIRABLE).isValidRepairItem(itemStack);
@@ -103,10 +101,11 @@ public abstract class RepairItemRecipeMixin extends CustomRecipe {
                                     return false;
                                 }).toList();
                         *///?}
-                        if (!repairMaterials.isEmpty() && repairMaterials.size() <= unitsToMaxRepair + 1) {
-                            ItemStack outputItem = itemToRepair.copy();
-                            outputItem.setDamageValue(outputItem.getDamageValue() - ((outputItem.getMaxDamage() / unitCost) * repairMaterials.size()));
-                            cir.setReturnValue(outputItem);
+                            if (!repairMaterials.isEmpty() && repairMaterials.size() <= unitsToMaxRepair + 1) {
+                                ItemStack outputItem = itemToRepair.copy();
+                                outputItem.setDamageValue(outputItem.getDamageValue() - ((outputItem.getMaxDamage() / unitCost) * repairMaterials.size()));
+                                cir.setReturnValue(outputItem);
+                            }
                         }
                     }
                 }
@@ -123,41 +122,39 @@ public abstract class RepairItemRecipeMixin extends CustomRecipe {
                         itemStack.isDamageableItem() && !itemStack.is(ModItems.WHETSTONE)).toList();
                 if (!repairableItems.isEmpty()) {
                     ItemStack itemToRepair = repairableItems.getFirst();
-                    if (
-                            itemToRepair.isDamaged() &&
-                                    itemToRepair.getEnchantments().equals(whetstones.getFirst().getOrDefault(
-                                            DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY)
-                                    )
-                    ) {
-                        int unitCost = ModUtil.determineUnitCost(itemToRepair);
-                        int damageRepairedPerUnit = itemToRepair.getMaxDamage() / unitCost;
-                        int unitsToMaxRepair = itemToRepair.getDamageValue() / damageRepairedPerUnit;
-                        List<ItemStack> repairMaterials = input.items().stream().filter(itemStack ->
-                                //? if <= 1.21.1
-                                itemToRepair.getItem().isValidRepairItem(itemToRepair, itemStack)).toList();
-                                //? if > 1.21.1 {
-                                /*{
-                                    if (itemToRepair.has(DataComponents.REPAIRABLE)) {
-                                        return itemToRepair.get(DataComponents.REPAIRABLE).isValidRepairItem(itemStack);
-                                    }
-                                    return false;
-                                }).toList();
-                        *///?}
-                        if (!repairMaterials.isEmpty() && repairMaterials.size() <= unitsToMaxRepair + 1) {
-                            List<ItemStack> otherGear = repairableItems.subList(1, repairableItems.size());
-                            NonNullList<ItemStack> remainingItems = NonNullList.withSize(input.size(), ItemStack.EMPTY);
-                            for (int i = 0; i < remainingItems.size(); i++) {
-                                ItemStack itemStack = input.getItem(i);
-                                if (itemStack.is(ModItems.WHETSTONE)) {
-                                    itemStack.setDamageValue(itemStack.getDamageValue() + repairMaterials.size());
-                                    if (itemStack.getDamageValue() < itemStack.getMaxDamage()) {
+                    if (itemToRepair.isDamaged()) {
+                        ItemEnchantments whetstoneEnchantments = whetstones.getFirst().getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY);
+                        if (itemToRepair.getEnchantments().entrySet().stream().allMatch(entry -> whetstoneEnchantments.getLevel(entry.getKey()) >= Math.min(entry.getIntValue(), entry.getKey().value().getMaxLevel()))) {
+                            int unitCost = ModUtil.determineUnitCost(itemToRepair);
+                            int damageRepairedPerUnit = itemToRepair.getMaxDamage() / unitCost;
+                            int unitsToMaxRepair = itemToRepair.getDamageValue() / damageRepairedPerUnit;
+                            List<ItemStack> repairMaterials = input.items().stream().filter(itemStack ->
+                                    //? if <= 1.21.1
+                                    itemToRepair.getItem().isValidRepairItem(itemToRepair, itemStack)).toList();
+                                    //? if > 1.21.1 {
+                                    /*{
+                                        if (itemToRepair.has(DataComponents.REPAIRABLE)) {
+                                            return itemToRepair.get(DataComponents.REPAIRABLE).isValidRepairItem(itemStack);
+                                        }
+                                        return false;
+                                    }).toList();
+                                    *///?}
+                            if (!repairMaterials.isEmpty() && repairMaterials.size() <= unitsToMaxRepair + 1) {
+                                List<ItemStack> otherGear = repairableItems.subList(1, repairableItems.size());
+                                NonNullList<ItemStack> remainingItems = NonNullList.withSize(input.size(), ItemStack.EMPTY);
+                                for (int i = 0; i < remainingItems.size(); i++) {
+                                    ItemStack itemStack = input.getItem(i);
+                                    if (itemStack.is(ModItems.WHETSTONE)) {
+                                        itemStack.setDamageValue(itemStack.getDamageValue() + repairMaterials.size());
+                                        if (itemStack.getDamageValue() < itemStack.getMaxDamage()) {
+                                            remainingItems.set(i, itemStack.copy());
+                                        }
+                                    } else if (otherGear.contains(itemStack)) {
                                         remainingItems.set(i, itemStack.copy());
                                     }
-                                } else if (otherGear.contains(itemStack)) {
-                                    remainingItems.set(i, itemStack.copy());
                                 }
+                                return remainingItems;
                             }
-                            return remainingItems;
                         }
                     }
                 }
