@@ -11,6 +11,7 @@
 
   "text.config.simple_smithing_overhaul.category.pinnacleEnchantment": "Pinnacle enchantment",
   "text.config.simple_smithing_overhaul.option.pinnacleEnchantment.enablePinnacleEnchantment": "Enable pinnacle enchantment",
+  "text.config.simple_smithing_overhaul.option.pinnacleEnchantment.pinnacleExperienceCost": "Pinnacle upgrade XP level cost",
 
   "text.config.simple_smithing_overhaul.category.streamlinedRepairs": "Streamlined repairs",
   "text.config.simple_smithing_overhaul.option.streamlinedRepairs.modifyAnvilRepairUnitCosts": "Enable repair unit cost modification",

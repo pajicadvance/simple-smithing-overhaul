@@ -29,6 +29,7 @@ public class ConfigModel {
 
     public static class PinnacleEnchantment {
         @RestartRequired public boolean enablePinnacleEnchantment = true;
+        @PredicateConstraint("greaterThanZero") public int pinnacleExperienceCost = 30;
     }
 
     public static class Whetstone {
