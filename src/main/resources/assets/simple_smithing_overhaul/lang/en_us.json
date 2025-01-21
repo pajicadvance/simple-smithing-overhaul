@@ -9,6 +9,9 @@
   "text.config.simple_smithing_overhaul.option.enchantmentUpgrading.upgradingBaseExperienceCost": "Upgrade base XP level cost",
   "text.config.simple_smithing_overhaul.option.enchantmentUpgrading.ignoreTooExpensive": "Ignore \"Too Expensive\"",
 
+  "text.config.simple_smithing_overhaul.category.pinnacleEnchantment": "Pinnacle enchantment",
+  "text.config.simple_smithing_overhaul.option.pinnacleEnchantment.enablePinnacleEnchantment": "Enable pinnacle enchantment",
+
   "text.config.simple_smithing_overhaul.category.streamlinedRepairs": "Streamlined repairs",
   "text.config.simple_smithing_overhaul.option.streamlinedRepairs.modifyAnvilRepairUnitCosts": "Enable repair unit cost modification",
   "text.config.simple_smithing_overhaul.category.streamlinedRepairs.armor": "Armor unit costs",
