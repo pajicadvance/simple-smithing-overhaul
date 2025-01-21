@@ -28,6 +28,9 @@ public class ModCommonConfig {
             .translation("text.config.simple_smithing_overhaul.option.anvilImprovements.modRepairableItems")
             .defineListAllowEmpty("modRepairableItems",List.of(
                   "another_furniture:furniture_hammer;#minecraft:planks",
+                            "guarding:netherite_shield;minecraft:netherite_scrap",
+                            "rearm:netherite_bow;minecraft:netherite_scrap",
+                            "rearm:netherite_crossbow;minecraft:netherite_scrap",
                             "chalk:black_chalk;minecraft:calcite",
                               "chalk:black_glow_chalk;minecraft:glow_ink_sac",
                               "chalk:blue_chalk;minecraft:calcite",

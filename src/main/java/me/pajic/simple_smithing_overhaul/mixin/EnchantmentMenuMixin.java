@@ -4,24 +4,24 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.config.ModCommonConfig;
-import me.pajic.simple_smithing_overhaul.config.ModServerConfig;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.inventory.EnchantmentMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(EnchantmentHelper.class)
-public class EnchantmentHelperMixin {
+@Mixin(EnchantmentMenu.class)
+public class EnchantmentMenuMixin {
 
     @ModifyExpressionValue(
-            method = "getComponentType",
+            method = "getEnchantmentList",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/world/item/Item;)Z"
             )
     )
-    private static boolean storeEnchantmentsIfWhetstone(boolean original, @Local(argsOnly = true) ItemStack stack) {
+    private boolean getEnchantmentList_handleWhetstoneEnchanting(boolean original, @Local(argsOnly = true) ItemStack stack) {
         if (ModCommonConfig.enableWhetstone) {
             return original || stack.is(ModItems.WHETSTONE);
         }
@@ -29,15 +29,15 @@ public class EnchantmentHelperMixin {
     }
 
     @ModifyExpressionValue(
-            method = "getAvailableEnchantmentResults",
+            method = "slotsChanged",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/world/item/Item;)Z"
+                    target = "Lnet/minecraft/world/item/ItemStack;isEnchantable()Z"
             )
     )
-    private static boolean handleWhetstoneEnchanting(boolean original, @Local(argsOnly = true) ItemStack stack) {
-        if (ModCommonConfig.enableWhetstone) {
-            return original || stack.is(ModItems.WHETSTONE);
+    private boolean slotsChanged_handleWhetstoneEnchanting(boolean original, @Local ItemStack stack) {
+        if (ModCommonConfig.enableWhetstone && stack.is(ModItems.WHETSTONE)) {
+            return original && stack.get(DataComponents.STORED_ENCHANTMENTS).isEmpty();
         }
         return original;
     }

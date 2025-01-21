@@ -208,6 +208,7 @@ public class ModItems {
                     .component(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY)
                     //? if > 1.21.1 {
                     /*.repairable(Items.QUARTZ)
+                    .enchantable(1)
                     .setId(ResourceKey.create(
                             Registries.ITEM,
                             ResourceLocation.fromNamespaceAndPath("simple_smithing_overhaul", "whetstone")

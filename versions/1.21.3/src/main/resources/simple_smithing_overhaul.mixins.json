@@ -8,6 +8,7 @@
     "AbstractContainerMenuMixin",
     "AnvilMenuMixin",
     "EnchantmentHelperMixin",
+    "EnchantmentMenuMixin",
     "EnchantmentMixin",
     "ItemCombinerMenuMixin",
     "RepairItemRecipeMixin",

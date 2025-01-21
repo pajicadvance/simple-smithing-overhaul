@@ -46,10 +46,14 @@ public class WhetstoneItem extends Item {
     //? if <= 1.21.1 {
     @Override
     public boolean isEnchantable(@NotNull ItemStack stack) {
-        return false;
+        return stack.getCount() == 1 && stack.get(DataComponents.STORED_ENCHANTMENTS).isEmpty();
+    }
+
+    @Override
+    public int getEnchantmentValue() {
+        return 1;
     }
     //?}
-
 
     @Override
     public boolean supportsEnchantment(@NotNull ItemStack stack, @NotNull Holder<Enchantment> enchantment) {
