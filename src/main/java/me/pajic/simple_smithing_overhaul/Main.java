@@ -27,8 +27,6 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 @Mod("simple_smithing_overhaul")
 public class Main {
 
-    public static int cost = 0;
-
     public Main(IEventBus modEventBus, ModContainer modContainer) {
         modContainer.registerConfig(ModConfig.Type.COMMON, ModCommonConfig.COMMON_SPEC);
         modContainer.registerConfig(ModConfig.Type.SERVER, ModServerConfig.SERVER_SPEC);

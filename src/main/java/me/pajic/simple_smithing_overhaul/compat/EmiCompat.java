@@ -201,7 +201,9 @@ public class EmiCompat implements EmiPlugin {
 
             List<EnchantmentInstance> enchantmentInstances;
             Set<Holder<Enchantment>> enchantmentSet = new HashSet<>();
-            EmiPort.getEnchantmentRegistry().holders().forEach(enchantmentSet::add);
+            EmiPort.getEnchantmentRegistry().holders().forEach(e -> {
+                if (ModUtil.enchantmentEnabled(e)) enchantmentSet.add(e);
+            });
             enchantmentInstances = EnchantmentHelper.selectEnchantment(RandomSource.create(), input.getItemStack(), 30, enchantmentSet.stream());
 
             widgetHolder.addGeneratedSlot(r -> this.getInput(r, false, enchantmentInstances), this.uniq1, 0, 0);
@@ -299,7 +301,9 @@ public class EmiCompat implements EmiPlugin {
             ItemStack inputStack = this.input.getItemStack().copy();
             List<EnchantmentInstance> enchantmentInstances;
             Set<Holder<Enchantment>> enchantmentSet = new HashSet<>();
-            EmiPort.getEnchantmentRegistry().holders().forEach(enchantmentSet::add);
+            EmiPort.getEnchantmentRegistry().holders().forEach(e -> {
+                if (ModUtil.enchantmentEnabled(e)) enchantmentSet.add(e);
+            });
             enchantmentInstances = EnchantmentHelper.selectEnchantment(RandomSource.create(), inputStack, 30, enchantmentSet.stream());
             if (enchantmentInstances.isEmpty()) {
                 enchantmentInstances = EnchantmentHelper.selectEnchantment(RandomSource.create(), new ItemStack(Items.BOOK), 30, enchantmentSet.stream());
@@ -424,7 +428,7 @@ public class EmiCompat implements EmiPlugin {
             ItemStack inputStack = this.input.getItemStack().copy();
             ItemEnchantments.Mutable enchantments = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
             EmiPort.getEnchantmentRegistry().holders().forEach(ref -> {
-                if (ref.value().isPrimaryItem(inputStack) && ref.value().exclusiveSet().size() == 0)
+                if (ref.value().isPrimaryItem(inputStack) && ref.value().exclusiveSet().size() == 0 && ModUtil.enchantmentEnabled(ref))
                     enchantments.set(ref, ref.value().getMaxLevel());
             });
             EmiPort.getEnchantmentRegistry().getTags().forEach(tag -> {
@@ -432,7 +436,9 @@ public class EmiCompat implements EmiPlugin {
                     tag.getSecond().forEach(e -> enchantments.removeIf(ie -> ie.is(e)));
                 }
                 else if (tag.getFirst().location().getPath().contains("exclusive_set")) {
-                    List<Holder<Enchantment>> possibleEnchantments = tag.getSecond().stream().filter(e -> e.value().isPrimaryItem(inputStack)).toList();
+                    List<Holder<Enchantment>> possibleEnchantments = tag.getSecond().stream().filter(e ->
+                            e.value().isPrimaryItem(inputStack) && ModUtil.enchantmentEnabled(e)
+                    ).toList();
                     if (!possibleEnchantments.isEmpty()){
                         Holder<Enchantment> e = possibleEnchantments.get(EmiUtil.RANDOM.nextInt(possibleEnchantments.size()));
                         enchantments.set(e, e.value().getMaxLevel());
