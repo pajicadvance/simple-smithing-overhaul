@@ -16,6 +16,17 @@ repositories {
     maven { url = "https://maven.terraformersmc.com/" }
     maven { url = "https://maven.wispforest.io/releases/" }
     maven { url = "https://maven.shedaniel.me/" }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
 }
 
 dependencies {
@@ -31,6 +42,7 @@ dependencies {
     modImplementation("com.terraformersmc:modmenu:${property("modmenu_version")}")
     annotationProcessor modImplementation("io.wispforest:owo-lib:${property("owo_version")}")
     modCompileOnly "dev.emi:emi-fabric:${property("emi_version")}"
+    modCompileOnly "maven.modrinth:enchantment-disabler:${property("ed_version")}"
 
     if (stonecutter.eval(stonecutter.current.version, "1.21.1")) {
         modImplementation "dev.emi:emi-fabric:${property("emi_version")}"

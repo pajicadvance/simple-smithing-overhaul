@@ -1,8 +1,8 @@
 package me.pajic.simple_smithing_overhaul.util;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair;
 import me.pajic.simple_smithing_overhaul.Main;
+import me.pajic.simple_smithing_overhaul.compat.EDCompat;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
@@ -28,6 +28,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import org.slf4j.Logger;
@@ -43,7 +44,9 @@ public class ModUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("SimpleSmithingOverhaul-Util");
 
+    public static final boolean ED_LOADED = FabricLoader.getInstance().isModLoaded("enchantmentdisabler");
     public static final List<ObjectObjectImmutablePair<Item, Ingredient>> additionalRepairables = new ArrayList<>();
+    public static int cost = 0;
 
     public static int determineUnitCost(ItemStack stack) {
         if (Main.CONFIG.streamlinedRepairs.modifyAnvilRepairUnitCosts()) {
@@ -194,5 +197,9 @@ public class ModUtil {
                 slots.get(1).getItem().getMaxStackSize() == 1 &&
                 slots.get(1).getItem().has(DataComponents.ENCHANTMENTS) &&
                 slots.get(2).getItem().is(Items.ECHO_SHARD);
+    }
+
+    public static boolean enchantmentEnabled(Holder<Enchantment> enchantment) {
+        return !ED_LOADED || EDCompat.enchantmentEnabled(enchantment);
     }
 }

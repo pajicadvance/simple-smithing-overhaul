@@ -100,8 +100,8 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
                                     );
                                     if (Main.CONFIG.enchantmentUpgrading.upgradingHasExperienceCost()) {
                                         int originalRepairCost = stack.get().getOrDefault(DataComponents.REPAIR_COST, 0);
-                                        Main.cost = Main.CONFIG.enchantmentUpgrading.upgradingBaseExperienceCost() + originalRepairCost;
-                                        if (Main.cost < 1 || (!Main.CONFIG.enchantmentUpgrading.ignoreTooExpensive() && Main.cost >= 40)) break;
+                                        ModUtil.cost = Main.CONFIG.enchantmentUpgrading.upgradingBaseExperienceCost() + originalRepairCost;
+                                        if (ModUtil.cost < 1 || (!Main.CONFIG.enchantmentUpgrading.ignoreTooExpensive() && ModUtil.cost >= 40)) break;
                                         updatedStack.set(DataComponents.REPAIR_COST, AnvilMenu.calculateIncreasedRepairCost(originalRepairCost));
                                     }
                                     stack.set(updatedStack);
@@ -129,7 +129,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
                     HolderLookup.RegistryLookup<Enchantment> registry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
                     Set<EnchantmentInstance> maxedOutEnchantments = new HashSet<>();
                     registry.listElements().forEach(ref -> {
-                        if (ref.value().isPrimaryItem(itemStack))
+                        if (ref.value().isPrimaryItem(itemStack) && ModUtil.enchantmentEnabled(ref))
                             maxedOutEnchantments.add(new EnchantmentInstance(ref, ref.value().getMaxLevel()));
                     });
                     itemEnchantments.forEach(ei -> {
@@ -168,7 +168,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
                 Main.CONFIG.enchantmentUpgrading.upgradingHasExperienceCost() &&
                 (ModUtil.isEnchantedBookOrWhetstoneUpgradeRecipe(slots) || ModUtil.isEnchantedItemUpgradeRecipe(slots))
         ) {
-            return (player.hasInfiniteMaterials() || player.experienceLevel >= Main.cost) && Main.cost > 0;
+            return (player.hasInfiniteMaterials() || player.experienceLevel >= ModUtil.cost) && ModUtil.cost > 0;
         }
         if (
                 Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment() &&
@@ -191,7 +191,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
                 (ModUtil.isEnchantedBookOrWhetstoneUpgradeRecipe(slots) || ModUtil.isEnchantedItemUpgradeRecipe(slots)) &&
                 !player.getAbilities().instabuild
         ) {
-            player.giveExperienceLevels(-Main.cost);
+            player.giveExperienceLevels(-ModUtil.cost);
         }
         if (
                 Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment() &&

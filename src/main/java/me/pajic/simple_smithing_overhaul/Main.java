@@ -9,7 +9,6 @@ import net.fabricmc.api.ModInitializer;
 public class Main implements ModInitializer {
 
     public static ModConfig CONFIG = ModConfig.createAndLoad();
-    public static int cost = 0;
 
     @Override
     public void onInitialize() {

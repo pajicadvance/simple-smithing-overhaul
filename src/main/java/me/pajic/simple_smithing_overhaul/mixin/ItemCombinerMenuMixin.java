@@ -41,7 +41,7 @@ public abstract class ItemCombinerMenuMixin extends AbstractContainerMenu {
                 Main.CONFIG.enchantmentUpgrading.upgradingHasExperienceCost() &&
                 (ModUtil.isEnchantedBookOrWhetstoneUpgradeRecipe(slots) || ModUtil.isEnchantedItemUpgradeRecipe(slots))
         ) {
-            return (player.hasInfiniteMaterials() || player.experienceLevel >= Main.cost) && Main.cost > 0;
+            return (player.hasInfiniteMaterials() || player.experienceLevel >= ModUtil.cost) && ModUtil.cost > 0;
         }
         return hasStack;
     }
