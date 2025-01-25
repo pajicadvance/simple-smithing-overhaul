@@ -14,6 +14,10 @@
   "text.config.simple_smithing_overhaul.option.pinnacleEnchantment.pinnacleExperienceCost": "Pinnacle upgrade XP level cost",
 
   "simple_smithing_overhaul.configuration.streamlinedRepairs": "Streamlined repairs",
+  "text.config.simple_smithing_overhaul.option.streamlinedRepairs.netheriteRepairMaterial": "Netherite repair material",
+  "text.config.simple_smithing_overhaul.option.streamlinedRepairs.netheriteRepairMaterial.value.netherite_ingot": "Netherite ingot",
+  "text.config.simple_smithing_overhaul.option.streamlinedRepairs.netheriteRepairMaterial.value.netherite_scrap": "Netherite scrap",
+  "text.config.simple_smithing_overhaul.option.streamlinedRepairs.netheriteRepairMaterial.value.diamond": "Diamond",
   "text.config.simple_smithing_overhaul.option.anvilImprovements.modifyRepairUnitCosts": "Enable repair unit cost modification",
   "simple_smithing_overhaul.configuration.armor": "Armor unit costs",
   "simple_smithing_overhaul.configuration.tools": "Tool unit costs",

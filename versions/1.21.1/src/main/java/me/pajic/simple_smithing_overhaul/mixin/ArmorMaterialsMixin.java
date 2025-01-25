@@ -1,9 +1,9 @@
 package me.pajic.simple_smithing_overhaul.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -17,7 +17,7 @@ public class ArmorMaterialsMixin {
                     target = "Lnet/minecraft/world/item/Items;NETHERITE_INGOT:Lnet/minecraft/world/item/Item;"
             )
     )
-    private static Item modifyArmorMaterial(Item instance) {
-        return Items.NETHERITE_SCRAP;
+    private static Item modifyArmorMaterial(Item original) {
+        return ModUtil.getNetheriteRepairMaterial();
     }
 }

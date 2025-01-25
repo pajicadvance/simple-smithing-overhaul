@@ -24,6 +24,10 @@ public class ModCommonConfig {
             .translation("text.config.simple_smithing_overhaul.option.whetstone.enableWhetstone")
             .gameRestart()
             .define("enableWhetstone", true);
+    private static final ModConfigSpec.ConfigValue<NetheriteRepairMaterials> NETHERITE_REPAIR_MATERIAL = BUILDER
+            .translation("text.config.simple_smithing_overhaul.option.streamlinedRepairs.netheriteRepairMaterial")
+            .gameRestart()
+            .defineEnum("netheriteRepairMaterial", NetheriteRepairMaterials.NETHERITE_SCRAP);
     private static final ModConfigSpec.ConfigValue<List<? extends String>> MOD_REPAIRABLE_ITEMS = BUILDER
             .translation("text.config.simple_smithing_overhaul.option.anvilImprovements.modRepairableItems")
             .defineListAllowEmpty("modRepairableItems",List.of(
@@ -112,6 +116,7 @@ public class ModCommonConfig {
     public static boolean enableEnchantmentUpgrading;
     public static boolean enablePinnacleEnchantment;
     public static boolean enableWhetstone;
+    public static NetheriteRepairMaterials netheriteRepairMaterial;
     public static List<String> modRepairableItems;
     public static List<String> modItemUnitCosts;
 
@@ -130,8 +135,13 @@ public class ModCommonConfig {
             enableEnchantmentUpgrading = ENABLE_ENCHANTMENT_UPGRADING.get();
             enablePinnacleEnchantment = ENABLE_PINNACLE_ENCHANTMENT.get();
             enableWhetstone = ENABLE_WHETSTONE.get();
+            netheriteRepairMaterial = NETHERITE_REPAIR_MATERIAL.get();
             modRepairableItems = new ArrayList<>(MOD_REPAIRABLE_ITEMS.get());
             modItemUnitCosts = new ArrayList<>(MOD_ITEM_UNIT_COSTS.get());
         }
+    }
+
+    public enum NetheriteRepairMaterials {
+        NETHERITE_INGOT, NETHERITE_SCRAP, DIAMOND
     }
 }

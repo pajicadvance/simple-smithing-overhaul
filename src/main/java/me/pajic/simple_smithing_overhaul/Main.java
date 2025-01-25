@@ -2,6 +2,7 @@ package me.pajic.simple_smithing_overhaul;
 
 import me.pajic.simple_smithing_overhaul.config.ModCommonConfig;
 import me.pajic.simple_smithing_overhaul.config.ModServerConfig;
+import me.pajic.simple_smithing_overhaul.datapacks.NetheriteRepairMaterial;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.registries.Registries;
@@ -32,6 +33,8 @@ public class Main {
         modContainer.registerConfig(ModConfig.Type.SERVER, ModServerConfig.SERVER_SPEC);
         modEventBus.addListener(this::registerItems);
         modEventBus.addListener(this::addCreative);
+        //? if > 1.21.1
+        /*modEventBus.addListener(NetheriteRepairMaterial::registerDatapacks);*/
         NeoForge.EVENT_BUS.addListener(this::addLoot);
         NeoForge.EVENT_BUS.addListener(this::onAnvilUse);
         modEventBus.addListener(this::onInitialize);

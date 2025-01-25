@@ -1,6 +1,7 @@
 package me.pajic.simple_smithing_overhaul.util;
 
 import it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair;
+import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.compat.EDCompat;
 import me.pajic.simple_smithing_overhaul.config.ModCommonConfig;
 import me.pajic.simple_smithing_overhaul.config.ModServerConfig;
@@ -202,5 +203,13 @@ public class ModUtil {
 
     public static boolean enchantmentEnabled(Holder<Enchantment> enchantment) {
         return !ED_LOADED || EDCompat.enchantmentEnabled(enchantment);
+    }
+
+    public static Item getNetheriteRepairMaterial() {
+        return switch (ModCommonConfig.netheriteRepairMaterial) {
+            case DIAMOND -> Items.DIAMOND;
+            case NETHERITE_SCRAP -> Items.NETHERITE_SCRAP;
+            default -> Items.NETHERITE_INGOT;
+        };
     }
 }
