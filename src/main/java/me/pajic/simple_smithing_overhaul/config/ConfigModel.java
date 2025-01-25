@@ -41,6 +41,7 @@ public class ConfigModel {
     }
 
     public static class StreamlinedRepairs {
+        @RestartRequired public NetheriteRepairMaterials netheriteRepairMaterial = NetheriteRepairMaterials.NETHERITE_SCRAP;
         public boolean modifyAnvilRepairUnitCosts = true;
         @Nest public Armor armor = new Armor();
         @Nest public Tools tools = new Tools();
@@ -166,5 +167,9 @@ public class ConfigModel {
         public int fishingRodUnits = 2;
         public int carrotOnAStickUnits = 1;
         public int warpedFungusOnAStickUnits = 1;
+    }
+
+    public enum NetheriteRepairMaterials {
+        NETHERITE_INGOT, NETHERITE_SCRAP, DIAMOND
     }
 }

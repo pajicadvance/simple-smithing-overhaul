@@ -202,4 +202,12 @@ public class ModUtil {
     public static boolean enchantmentEnabled(Holder<Enchantment> enchantment) {
         return !ED_LOADED || EDCompat.enchantmentEnabled(enchantment);
     }
+
+    public static Item getNetheriteRepairMaterial() {
+        return switch (Main.CONFIG.streamlinedRepairs.netheriteRepairMaterial()) {
+            case DIAMOND -> Items.DIAMOND;
+            case NETHERITE_SCRAP -> Items.NETHERITE_SCRAP;
+            default -> Items.NETHERITE_INGOT;
+        };
+    }
 }
