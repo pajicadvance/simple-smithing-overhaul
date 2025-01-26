@@ -199,8 +199,10 @@ public class ModUtil {
                 slots.get(2).getItem().is(Items.ECHO_SHARD);
     }
 
-    public static boolean enchantmentEnabled(Holder<Enchantment> enchantment) {
-        return !ED_LOADED || EDCompat.enchantmentEnabled(enchantment);
+    public static boolean enchantmentEligible(Holder<Enchantment> enchantment) {
+        return Main.CONFIG.pinnacleEnchantment.excludedFromMaxedOutCheck()
+                .stream().noneMatch(entry -> enchantment.is(ResourceLocation.parse(entry))) &&
+                (!ED_LOADED || EDCompat.enchantmentEnabled(enchantment));
     }
 
     public static Item getNetheriteRepairMaterial() {

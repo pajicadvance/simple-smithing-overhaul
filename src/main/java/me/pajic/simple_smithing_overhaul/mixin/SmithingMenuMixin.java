@@ -121,27 +121,19 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
         if (Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment()) {
             if (ModUtil.isPinnacleEnchantmentRecipe(slots)) {
                 boolean success = false;
+                HolderLookup.RegistryLookup<Enchantment> registry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
                 ItemStack itemStack = slots.get(1).getItem().copy();
                 Set<EnchantmentInstance> itemEnchantments = itemStack.getEnchantments().entrySet()
                         .stream().map(entry -> new EnchantmentInstance(entry.getKey(), entry.getIntValue()))
                         .collect(Collectors.toSet());
-                if (itemEnchantments.stream().allMatch(ei -> ei.level == ei.enchantment.value().getMaxLevel())) {
-                    HolderLookup.RegistryLookup<Enchantment> registry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+                if (itemEnchantments.stream().allMatch(ei -> ei.level == ei.enchantment.value().getMaxLevel() && !registry.getOrThrow(EnchantmentTags.CURSE).contains(ei.enchantment))) {
                     Set<EnchantmentInstance> maxedOutEnchantments = new HashSet<>();
                     registry.listElements().forEach(ref -> {
-                        if (ref.value().isPrimaryItem(itemStack) && ModUtil.enchantmentEnabled(ref))
+                        if (ref.value().isSupportedItem(itemStack) && ModUtil.enchantmentEligible(ref))
                             maxedOutEnchantments.add(new EnchantmentInstance(ref, ref.value().getMaxLevel()));
                     });
-                    itemEnchantments.forEach(ei -> {
-                        maxedOutEnchantments.removeIf(ei1 -> ei1.enchantment.is(ei.enchantment) && ei1.level == ei.level);
-                        registry.listTags().forEach(tag -> {
-                            if ((tag.key().location().getPath().contains("exclusive_set") && tag.contains(ei.enchantment)) || tag.key().equals(EnchantmentTags.CURSE)) {
-                                registry.get(tag.key()).orElseThrow().forEach(e ->
-                                        maxedOutEnchantments.removeIf(ei1 -> ei1.enchantment.is(e))
-                                );
-                            }
-                        });
-                    });
+                    maxedOutEnchantments.removeIf(ei -> registry.getOrThrow(EnchantmentTags.CURSE).contains(ei.enchantment));
+                    itemEnchantments.forEach(ei -> maxedOutEnchantments.removeIf(ei1 -> !Enchantment.areCompatible(ei.enchantment, ei1.enchantment)));
                     if (maxedOutEnchantments.isEmpty()) {
                         success = true;
                         ItemStack updatedStack = slots.get(1).getItem().copy();

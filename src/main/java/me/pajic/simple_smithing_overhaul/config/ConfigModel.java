@@ -30,6 +30,7 @@ public class ConfigModel {
     public static class PinnacleEnchantment {
         @RestartRequired public boolean enablePinnacleEnchantment = true;
         @PredicateConstraint("greaterThanZero") public int pinnacleExperienceCost = 30;
+        public List<String> excludedFromMaxedOutCheck = List.of();
 
         public static boolean greaterThanZero(int value) {
             return value > 0;
@@ -46,7 +47,7 @@ public class ConfigModel {
         @Nest public Armor armor = new Armor();
         @Nest public Tools tools = new Tools();
         @Nest public UniqueItems uniqueItems = new UniqueItems();
-        public List<String> modRepairableItems = List.of(
+        @RestartRequired public List<String> modRepairableItems = List.of(
                 "another_furniture:furniture_hammer;#minecraft:planks",
                 "guarding:netherite_shield;minecraft:netherite_scrap",
                 "rearm:netherite_bow;minecraft:netherite_scrap",

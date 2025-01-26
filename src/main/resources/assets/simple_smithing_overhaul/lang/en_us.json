@@ -12,6 +12,8 @@
   "text.config.simple_smithing_overhaul.category.pinnacleEnchantment": "Pinnacle enchantment",
   "text.config.simple_smithing_overhaul.option.pinnacleEnchantment.enablePinnacleEnchantment": "Enable pinnacle enchantment",
   "text.config.simple_smithing_overhaul.option.pinnacleEnchantment.pinnacleExperienceCost": "Pinnacle upgrade XP level cost",
+  "text.config.simple_smithing_overhaul.option.pinnacleEnchantment.excludedFromMaxedOutCheck": "Enchantments excluded from \"maxed out\" check",
+  "text.config.simple_smithing_overhaul.option.pinnacleEnchantment.excludedFromMaxedOutCheck.tooltip": "Add entries in format of namespace:enchantment",
 
   "text.config.simple_smithing_overhaul.category.streamlinedRepairs": "Streamlined repairs",
   "text.config.simple_smithing_overhaul.option.streamlinedRepairs.netheriteRepairMaterial": "Netherite repair material",
