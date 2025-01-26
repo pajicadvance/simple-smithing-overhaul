@@ -30,6 +30,7 @@ public class ModCommonConfig {
             .defineEnum("netheriteRepairMaterial", NetheriteRepairMaterials.NETHERITE_SCRAP);
     private static final ModConfigSpec.ConfigValue<List<? extends String>> MOD_REPAIRABLE_ITEMS = BUILDER
             .translation("text.config.simple_smithing_overhaul.option.anvilImprovements.modRepairableItems")
+            .gameRestart()
             .defineListAllowEmpty("modRepairableItems",List.of(
                   "another_furniture:furniture_hammer;#minecraft:planks",
                             "guarding:netherite_shield;minecraft:netherite_scrap",

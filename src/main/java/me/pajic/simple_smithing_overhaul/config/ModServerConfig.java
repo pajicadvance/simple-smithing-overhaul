@@ -5,6 +5,9 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @EventBusSubscriber(modid = "simple_smithing_overhaul", bus = EventBusSubscriber.Bus.MOD)
 public class ModServerConfig {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
@@ -14,6 +17,7 @@ public class ModServerConfig {
     private static final ModConfigSpec.BooleanValue IGNORE_TOO_EXPENSIVE;
 
     private static final ModConfigSpec.IntValue PINNACLE_EXPERIENCE_COST;
+    private static final ModConfigSpec.ConfigValue<List<? extends String>> EXCLUDED_FROM_MAXED_OUT_CHECK;
 
     private static final ModConfigSpec.BooleanValue MODIFY_REPAIR_UNIT_COSTS;
     private static final ModConfigSpec.IntValue HEAD_ARMOR_UNITS;
@@ -68,6 +72,9 @@ public class ModServerConfig {
             PINNACLE_EXPERIENCE_COST = BUILDER
                     .translation("text.config.simple_smithing_overhaul.option.pinnacleEnchantment.pinnacleExperienceCost")
                     .defineInRange("pinnacleExperienceCost", 30, 1, Integer.MAX_VALUE);
+            EXCLUDED_FROM_MAXED_OUT_CHECK = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.pinnacleEnchantment.excludedFromMaxedOutCheck")
+                    .defineListAllowEmpty("excludedFromMaxedOutCheck",List.of(), () -> "", o -> true);
         BUILDER.pop();
 
         BUILDER.push("streamlinedRepairs");
@@ -188,6 +195,7 @@ public class ModServerConfig {
     public static int upgradingBaseExperienceCost;
     public static boolean ignoreTooExpensive;
     public static int pinnacleExperienceCost;
+    public static List<String> excludedFromMaxedOutCheck;
     public static boolean modifyAnvilRepairUnitCosts;
     public static int headArmorUnits;
     public static int chestArmorUnits;
@@ -237,6 +245,7 @@ public class ModServerConfig {
             upgradingBaseExperienceCost = UPGRADING_BASE_EXPERIENCE_COST.get();
             ignoreTooExpensive = IGNORE_TOO_EXPENSIVE.get();
             pinnacleExperienceCost = PINNACLE_EXPERIENCE_COST.get();
+            excludedFromMaxedOutCheck = new ArrayList<>(EXCLUDED_FROM_MAXED_OUT_CHECK.get());
             modifyAnvilRepairUnitCosts = MODIFY_REPAIR_UNIT_COSTS.get();
             headArmorUnits = HEAD_ARMOR_UNITS.get();
             chestArmorUnits = CHEST_ARMOR_UNITS.get();

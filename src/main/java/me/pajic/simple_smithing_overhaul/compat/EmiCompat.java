@@ -202,7 +202,7 @@ public class EmiCompat implements EmiPlugin {
             List<EnchantmentInstance> enchantmentInstances;
             Set<Holder<Enchantment>> enchantmentSet = new HashSet<>();
             EmiPort.getEnchantmentRegistry().holders().forEach(e -> {
-                if (ModUtil.enchantmentEnabled(e)) enchantmentSet.add(e);
+                if (ModUtil.enchantmentEligible(e)) enchantmentSet.add(e);
             });
             enchantmentInstances = EnchantmentHelper.selectEnchantment(RandomSource.create(), input.getItemStack(), 30, enchantmentSet.stream());
 
@@ -302,7 +302,7 @@ public class EmiCompat implements EmiPlugin {
             List<EnchantmentInstance> enchantmentInstances;
             Set<Holder<Enchantment>> enchantmentSet = new HashSet<>();
             EmiPort.getEnchantmentRegistry().holders().forEach(e -> {
-                if (ModUtil.enchantmentEnabled(e)) enchantmentSet.add(e);
+                if (ModUtil.enchantmentEligible(e)) enchantmentSet.add(e);
             });
             enchantmentInstances = EnchantmentHelper.selectEnchantment(RandomSource.create(), inputStack, 30, enchantmentSet.stream());
             if (enchantmentInstances.isEmpty()) {
@@ -392,6 +392,7 @@ public class EmiCompat implements EmiPlugin {
         protected final EmiStack input;
         protected final EmiIngredient addition;
         private final int uniq;
+
         private EmiPinnacleEnchantmentSmithingRecipe(ResourceLocation id, ItemStack input) {
             this.id = id;
             this.template = EmiStack.of(ModItems.PINNACLE_ENCHANTMENT_SMITHING_TEMPLATE);
@@ -399,59 +400,64 @@ public class EmiCompat implements EmiPlugin {
             this.addition = EmiStack.of(Items.ECHO_SHARD);
             this.uniq = EmiUtil.RANDOM.nextInt();
         }
+
         @Override
         public EmiRecipeCategory getCategory() {
             return VanillaEmiRecipeCategories.SMITHING;
         }
+
         @Override
         public @Nullable ResourceLocation getId() {
             return this.id;
         }
+
         @Override
         public List<EmiIngredient> getInputs() {
             return List.of(this.template, this.input, this.addition);
         }
+
         @Override
         public List<EmiStack> getOutputs() {
             return List.of(this.input);
         }
+
         @Override
         public int getDisplayWidth() {
             return 112;
         }
+
         @Override
         public int getDisplayHeight() {
             return 18;
         }
+
         @Override
         public void addWidgets(WidgetHolder widgetHolder) {
             ItemStack inputStack = this.input.getItemStack().copy();
-            ItemEnchantments.Mutable enchantments = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+            List<EnchantmentInstance> allEnchantments = new ArrayList<>();
             EmiPort.getEnchantmentRegistry().holders().forEach(ref -> {
-                if (ref.value().isPrimaryItem(inputStack) && ref.value().exclusiveSet().size() == 0 && ModUtil.enchantmentEnabled(ref))
-                    enchantments.set(ref, ref.value().getMaxLevel());
+                if (ref.value().isSupportedItem(inputStack) && ModUtil.enchantmentEligible(ref))
+                    allEnchantments.add(new EnchantmentInstance(ref, ref.value().getMaxLevel()));
             });
-            EmiPort.getEnchantmentRegistry().getTags().forEach(tag -> {
-                if (tag.getFirst().equals(EnchantmentTags.CURSE)) {
-                    tag.getSecond().forEach(e -> enchantments.removeIf(ie -> ie.is(e)));
-                }
-                else if (tag.getFirst().location().getPath().contains("exclusive_set")) {
-                    List<Holder<Enchantment>> possibleEnchantments = tag.getSecond().stream().filter(e ->
-                            e.value().isPrimaryItem(inputStack) && ModUtil.enchantmentEnabled(e)
-                    ).toList();
-                    if (!possibleEnchantments.isEmpty()){
-                        Holder<Enchantment> e = possibleEnchantments.get(EmiUtil.RANDOM.nextInt(possibleEnchantments.size()));
-                        enchantments.set(e, e.value().getMaxLevel());
-                    }
+            Collections.shuffle(allEnchantments);
+            ItemEnchantments.Mutable filteredEnchantments = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+            allEnchantments.forEach(ei -> {
+                if (
+                        !EmiPort.getEnchantmentRegistry().getTag(EnchantmentTags.CURSE).orElseThrow().contains(ei.enchantment) &&
+                        filteredEnchantments.keySet().stream().allMatch(e1 -> Enchantment.areCompatible(ei.enchantment, e1))
+                ) {
+                    filteredEnchantments.set(ei.enchantment, ei.level);
                 }
             });
-            inputStack.set(DataComponents.ENCHANTMENTS, enchantments.toImmutable());
+            inputStack.set(DataComponents.ENCHANTMENTS, filteredEnchantments.toImmutable());
+
             widgetHolder.addTexture(EmiTexture.EMPTY_ARROW, 62, 1);
             widgetHolder.addSlot(this.template, 0, 0);
             widgetHolder.addSlot(EmiStack.of(inputStack), 18, 0);
             widgetHolder.addSlot(this.addition, 36, 0);
-            widgetHolder.addGeneratedSlot(r -> this.getOutput(inputStack, enchantments.toImmutable(), r), this.uniq, 94, 0).recipeContext(this);
+            widgetHolder.addGeneratedSlot(r -> this.getOutput(inputStack, filteredEnchantments.toImmutable(), r), this.uniq, 94, 0).recipeContext(this);
         }
+
         private EmiStack getOutput(ItemStack stack, ItemEnchantments enchantments, Random r) {
             stack.set(DataComponents.CUSTOM_NAME, stack.getItem().getName(stack).copy().withStyle(ChatFormatting.LIGHT_PURPLE));
             stack.set(DataComponents.ENCHANTMENTS, enchantments);

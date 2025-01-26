@@ -1,7 +1,6 @@
 package me.pajic.simple_smithing_overhaul.util;
 
 import it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair;
-import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.compat.EDCompat;
 import me.pajic.simple_smithing_overhaul.config.ModCommonConfig;
 import me.pajic.simple_smithing_overhaul.config.ModServerConfig;
@@ -201,8 +200,10 @@ public class ModUtil {
                 slots.get(2).getItem().is(Items.ECHO_SHARD);
     }
 
-    public static boolean enchantmentEnabled(Holder<Enchantment> enchantment) {
-        return !ED_LOADED || EDCompat.enchantmentEnabled(enchantment);
+    public static boolean enchantmentEligible(Holder<Enchantment> enchantment) {
+        return ModServerConfig.excludedFromMaxedOutCheck
+                .stream().noneMatch(entry -> enchantment.is(ResourceLocation.parse(entry))) &&
+                (!ED_LOADED || EDCompat.enchantmentEnabled(enchantment));
     }
 
     public static Item getNetheriteRepairMaterial() {
