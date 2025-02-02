@@ -43,6 +43,7 @@ dependencies {
     annotationProcessor modImplementation("io.wispforest:owo-lib:${property("owo_version")}")
     modCompileOnly "dev.emi:emi-fabric:${property("emi_version")}"
     modCompileOnly "maven.modrinth:enchantment-disabler:${property("ed_version")}"
+    modCompileOnly "maven.modrinth:rearm:${property("rearm_version")}"
 
     if (stonecutter.eval(stonecutter.current.version, "1.21.1")) {
         modImplementation "dev.emi:emi-fabric:${property("emi_version")}"

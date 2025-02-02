@@ -15,6 +15,7 @@ public class ConfigModel {
     @Nest public Whetstone whetstone = new Whetstone();
     @Nest public StreamlinedRepairs streamlinedRepairs = new StreamlinedRepairs();
     @Nest public AnvilImprovements anvilImprovements = new AnvilImprovements();
+    @Nest public GrindstoneImprovements grindstoneImprovements = new GrindstoneImprovements();
 
     public static class EnchantmentUpgrading {
         @RestartRequired public boolean enableEnchantmentUpgrading = true;
@@ -135,6 +136,11 @@ public class ConfigModel {
         public boolean noPriorWorkCost = false;
         public boolean freeRenames = true;
         public boolean noTooExpensive = true;
+    }
+
+    public static class GrindstoneImprovements {
+        public boolean repairCostReductionRecipe = true;
+        public boolean increasedDisenchantXpGain = true;
     }
 
     public static class Armor {

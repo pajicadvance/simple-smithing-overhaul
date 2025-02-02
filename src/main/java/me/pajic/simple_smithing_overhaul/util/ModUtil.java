@@ -3,15 +3,13 @@ package me.pajic.simple_smithing_overhaul.util;
 import it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair;
 import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.compat.EDCompat;
+import me.pajic.simple_smithing_overhaul.compat.ReArmCompat;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -33,18 +31,21 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//? if > 1.21.1
-/*import net.minecraft.world.item.enchantment.Repairable;*/
+//? if > 1.21.1 {
+/*import net.minecraft.world.item.enchantment.Repairable;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.PatchedDataComponentMap;
+*///?}
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class ModUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("SimpleSmithingOverhaul-Util");
 
     public static final boolean ED_LOADED = FabricLoader.getInstance().isModLoaded("enchantmentdisabler");
+    public static final boolean REARM_LOADED = FabricLoader.getInstance().isModLoaded("rearm");
     public static final List<ObjectObjectImmutablePair<Item, Ingredient>> additionalRepairables = new ArrayList<>();
     public static int cost = 0;
 
@@ -205,11 +206,28 @@ public class ModUtil {
                 (!ED_LOADED || EDCompat.enchantmentEnabled(enchantment));
     }
 
+    public static boolean itemSupportsEnchantment(Holder<Enchantment> enchantment, ItemStack stack) {
+        if (REARM_LOADED) return ReArmCompat.itemSupportsEnchantment(enchantment, stack).orElseGet(() -> enchantment.value().isSupportedItem(stack));
+        else return enchantment.value().isSupportedItem(stack);
+    }
+
+    public static boolean areCompatible(Holder<Enchantment> e1, Holder<Enchantment> e2, Collection<EnchantmentInstance> itemEnchantments) {
+        if (REARM_LOADED) return ReArmCompat.areCompatible(e1, e2, itemEnchantments).orElseGet(() -> Enchantment.areCompatible(e1, e2));
+        else return Enchantment.areCompatible(e1, e2);
+    }
+
     public static Item getNetheriteRepairMaterial() {
         return switch (Main.CONFIG.streamlinedRepairs.netheriteRepairMaterial()) {
             case DIAMOND -> Items.DIAMOND;
             case NETHERITE_SCRAP -> Items.NETHERITE_SCRAP;
             default -> Items.NETHERITE_INGOT;
         };
+    }
+
+    public static boolean hasAdditionalRepair(ItemStack stack, ItemStack repairCandidate) {
+        for (ObjectObjectImmutablePair<Item, Ingredient> repair : additionalRepairables) {
+            if (stack.is(repair.left())) return repair.right().test(repairCandidate);
+        }
+        return false;
     }
 }

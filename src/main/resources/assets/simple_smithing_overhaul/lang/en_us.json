@@ -62,6 +62,10 @@
   "text.config.simple_smithing_overhaul.option.anvilImprovements.freeRenames": "No XP cost for renaming",
   "text.config.simple_smithing_overhaul.option.anvilImprovements.noTooExpensive": "Ignore \"Too Expensive\"",
 
+  "text.config.simple_smithing_overhaul.category.grindstoneImprovements": "Grindstone improvements",
+  "text.config.simple_smithing_overhaul.option.grindstoneImprovements.repairCostReductionRecipe": "Halve item repair cost with netherite scrap",
+  "text.config.simple_smithing_overhaul.option.grindstoneImprovements.increasedDisenchantXpGain": "More XP for disenchanting items",
+
   "item.simple_smithing_overhaul.enchantment_upgrade": "Enchantment Upgrade Smithing Template",
   "upgrade.minecraft.simple_smithing_overhaul.enchantment_upgrade": "Enchantment Upgrade",
   "item.minecraft.simple_smithing_overhaul.smithing_template.enchantment_upgrade.applies_to": "Enchanted Items",

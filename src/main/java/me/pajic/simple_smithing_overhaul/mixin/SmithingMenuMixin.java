@@ -133,7 +133,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
                             maxedOutEnchantments.add(new EnchantmentInstance(ref, ref.value().getMaxLevel()));
                     });
                     maxedOutEnchantments.removeIf(ei -> registry.getOrThrow(EnchantmentTags.CURSE).contains(ei.enchantment));
-                    itemEnchantments.forEach(ei -> maxedOutEnchantments.removeIf(ei1 -> !Enchantment.areCompatible(ei.enchantment, ei1.enchantment)));
+                    itemEnchantments.forEach(ei -> maxedOutEnchantments.removeIf(ei1 -> !ModUtil.areCompatible(ei1.enchantment, ei.enchantment, itemEnchantments)));
                     if (maxedOutEnchantments.isEmpty()) {
                         success = true;
                         ItemStack updatedStack = slots.get(1).getItem().copy();

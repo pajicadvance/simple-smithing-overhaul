@@ -200,7 +200,7 @@ public class EmiCompat implements EmiPlugin {
             List<EnchantmentInstance> enchantmentInstances;
             Set<Holder<Enchantment>> enchantmentSet = new HashSet<>();
             EmiPort.getEnchantmentRegistry().holders().forEach(e -> {
-                if (ModUtil.enchantmentEligible(e)) enchantmentSet.add(e);
+                if (ModUtil.itemSupportsEnchantment(e, this.input.getItemStack()) && ModUtil.enchantmentEligible(e)) enchantmentSet.add(e);
             });
             enchantmentInstances = EnchantmentHelper.selectEnchantment(RandomSource.create(), input.getItemStack(), 30, enchantmentSet.stream());
 
@@ -300,7 +300,7 @@ public class EmiCompat implements EmiPlugin {
             List<EnchantmentInstance> enchantmentInstances;
             Set<Holder<Enchantment>> enchantmentSet = new HashSet<>();
             EmiPort.getEnchantmentRegistry().holders().forEach(e -> {
-                if (ModUtil.enchantmentEligible(e)) enchantmentSet.add(e);
+                if (((inputStack.is(Items.ENCHANTED_BOOK) || inputStack.is(ModItems.WHETSTONE)) || ModUtil.itemSupportsEnchantment(e, inputStack)) && ModUtil.enchantmentEligible(e)) enchantmentSet.add(e);
             });
             enchantmentInstances = EnchantmentHelper.selectEnchantment(RandomSource.create(), inputStack, 30, enchantmentSet.stream());
             if (enchantmentInstances.isEmpty()) {
@@ -434,26 +434,28 @@ public class EmiCompat implements EmiPlugin {
             ItemStack inputStack = this.input.getItemStack().copy();
             List<EnchantmentInstance> allEnchantments = new ArrayList<>();
             EmiPort.getEnchantmentRegistry().holders().forEach(ref -> {
-                if (ref.value().isSupportedItem(inputStack) && ModUtil.enchantmentEligible(ref))
+                if (ModUtil.itemSupportsEnchantment(ref, inputStack) && ModUtil.enchantmentEligible(ref))
                     allEnchantments.add(new EnchantmentInstance(ref, ref.value().getMaxLevel()));
             });
             Collections.shuffle(allEnchantments);
-            ItemEnchantments.Mutable filteredEnchantments = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+            List<EnchantmentInstance> filteredEnchantments = new ArrayList<>();
             allEnchantments.forEach(ei -> {
                 if (
                         !EmiPort.getEnchantmentRegistry().getTag(EnchantmentTags.CURSE).orElseThrow().contains(ei.enchantment) &&
-                        filteredEnchantments.keySet().stream().allMatch(e1 -> Enchantment.areCompatible(ei.enchantment, e1))
+                        filteredEnchantments.stream().allMatch(e1 -> ModUtil.areCompatible(ei.enchantment, e1.enchantment, filteredEnchantments))
                 ) {
-                    filteredEnchantments.set(ei.enchantment, ei.level);
+                    filteredEnchantments.add(new EnchantmentInstance(ei.enchantment, ei.level));
                 }
             });
-            inputStack.set(DataComponents.ENCHANTMENTS, filteredEnchantments.toImmutable());
+            ItemEnchantments.Mutable finalEnchantments = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+            filteredEnchantments.forEach(ei -> finalEnchantments.set(ei.enchantment, ei.level));
+            inputStack.set(DataComponents.ENCHANTMENTS, finalEnchantments.toImmutable());
 
             widgetHolder.addTexture(EmiTexture.EMPTY_ARROW, 62, 1);
             widgetHolder.addSlot(this.template, 0, 0);
             widgetHolder.addSlot(EmiStack.of(inputStack), 18, 0);
             widgetHolder.addSlot(this.addition, 36, 0);
-            widgetHolder.addGeneratedSlot(r -> this.getOutput(inputStack, filteredEnchantments.toImmutable(), r), this.uniq, 94, 0).recipeContext(this);
+            widgetHolder.addGeneratedSlot(r -> this.getOutput(inputStack, finalEnchantments.toImmutable(), r), this.uniq, 94, 0).recipeContext(this);
         }
 
         private EmiStack getOutput(ItemStack stack, ItemEnchantments enchantments, Random r) {

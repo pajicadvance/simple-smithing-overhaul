@@ -162,7 +162,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
                 Main.CONFIG.anvilImprovements.noWorkCostIncreaseOnRepair() &&
                 inputSlots.getItem(0).isDamageableItem() &&
                 //? if <= 1.21.1
-                inputSlots.getItem(0).getItem().isValidRepairItem(inputSlots.getItem(0), inputSlots.getItem(1))
+                (ModUtil.hasAdditionalRepair(inputSlots.getItem(0), inputSlots.getItem(1)) || inputSlots.getItem(0).getItem().isValidRepairItem(inputSlots.getItem(0), inputSlots.getItem(1)))
                 //? if > 1.21.1 {
                 /*inputSlots.getItem(0).has(DataComponents.REPAIRABLE) &&
                 inputSlots.getItem(0).get(DataComponents.REPAIRABLE).isValidRepairItem(inputSlots.getItem(1))
@@ -188,4 +188,17 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
         }
         return original;
     }
+
+    //? if <= 1.21.1 {
+    @ModifyExpressionValue(
+            method = "createResult",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/item/Item;isValidRepairItem(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Z"
+            )
+    )
+    private boolean checkAdditionalRepair(boolean original) {
+        return ModUtil.hasAdditionalRepair(inputSlots.getItem(0), inputSlots.getItem(1)) || original;
+    }
+    //?}
 }
