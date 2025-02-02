@@ -7,11 +7,8 @@ import me.pajic.simple_smithing_overhaul.config.ModServerConfig;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -34,8 +31,12 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.neoforged.fml.ModList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//? if > 1.21.1
-/*import net.minecraft.world.item.enchantment.Repairable;*/
+//? if > 1.21.1 {
+/*import net.minecraft.world.item.enchantment.Repairable;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.PatchedDataComponentMap;
+*///?}
 
 import java.util.ArrayList;
 import java.util.List;
@@ -212,5 +213,12 @@ public class ModUtil {
             case NETHERITE_SCRAP -> Items.NETHERITE_SCRAP;
             default -> Items.NETHERITE_INGOT;
         };
+    }
+
+    public static boolean hasAdditionalRepair(ItemStack stack, ItemStack repairCandidate) {
+        for (ObjectObjectImmutablePair<Item, Ingredient> repair : additionalRepairables) {
+            if (stack.is(repair.left())) return repair.right().test(repairCandidate);
+        }
+        return false;
     }
 }

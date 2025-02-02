@@ -50,7 +50,7 @@ public abstract class RepairItemRecipeMixin extends CustomRecipe {
                             int unitsToMaxRepair = itemToRepair.getDamageValue() / damageRepairedPerUnit;
                             List<ItemStack> repairMaterials = input.items().stream().filter(itemStack ->
                                     //? if <= 1.21.1
-                                    itemToRepair.getItem().isValidRepairItem(itemToRepair, itemStack)).toList();
+                                    ModUtil.hasAdditionalRepair(itemToRepair, itemStack) || itemToRepair.getItem().isValidRepairItem(itemToRepair, itemStack)).toList();
                             //? if > 1.21.1 {
                                 /*{
                                     if (itemToRepair.has(DataComponents.REPAIRABLE)) {
@@ -90,7 +90,7 @@ public abstract class RepairItemRecipeMixin extends CustomRecipe {
                             int unitsToMaxRepair = itemToRepair.getDamageValue() / damageRepairedPerUnit;
                             List<ItemStack> repairMaterials = input.items().stream().filter(itemStack ->
                                     //? if <= 1.21.1
-                                    itemToRepair.getItem().isValidRepairItem(itemToRepair, itemStack)).toList();
+                                    ModUtil.hasAdditionalRepair(itemToRepair, itemStack) || itemToRepair.getItem().isValidRepairItem(itemToRepair, itemStack)).toList();
                             //? if > 1.21.1 {
                                 /*{
                                     if (itemToRepair.has(DataComponents.REPAIRABLE)) {
@@ -128,7 +128,7 @@ public abstract class RepairItemRecipeMixin extends CustomRecipe {
                             int unitsToMaxRepair = itemToRepair.getDamageValue() / damageRepairedPerUnit;
                             List<ItemStack> repairMaterials = input.items().stream().filter(itemStack ->
                                     //? if <= 1.21.1
-                                    itemToRepair.getItem().isValidRepairItem(itemToRepair, itemStack)).toList();
+                                    ModUtil.hasAdditionalRepair(itemToRepair, itemStack) || itemToRepair.getItem().isValidRepairItem(itemToRepair, itemStack)).toList();
                             //? if > 1.21.1 {
                                     /*{
                                         if (itemToRepair.has(DataComponents.REPAIRABLE)) {

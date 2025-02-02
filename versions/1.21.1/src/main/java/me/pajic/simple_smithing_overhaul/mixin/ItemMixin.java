@@ -14,9 +14,6 @@ public class ItemMixin {
 
     @WrapMethod(method = "isValidRepairItem")
     private boolean modifyIsValidRepairItem(ItemStack stack, ItemStack repairCandidate, Operation<Boolean> original) {
-        for (ObjectObjectImmutablePair<Item, Ingredient> repair : ModUtil.additionalRepairables) {
-            if (stack.is(repair.left())) return repair.right().test(repairCandidate);
-        }
-        return original.call(stack, repairCandidate);
+        return ModUtil.hasAdditionalRepair(stack, repairCandidate) || original.call(stack, repairCandidate);
     }
 }

@@ -53,6 +53,9 @@ public class ModServerConfig {
     private static final ModConfigSpec.BooleanValue FREE_RENAMES;
     private static final ModConfigSpec.BooleanValue NO_TOO_EXPENSIVE;
 
+    private static final ModConfigSpec.BooleanValue REPAIR_COST_REDUCTION_RECIPE;
+    private static final ModConfigSpec.BooleanValue INCREASED_DISENCHANT_XP_GAIN;
+
     static {
         BUILDER.comment("Simple Smithing Overhaul Configuration");
 
@@ -187,6 +190,15 @@ public class ModServerConfig {
                     .translation("text.config.simple_smithing_overhaul.option.anvilImprovements.noTooExpensive")
                     .define("noTooExpensive", true);
         BUILDER.pop();
+
+        BUILDER.push("grindstoneImprovements");
+            REPAIR_COST_REDUCTION_RECIPE = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.grindstoneImprovements.repairCostReductionRecipe")
+                    .define("repairCostReductionRecipe", true);
+            INCREASED_DISENCHANT_XP_GAIN = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.grindstoneImprovements.increasedDisenchantXpGain")
+                    .define("increasedDisenchantXpGain", true);
+        BUILDER.pop();
     }
 
     public static final ModConfigSpec SERVER_SPEC = BUILDER.build();
@@ -228,6 +240,8 @@ public class ModServerConfig {
     public static boolean noPriorWorkCost;
     public static boolean freeRenames;
     public static boolean noTooExpensive;
+    public static boolean repairCostReductionRecipe;
+    public static boolean increasedDisenchantXpGain;
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent.Loading event) {
@@ -278,6 +292,8 @@ public class ModServerConfig {
             noPriorWorkCost = NO_PRIOR_WORK_COST.get();
             freeRenames = FREE_RENAMES.get();
             noTooExpensive = NO_TOO_EXPENSIVE.get();
+            repairCostReductionRecipe = REPAIR_COST_REDUCTION_RECIPE.get();
+            increasedDisenchantXpGain = INCREASED_DISENCHANT_XP_GAIN.get();
         }
     }
 }
