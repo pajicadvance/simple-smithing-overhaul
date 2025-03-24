@@ -144,7 +144,7 @@ public class ModItems {
             ),
             List.of(ResourceLocation.parse("container/slot/lapis_lazuli")),
             ^///?}
-            new Item.Properties().rarity(Rarity.EPIC).setId(ResourceKey.create(
+            new Item.Properties().rarity(Rarity.RARE).setId(ResourceKey.create(
                     Registries.ITEM,
                     ResourceLocation.fromNamespaceAndPath("simple_smithing_overhaul", "enchantment_upgrade")
             ))

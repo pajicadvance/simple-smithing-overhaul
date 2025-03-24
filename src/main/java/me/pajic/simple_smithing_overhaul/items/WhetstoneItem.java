@@ -39,7 +39,7 @@ public class WhetstoneItem extends Item {
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
         return this.isFoil(stack) ?
-                Component.translatable("item.simple_smithing_overhaul.enchanted_whetstone").withStyle(ChatFormatting.LIGHT_PURPLE) :
+                super.getName(stack).copy().withStyle(ChatFormatting.YELLOW) :
                 super.getName(stack);
     }
 

@@ -3,7 +3,6 @@ package me.pajic.simple_smithing_overhaul.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.config.ModServerConfig;
 import net.minecraft.client.gui.screens.inventory.AnvilScreen;
 import net.minecraft.client.gui.screens.inventory.ItemCombinerScreen;

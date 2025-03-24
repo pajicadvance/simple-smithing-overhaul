@@ -2,7 +2,6 @@ package me.pajic.simple_smithing_overhaul;
 
 import me.pajic.simple_smithing_overhaul.config.ModCommonConfig;
 import me.pajic.simple_smithing_overhaul.config.ModServerConfig;
-import me.pajic.simple_smithing_overhaul.datapacks.NetheriteRepairMaterial;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.registries.Registries;
@@ -24,6 +23,8 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.neoforged.neoforge.event.entity.player.AnvilRepairEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
+//? if > 1.21.1
+/*import me.pajic.simple_smithing_overhaul.datapacks.NetheriteRepairMaterial;*/
 
 @Mod("simple_smithing_overhaul")
 public class Main {
