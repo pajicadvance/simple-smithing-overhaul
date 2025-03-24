@@ -16,9 +16,9 @@
     "GrindstoneMenuOutputSlotMixin",
     "ItemCombinerMenuMixin",
     "ItemMixin",
-    "RepairItemRecipeMixin",
     "SmithingMenuMixin",
     "TiersMixin",
+    "VanillaRecipeProviderMixin",
     "compat.emi.EmiAnvilRecipeMixin"
   ],
   "client": [

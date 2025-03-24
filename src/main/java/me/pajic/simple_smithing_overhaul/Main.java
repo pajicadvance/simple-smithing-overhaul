@@ -3,12 +3,14 @@ package me.pajic.simple_smithing_overhaul;
 import me.pajic.simple_smithing_overhaul.config.ModCommonConfig;
 import me.pajic.simple_smithing_overhaul.config.ModServerConfig;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
+import me.pajic.simple_smithing_overhaul.recipe.WhetstoneRepairItemRecipe;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
@@ -23,11 +25,23 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.neoforged.neoforge.event.entity.player.AnvilRepairEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
-//? if > 1.21.1
-/*import me.pajic.simple_smithing_overhaul.datapacks.NetheriteRepairMaterial;*/
+//? if <= 1.21.1
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
+//? if > 1.21.1 {
+/*import me.pajic.simple_smithing_overhaul.datapacks.NetheriteRepairMaterial;
+import net.minecraft.world.item.crafting.CustomRecipe;
+*///?}
 
 @Mod("simple_smithing_overhaul")
 public class Main {
+
+    public static RecipeSerializer<WhetstoneRepairItemRecipe> WHETSTONE_REPAIR_ITEM = RecipeSerializer.register(
+            "crafting_special_whetstone_repairitem",
+            //? if <= 1.21.1
+            new SimpleCraftingRecipeSerializer<>(WhetstoneRepairItemRecipe::new)
+            //? if > 1.21.1
+            /*new CustomRecipe.Serializer<>(WhetstoneRepairItemRecipe::new)*/
+    );
 
     public Main(IEventBus modEventBus, ModContainer modContainer) {
         modContainer.registerConfig(ModConfig.Type.COMMON, ModCommonConfig.COMMON_SPEC);
