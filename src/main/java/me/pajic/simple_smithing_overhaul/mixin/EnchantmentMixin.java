@@ -22,6 +22,6 @@ public class EnchantmentMixin {
                                                     @Local(argsOnly = true) int level
     ) {
         if (level > enchantment.value().getMaxLevel()) return ChatFormatting.LIGHT_PURPLE;
-        return ChatFormatting.GRAY;
+        return original;
     }
 }

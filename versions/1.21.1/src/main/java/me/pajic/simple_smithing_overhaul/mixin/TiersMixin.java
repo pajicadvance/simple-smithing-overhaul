@@ -2,7 +2,6 @@ package me.pajic.simple_smithing_overhaul.mixin;
 
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.spongepowered.asm.mixin.*;
