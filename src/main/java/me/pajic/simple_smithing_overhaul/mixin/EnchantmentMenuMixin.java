@@ -40,4 +40,18 @@ public class EnchantmentMenuMixin {
         }
         return original;
     }
+
+    @ModifyExpressionValue(
+            method = "method_17411",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/level/block/EnchantingTableBlock;isValidBookShelf(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;)Z"
+            )
+    )
+    private boolean limitTablePower(boolean original, @Local int ix) {
+        if (Main.CONFIG.enchantmentLimits.limitEnchantingTablePower() && ix >= Main.CONFIG.enchantmentLimits.enchantingTablePowerLimit()) {
+            return false;
+        }
+        return original;
+    }
 }

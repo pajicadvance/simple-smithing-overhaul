@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:smithing/root",
+  "criteria": {
+    "disenchant_item": {
+      "trigger": "simple_smithing_overhaul:disenchant_item"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.smithing.disenchanter.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:grindstone"
+    },
+    "title": {
+      "translate": "advancements.smithing.disenchanter.title"
+    }
+  },
+  "requirements": [
+    [
+      "disenchant_item"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

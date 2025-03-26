@@ -1,0 +1,27 @@
+{
+  "parent": "minecraft:smithing/as_good_as_new",
+  "criteria": {
+    "item_repair_count": {
+      "trigger": "simple_smithing_overhaul:item_repair_count"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.smithing.right_to_repair.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:iron_block"
+    },
+    "title": {
+      "translate": "advancements.smithing.right_to_repair.title"
+    }
+  },
+  "requirements": [
+    [
+      "item_repair_count"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

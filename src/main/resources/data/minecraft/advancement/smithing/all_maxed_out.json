@@ -1,0 +1,27 @@
+{
+  "parent": "minecraft:smithing/limit_break",
+  "criteria": {
+    "maxed_out": {
+      "trigger": "simple_smithing_overhaul:maxed_out"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.smithing.all_maxed_out.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:nether_star"
+    },
+    "title": {
+      "translate": "advancements.smithing.all_maxed_out.title"
+    }
+  },
+  "requirements": [
+    [
+      "maxed_out"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

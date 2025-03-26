@@ -74,6 +74,7 @@ public class WhetstoneRepairItemRecipe extends CustomRecipe {
     public @NotNull ItemStack assemble(@NotNull CraftingInput input, HolderLookup.@NotNull Provider registries) {
         ItemStack outputItem = itemToRepair.copy();
         outputItem.setDamageValue(outputItem.getDamageValue() - ((outputItem.getMaxDamage() / unitCost) * repairMaterials.size()));
+        outputItem.set(Main.REPAIR_COUNT, outputItem.getOrDefault(Main.REPAIR_COUNT, 0) + 1);
         return outputItem;
     }
 

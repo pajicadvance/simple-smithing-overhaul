@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import me.pajic.simple_smithing_overhaul.Main;
+import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -12,6 +13,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -138,6 +140,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
                         success = true;
                         ItemStack updatedStack = slots.get(1).getItem().copy();
                         updatedStack.set(DataComponents.CUSTOM_NAME, Component.translatable("text.item.simple_smithing_overhaul.pinnacleCustomName").withStyle(ChatFormatting.LIGHT_PURPLE));
+                        updatedStack.set(Main.PINNACLE_COUNT, updatedStack.getOrDefault(Main.PINNACLE_COUNT, 0) + 1);
                         stack.set(updatedStack);
                     }
                 }
@@ -180,17 +183,20 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
         if (
                 Main.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading() &&
                 Main.CONFIG.enchantmentUpgrading.upgradingHasExperienceCost() &&
-                (ModUtil.isEnchantedBookOrWhetstoneUpgradeRecipe(slots) || ModUtil.isEnchantedItemUpgradeRecipe(slots)) &&
-                !player.getAbilities().instabuild
+                (ModUtil.isEnchantedBookOrWhetstoneUpgradeRecipe(slots) || ModUtil.isEnchantedItemUpgradeRecipe(slots))
         ) {
-            player.giveExperienceLevels(-ModUtil.cost);
+            if (!player.getAbilities().instabuild) player.giveExperienceLevels(-ModUtil.cost);
+            if (player instanceof ServerPlayer p) ModCriteria.APPLY_ENCHANTMENT_UPGRADE.trigger(p);
         }
         if (
                 Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment() &&
-                ModUtil.isPinnacleEnchantmentRecipe(slots) &&
-                !player.getAbilities().instabuild
+                ModUtil.isPinnacleEnchantmentRecipe(slots)
         ) {
-            player.giveExperienceLevels(-Main.CONFIG.pinnacleEnchantment.pinnacleExperienceCost());
+            if (!player.getAbilities().instabuild) player.giveExperienceLevels(-Main.CONFIG.pinnacleEnchantment.pinnacleExperienceCost());
+            if (player instanceof ServerPlayer p) {
+                ModCriteria.APPLY_PINNACLE_ENCHANTMENT.trigger(p);
+                if (itemStack.getOrDefault(Main.PINNACLE_COUNT, 0) == 10) ModCriteria.BAD_RNG.trigger(p);
+            }
         }
     }
 }

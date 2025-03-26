@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:smithing/limit_break",
+  "criteria": {
+    "bad_rng": {
+      "trigger": "simple_smithing_overhaul:bad_rng"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.smithing.bad_rng.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:poisonous_potato"
+    },
+    "title": {
+      "translate": "advancements.smithing.bad_rng.title"
+    },
+    "hidden": true
+  },
+  "requirements": [
+    [
+      "bad_rng"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

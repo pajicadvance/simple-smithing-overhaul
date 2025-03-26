@@ -1,0 +1,27 @@
+{
+  "parent": "minecraft:smithing/one_step_at_a_time",
+  "criteria": {
+    "apply_pinnacle_enchantment": {
+      "trigger": "simple_smithing_overhaul:apply_pinnacle_enchantment"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.smithing.limit_break.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "simple_smithing_overhaul:pinnacle_enchantment"
+    },
+    "title": {
+      "translate": "advancements.smithing.limit_break.title"
+    }
+  },
+  "requirements": [
+    [
+      "apply_pinnacle_enchantment"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
