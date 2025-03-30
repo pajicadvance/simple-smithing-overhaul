@@ -40,7 +40,7 @@ public class WhetstoneRepairItemRecipe extends CustomRecipe {
                             DataComponents.STORED_ENCHANTMENTS,
                             ItemEnchantments.EMPTY
                     );
-                    if (itemToRepair.getEnchantments().entrySet().stream().allMatch(
+                    if (itemToRepair.getTagEnchantments().entrySet().stream().allMatch(
                             entry -> whetstoneEnchantments.getLevel(entry.getKey()) >= Math.min(
                                     entry.getIntValue(),
                                     entry.getKey().value().getMaxLevel()

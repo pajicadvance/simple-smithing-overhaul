@@ -35,13 +35,11 @@ import net.minecraft.world.item.crafting.CustomRecipe;
 @Mod("simple_smithing_overhaul")
 public class Main {
 
-    public static RecipeSerializer<WhetstoneRepairItemRecipe> WHETSTONE_REPAIR_ITEM = RecipeSerializer.register(
-            "crafting_special_whetstone_repairitem",
+    public static RecipeSerializer<WhetstoneRepairItemRecipe> WHETSTONE_REPAIR_ITEM =
             //? if <= 1.21.1
-            new SimpleCraftingRecipeSerializer<>(WhetstoneRepairItemRecipe::new)
+            new SimpleCraftingRecipeSerializer<>(WhetstoneRepairItemRecipe::new);
             //? if > 1.21.1
-            /*new CustomRecipe.Serializer<>(WhetstoneRepairItemRecipe::new)*/
-    );
+            /*new CustomRecipe.Serializer<>(WhetstoneRepairItemRecipe::new);*/
 
     public Main(IEventBus modEventBus, ModContainer modContainer) {
         modContainer.registerConfig(ModConfig.Type.COMMON, ModCommonConfig.COMMON_SPEC);
@@ -70,6 +68,10 @@ public class Main {
                     ModItems.WHETSTONE
             );
         });
+        event.register(Registries.RECIPE_SERIALIZER, helper -> helper.register(
+                ResourceLocation.withDefaultNamespace("crafting_special_whetstone_repairitem"),
+                WHETSTONE_REPAIR_ITEM
+        ));
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
