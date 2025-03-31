@@ -89,14 +89,14 @@
   "text.config.simple_smithing_overhaul.option.enchantmentLimits.limitBookTradeUses": "Limit book trade uses",
   "text.config.simple_smithing_overhaul.option.enchantmentLimits.bookTradeUsesLimit": "Book trade uses limit",
 
-  "item.simple_smithing_overhaul.enchantment_upgrade": "Enchantment Upgrade Smithing Template",
+  "item.simple_smithing_overhaul.enchantment_upgrade": "Enchantment Upgrade",
   "upgrade.minecraft.simple_smithing_overhaul.enchantment_upgrade": "Enchantment Upgrade",
   "item.minecraft.simple_smithing_overhaul.smithing_template.enchantment_upgrade.applies_to": "Enchanted Items",
   "item.minecraft.simple_smithing_overhaul.smithing_template.enchantment_upgrade.ingredients": "Lapis Lazuli",
   "item.minecraft.simple_smithing_overhaul.smithing_template.enchantment_upgrade.base_slot_description": "Add enchanted item",
   "item.minecraft.simple_smithing_overhaul.smithing_template.enchantment_upgrade.additions_slot_description": "Select enchantment to upgrade with Lapis Lazuli",
 
-  "item.simple_smithing_overhaul.pinnacle_enchantment": "Pinnacle Enchantment Smithing Template",
+  "item.simple_smithing_overhaul.pinnacle_enchantment": "Pinnacle Enchantment",
   "upgrade.minecraft.simple_smithing_overhaul.pinnacle_enchantment": "Pinnacle Enchantment",
   "item.minecraft.simple_smithing_overhaul.smithing_template.pinnacle_enchantment.applies_to": "Maxed Out Enchanted Items",
   "item.minecraft.simple_smithing_overhaul.smithing_template.pinnacle_enchantment.ingredients": "Echo Shard",
