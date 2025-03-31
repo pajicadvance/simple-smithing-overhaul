@@ -132,5 +132,16 @@ public class ResourceModifications {
                     }
             );
         }
+        //? if > 1.21.1 {
+        /*Mixson.registerEvent(
+                Mixson.DEFAULT_PRIORITY,
+                "simple_smithing_overhaul:lang/en_us",
+                "simple_smithing_overhaul:modify_mod_lang",
+                context -> {
+                    context.getFile().getAsJsonObject().addProperty("item.simple_smithing_overhaul.enchantment_upgrade", "Enchantment Upgrade");
+                    context.getFile().getAsJsonObject().addProperty("item.simple_smithing_overhaul.pinnacle_enchantment", "Pinnacle Enchantment");
+                }
+        );
+        *///?}
     }
 }
