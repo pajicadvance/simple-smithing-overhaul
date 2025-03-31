@@ -71,6 +71,7 @@ public class ModCommonConfig {
     ), () -> "", o -> true);
     private static final ModConfigSpec.ConfigValue<List<? extends String>> MOD_ITEM_UNIT_COSTS = BUILDER
             .translation("text.config.simple_smithing_overhaul.option.anvilImprovements.modItemUnitCosts")
+            .gameRestart()
             .defineListAllowEmpty("modItemUnitCosts", List.of(
                     "#farmersdelight:tools/knives;1",
                     "another_furniture:furniture_hammer;3",
@@ -111,6 +112,133 @@ public class ModCommonConfig {
                       "chalk:yellow_chalk;2",
                       "chalk:yellow_glow_chalk;1"
     ), () -> "", o -> true);
+    private static final ModConfigSpec.BooleanValue ADDITIONAL_BOOK_CHEST_LOOT = BUILDER
+            .translation("text.config.simple_smithing_overhaul.option.enchantedBookLootTweaks.additionalChestLoot")
+            .gameRestart()
+            .define("additionalBookChestLoot", true);
+    private static final ModConfigSpec.ConfigValue<List<? extends String>> BOOK_LOOT_LOCATIONS = BUILDER
+            .translation("text.config.simple_smithing_overhaul.option.enchantedBookLootTweaks.bookLootLocations")
+            .gameRestart()
+            .defineListAllowEmpty("bookLootLocations",List.of(
+                    "minecraft:chests/abandoned_mineshaft;50",
+                    "minecraft:chests/ancient_city;50",
+                    "minecraft:chests/bastion_other;50",
+                    "minecraft:chests/bastion_treasure;100;3",
+                    "minecraft:chests/buried_treasure;100",
+                    "minecraft:chests/desert_pyramid;50",
+                    "minecraft:chests/jungle_temple;50",
+                    "minecraft:chests/pillager_outpost;50",
+                    "minecraft:chests/nether_bridge;50",
+                    "minecraft:chests/simple_dungeon;50",
+                    "minecraft:chests/stronghold_corridor;50",
+                    "minecraft:chests/stronghold_crossing;50",
+                    "minecraft:chests/stronghold_library;50",
+                    "minecraft:chests/underwater_ruin_big;50",
+                    "minecraft:chests/underwater_ruin_small;25",
+                    "minecraft:chests/woodland_mansion;50",
+                    "betteroceanmonuments:chests/upper_side_chamber;100",
+                    "betterjungletemples:chests/treasure;100;2",
+                    "betterdungeons:spider_dungeon/chests/egg_room;50",
+                    "betterdungeons:skeleton_dungeon/chests/common;50",
+                    "betterdungeons:skeleton_dungeon/chests/middle;50",
+                    "betterdungeons:zombie_dungeon/chests/common;50",
+                    "betterdungeons:zombie_dungeon/chests/special;100",
+                    "betterdungeons:zombie_dungeon/chests/tombstone;100",
+                    "betterdungeons:small_nether_dungeon/chests/common;50",
+                    "betterfortresses:chests/keep;20",
+                    "betterfortresses:chests/beacon;100",
+                    "repurposed_structures:chests/dungeons/badlands;50",
+                    "repurposed_structures:chests/dungeons/dark_forest;50",
+                    "repurposed_structures:chests/dungeons/deep;50",
+                    "repurposed_structures:chests/dungeons/desert;50",
+                    "repurposed_structures:chests/dungeons/icy;50",
+                    "repurposed_structures:chests/dungeons/jungle;50",
+                    "repurposed_structures:chests/dungeons/mushroom;50",
+                    "repurposed_structures:chests/dungeons/nether;50",
+                    "repurposed_structures:chests/dungeons/ocean;50",
+                    "repurposed_structures:chests/dungeons/snow;50",
+                    "repurposed_structures:chests/dungeons/swamp;50",
+                    "repurposed_structures:chests/mineshafts/basalt;50",
+                    "repurposed_structures:chests/mineshafts/birch;50",
+                    "repurposed_structures:chests/mineshafts/crimson;50",
+                    "repurposed_structures:chests/mineshafts/dark_forest;50",
+                    "repurposed_structures:chests/mineshafts/desert;50",
+                    "repurposed_structures:chests/mineshafts/end;50",
+                    "repurposed_structures:chests/mineshafts/icy;50",
+                    "repurposed_structures:chests/mineshafts/jungle;50",
+                    "repurposed_structures:chests/mineshafts/nether;50",
+                    "repurposed_structures:chests/mineshafts/ocean;50",
+                    "repurposed_structures:chests/mineshafts/savanna;50",
+                    "repurposed_structures:chests/mineshafts/soul;50",
+                    "repurposed_structures:chests/mineshafts/stone;50",
+                    "repurposed_structures:chests/mineshafts/swamp;50",
+                    "repurposed_structures:chests/mineshafts/taiga;50",
+                    "repurposed_structures:chests/mineshafts/warped;50"
+    ), () -> "", o -> true);
+    private static final ModConfigSpec.BooleanValue ADDITIONAL_BOTTLE_CHEST_LOOT = BUILDER
+            .translation("text.config.simple_smithing_overhaul.option.improvedExperienceBottle.additionalChestLoot")
+            .gameRestart()
+            .define("additionalBottleChestLoot", true);
+    private static final ModConfigSpec.ConfigValue<List<? extends String>> BOTTLE_LOOT_LOCATIONS = BUILDER
+            .translation("text.config.simple_smithing_overhaul.option.improvedExperienceBottle.bottleLootLocations")
+            .gameRestart()
+            .defineListAllowEmpty("bottleLootLocations",List.of(
+                    "minecraft:chests/abandoned_mineshaft;100",
+                    "minecraft:chests/ancient_city;100",
+                    "minecraft:chests/end_city_treasure;100",
+                    "minecraft:chests/jungle_temple;100",
+                    "minecraft:chests/pillager_outpost;100;2",
+                    "minecraft:chests/simple_dungeon;100",
+                    "minecraft:chests/stronghold_corridor;100",
+                    "minecraft:chests/stronghold_crossing;100",
+                    "minecraft:chests/stronghold_library;100;2",
+                    "minecraft:chests/woodland_mansion;100;3",
+                    "minecraft:chests/desert_pyramid;75",
+                    "minecraft:chests/nether_bridge;100",
+                    "minecraft:chests/buried_treasure;100;2",
+                    "minecraft:chests/underwater_ruin_big;100",
+                    "minecraft:chests/underwater_ruin_small;50",
+                    "minecraft:chests/bastion_other;100",
+                    "minecraft:chests/bastion_treasure;100;3",
+                    "betteroceanmonuments:chests/upper_side_chamber;100;3",
+                    "betterjungletemples:chests/treasure;100;3",
+                    "betterdungeons:spider_dungeon/chests/egg_room;100",
+                    "betterdungeons:skeleton_dungeon/chests/common;100",
+                    "betterdungeons:skeleton_dungeon/chests/middle;100",
+                    "betterdungeons:zombie_dungeon/chests/common;100",
+                    "betterdungeons:zombie_dungeon/chests/special;100",
+                    "betterdungeons:zombie_dungeon/chests/tombstone;100",
+                    "betterdungeons:small_nether_dungeon/chests/common;100",
+                    "betterfortresses:chests/keep;50",
+                    "betterfortresses:chests/beacon;100",
+                    "repurposed_structures:chests/dungeons/badlands;100",
+                    "repurposed_structures:chests/dungeons/dark_forest;100",
+                    "repurposed_structures:chests/dungeons/deep;100",
+                    "repurposed_structures:chests/dungeons/desert;100",
+                    "repurposed_structures:chests/dungeons/icy;100",
+                    "repurposed_structures:chests/dungeons/jungle;100",
+                    "repurposed_structures:chests/dungeons/mushroom;100",
+                    "repurposed_structures:chests/dungeons/nether;100",
+                    "repurposed_structures:chests/dungeons/ocean;100",
+                    "repurposed_structures:chests/dungeons/snow;100",
+                    "repurposed_structures:chests/dungeons/swamp;100",
+                    "repurposed_structures:chests/mineshafts/basalt;100",
+                    "repurposed_structures:chests/mineshafts/birch;100",
+                    "repurposed_structures:chests/mineshafts/crimson;100",
+                    "repurposed_structures:chests/mineshafts/dark_forest;100",
+                    "repurposed_structures:chests/mineshafts/desert;100",
+                    "repurposed_structures:chests/mineshafts/end;100",
+                    "repurposed_structures:chests/mineshafts/icy;100",
+                    "repurposed_structures:chests/mineshafts/jungle;100",
+                    "repurposed_structures:chests/mineshafts/nether;100",
+                    "repurposed_structures:chests/mineshafts/ocean;100",
+                    "repurposed_structures:chests/mineshafts/savanna;100",
+                    "repurposed_structures:chests/mineshafts/soul;100",
+                    "repurposed_structures:chests/mineshafts/stone;100",
+                    "repurposed_structures:chests/mineshafts/swamp;100",
+                    "repurposed_structures:chests/mineshafts/taiga;100",
+                    "repurposed_structures:chests/mineshafts/warped;100"
+            ), () -> "", o -> true);
 
     public static final ModConfigSpec COMMON_SPEC = BUILDER.build();
 
@@ -120,6 +248,10 @@ public class ModCommonConfig {
     public static NetheriteRepairMaterials netheriteRepairMaterial;
     public static List<String> modRepairableItems;
     public static List<String> modItemUnitCosts;
+    public static boolean additionalBookChestLoot;
+    public static List<String> bookLootLocations;
+    public static boolean additionalBottleChestLoot;
+    public static List<String> bottleLootLocations;
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent.Loading event) {
@@ -139,6 +271,10 @@ public class ModCommonConfig {
             netheriteRepairMaterial = NETHERITE_REPAIR_MATERIAL.get();
             modRepairableItems = new ArrayList<>(MOD_REPAIRABLE_ITEMS.get());
             modItemUnitCosts = new ArrayList<>(MOD_ITEM_UNIT_COSTS.get());
+            additionalBookChestLoot = ADDITIONAL_BOOK_CHEST_LOOT.get();
+            bookLootLocations = new ArrayList<>(BOOK_LOOT_LOCATIONS.get());
+            additionalBottleChestLoot = ADDITIONAL_BOTTLE_CHEST_LOOT.get();
+            bottleLootLocations = new ArrayList<>(BOTTLE_LOOT_LOCATIONS.get());
         }
     }
 

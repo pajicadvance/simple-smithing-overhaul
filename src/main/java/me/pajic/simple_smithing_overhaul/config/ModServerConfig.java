@@ -56,6 +56,21 @@ public class ModServerConfig {
     private static final ModConfigSpec.BooleanValue REPAIR_COST_REDUCTION_RECIPE;
     private static final ModConfigSpec.BooleanValue INCREASED_DISENCHANT_XP_GAIN;
 
+    private static final ModConfigSpec.BooleanValue WEIGHTED_LEVELS;
+
+    private static final ModConfigSpec.BooleanValue MODIFY_BOTTLE_XP_REWARD;
+    private static final ModConfigSpec.IntValue BOTTLE_MIN_XP;
+    private static final ModConfigSpec.IntValue BOTTLE_MAX_XP;
+
+    private static final ModConfigSpec.BooleanValue LIMIT_ENCHANTING_TABLE_POWER;
+    private static final ModConfigSpec.IntValue ENCHANTING_TABLE_POWER_LIMIT;
+    private static final ModConfigSpec.BooleanValue LIMIT_ENCHANTED_LOOT_POWER;
+    private static final ModConfigSpec.IntValue ENCHANTED_LOOT_POWER_LIMIT;
+    private static final ModConfigSpec.BooleanValue LIMIT_BOOK_TRADE_LEVEL;
+    private static final ModConfigSpec.IntValue BOOK_TRADE_LEVEL_LIMIT;
+    private static final ModConfigSpec.BooleanValue LIMIT_BOOK_TRADE_USES;
+    private static final ModConfigSpec.IntValue BOOK_TRADE_USES_LIMIT;
+
     static {
         BUILDER.comment("Simple Smithing Overhaul Configuration");
 
@@ -199,6 +214,51 @@ public class ModServerConfig {
                     .translation("text.config.simple_smithing_overhaul.option.grindstoneImprovements.increasedDisenchantXpGain")
                     .define("increasedDisenchantXpGain", true);
         BUILDER.pop();
+
+        BUILDER.push("enchantedBookLootTweaks");
+            WEIGHTED_LEVELS = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.enchantedBookLootTweaks.weightedLevels")
+                    .define("weightedLevels", true);
+        BUILDER.pop();
+
+        BUILDER.push("improvedExperienceBottle");
+            MODIFY_BOTTLE_XP_REWARD = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.improvedExperienceBottle.modifyXpReward")
+                    .define("modifyXpReward", true);
+            BOTTLE_MIN_XP = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.improvedExperienceBottle.minXp")
+                    .defineInRange("minXp", 30, 1, Integer.MAX_VALUE);
+            BOTTLE_MAX_XP = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.improvedExperienceBottle.maxXp")
+                    .defineInRange("maxXp", 50, 1, Integer.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("enchantmentLimits");
+            LIMIT_ENCHANTING_TABLE_POWER = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.enchantmentLimits.limitEnchantingTablePower")
+                    .define("limitEnchantingTablePower", true);
+            ENCHANTING_TABLE_POWER_LIMIT = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.enchantmentLimits.enchantingTablePowerLimit")
+                    .defineInRange("enchantingTablePowerLimit", 10, 1, 15);
+            LIMIT_ENCHANTED_LOOT_POWER = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.enchantmentLimits.limitEnchantedLootPower")
+                    .define("limitEnchantedLootPower", true);
+            ENCHANTED_LOOT_POWER_LIMIT = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.enchantmentLimits.enchantedLootPowerLimit")
+                    .defineInRange("enchantedLootPowerLimit", 20, 1, 50);
+            LIMIT_BOOK_TRADE_LEVEL = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.enchantmentLimits.limitBookTradeLevel")
+                    .define("limitBookTradeLevel", true);
+            BOOK_TRADE_LEVEL_LIMIT = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.enchantmentLimits.bookTradeLevelLimit")
+                    .defineInRange("bookTradeLevelLimit", 1, 1, Integer.MAX_VALUE);
+            LIMIT_BOOK_TRADE_USES = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.enchantmentLimits.limitBookTradeUses")
+                    .define("limitBookTradeUses", true);
+            BOOK_TRADE_USES_LIMIT = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.enchantmentLimits.bookTradeUsesLimit")
+                    .defineInRange("bookTradeUsesLimit", 3, 1, Integer.MAX_VALUE);
+        BUILDER.pop();
     }
 
     public static final ModConfigSpec SERVER_SPEC = BUILDER.build();
@@ -242,6 +302,18 @@ public class ModServerConfig {
     public static boolean noTooExpensive;
     public static boolean repairCostReductionRecipe;
     public static boolean increasedDisenchantXpGain;
+    public static boolean weightedLevels;
+    public static boolean modifyXpReward;
+    public static int minXp;
+    public static int maxXp;
+    public static boolean limitEnchantingTablePower;
+    public static int enchantingTablePowerLimit;
+    public static boolean limitEnchantedLootPower;
+    public static int enchantedLootPowerLimit;
+    public static boolean limitBookTradeLevel;
+    public static int bookTradeLevelLimit;
+    public static boolean limitBookTradeUses;
+    public static int bookTradeUsesLimit;
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent.Loading event) {
@@ -294,6 +366,18 @@ public class ModServerConfig {
             noTooExpensive = NO_TOO_EXPENSIVE.get();
             repairCostReductionRecipe = REPAIR_COST_REDUCTION_RECIPE.get();
             increasedDisenchantXpGain = INCREASED_DISENCHANT_XP_GAIN.get();
+            weightedLevels = WEIGHTED_LEVELS.get();
+            modifyXpReward = MODIFY_BOTTLE_XP_REWARD.get();
+            minXp = BOTTLE_MIN_XP.get();
+            maxXp = BOTTLE_MAX_XP.get();
+            limitEnchantingTablePower = LIMIT_ENCHANTING_TABLE_POWER.get();
+            enchantingTablePowerLimit = ENCHANTING_TABLE_POWER_LIMIT.get();
+            limitEnchantedLootPower = LIMIT_ENCHANTED_LOOT_POWER.get();
+            enchantedLootPowerLimit = ENCHANTED_LOOT_POWER_LIMIT.get();
+            limitBookTradeLevel = LIMIT_BOOK_TRADE_LEVEL.get();
+            bookTradeLevelLimit = BOOK_TRADE_LEVEL_LIMIT.get();
+            limitBookTradeUses = LIMIT_BOOK_TRADE_USES.get();
+            bookTradeUsesLimit = BOOK_TRADE_USES_LIMIT.get();
         }
     }
 }

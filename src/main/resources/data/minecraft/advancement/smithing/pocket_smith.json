@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:smithing/as_good_as_new",
+  "criteria": {
+    "repair_item_whetstone": {
+      "trigger": "simple_smithing_overhaul:repair_item_whetstone"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.smithing.pocket_smith.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "simple_smithing_overhaul:whetstone"
+    },
+    "title": {
+      "translate": "advancements.smithing.pocket_smith.title"
+    }
+  },
+  "requirements": [
+    [
+      "repair_item_whetstone"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

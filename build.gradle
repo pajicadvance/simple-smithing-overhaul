@@ -12,6 +12,7 @@ group = mod_group_id
 repositories {
     mavenLocal()
     maven { url = "https://maven.terraformersmc.com/" }
+    maven { url = "https://jitpack.io" }
     exclusiveContent {
         forRepository {
             maven {
@@ -87,8 +88,12 @@ tasks.named('jarJar') {
 
 dependencies {
     implementation "net.neoforged:neoforge:${property("neo_version")}"
-    implementation "com.moulberry:mixinconstraints:${project.mixinconstraints_version}"
-    jarJar(group: 'com.moulberry', name: 'mixinconstraints', version: project.mixinconstraints_version)
+    implementation(jarJar("com.moulberry:mixinconstraints:${project.mixinconstraints_version}")) {
+        jarJar.ranged(it, "[1.0.8,)")
+    }
+    implementation(jarJar("com.github.ramixin:mixson-neoforge:${project.mixson_version}")) {
+        jarJar.ranged(it, "[v1.3.1,)")
+    }
     compileOnly "dev.emi:emi-neoforge:${property("emi_version")}"
     compileOnly "maven.modrinth:enchantment-disabler:${property("ed_version")}"
     if (stonecutter.eval(stonecutter.current.version, "1.21.1")) {

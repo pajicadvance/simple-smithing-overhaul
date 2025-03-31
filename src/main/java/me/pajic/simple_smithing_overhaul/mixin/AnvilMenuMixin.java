@@ -5,13 +5,20 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.moulberry.mixinconstraints.annotations.IfModLoaded;
+import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.config.ModServerConfig;
+import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
+import me.pajic.simple_smithing_overhaul.items.ModItems;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -21,6 +28,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Mixin(value = AnvilMenu.class, priority = 2000)
 public abstract class AnvilMenuMixin extends ItemCombinerMenu {
@@ -62,6 +73,35 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
                 itemStack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty()
         ) {
             cost.set(0);
+        }
+    }
+
+    @Inject(
+            method = "onTake",
+            at = @At("HEAD")
+    )
+    private void grantAdvancements(Player player, ItemStack stack, CallbackInfo ci) {
+        if (resultSlots.getItem(0).getDamageValue() < inputSlots.getItem(0).getDamageValue()) {
+            if (player instanceof ServerPlayer p) ModCriteria.REPAIR_ITEM.trigger(p);
+            int repairCount = stack.getOrDefault(Main.REPAIR_COUNT, 0);
+            if (player instanceof ServerPlayer p) {
+                if (repairCount + 1 == 100) ModCriteria.ITEM_REPAIR_COUNT.trigger(p);
+                if (repairCount + 1 == 1000) ModCriteria.ITEM_REPAIR_COUNT_BIG.trigger(p);
+            }
+            stack.set(Main.REPAIR_COUNT, repairCount + 1);
+        }
+        if (inputSlots.getItem(1).is(Items.ENCHANTED_BOOK) && !inputSlots.getItem(0).is(Items.ENCHANTED_BOOK)) {
+            if (player instanceof ServerPlayer p) ModCriteria.ANVIL_ENCHANT_COMBINE.trigger(p);
+        }
+        if (resultSlots.getItem(0).is(ModItems.WHETSTONE)) {
+            Set<EnchantmentInstance> allEnchantments = new HashSet<>();
+            player.level().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).listElements().forEach(ref -> {
+                if (ModUtil.enchantmentEligible(ref)) allEnchantments.add(new EnchantmentInstance(ref, ref.value().getMaxLevel()));
+            });
+            Set<EnchantmentInstance> whetstoneEnchantments = resultSlots.getItem(0).getEnchantments().entrySet()
+                    .stream().map(entry -> new EnchantmentInstance(entry.getKey(), entry.getIntValue()))
+                    .collect(Collectors.toSet());
+            if (whetstoneEnchantments.containsAll(allEnchantments) && player instanceof ServerPlayer p) ModCriteria.MAX_WHETSTONE.trigger(p);
         }
     }
 

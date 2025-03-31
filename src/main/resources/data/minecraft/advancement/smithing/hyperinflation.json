@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:smithing/disenchanter",
+  "criteria": {
+    "reduce_repair_cost": {
+      "trigger": "simple_smithing_overhaul:reduce_repair_cost"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.smithing.hyperinflation.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:netherite_scrap"
+    },
+    "title": {
+      "translate": "advancements.smithing.hyperinflation.title"
+    }
+  },
+  "requirements": [
+    [
+      "reduce_repair_cost"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

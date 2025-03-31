@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:smithing/pocket_smith",
+  "criteria": {
+    "repair_item_whetstone_enchanted": {
+      "trigger": "simple_smithing_overhaul:repair_item_whetstone_enchanted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.smithing.shiny_pockets.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "simple_smithing_overhaul:whetstone",
+      "components": {
+        "minecraft:enchantment_glint_override": true
+      }
+    },
+    "title": {
+      "translate": "advancements.smithing.shiny_pockets.title"
+    }
+  },
+  "requirements": [
+    [
+      "repair_item_whetstone_enchanted"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
