@@ -55,7 +55,7 @@ public abstract class SmithingScreenMixin extends ItemCombinerScreen<SmithingMen
                 ModUtil.isPinnacleEnchantmentRecipe(menu.slots) &&
                 menu.slots.get(3).hasItem()
         ) {
-            int repairCost = Main.CONFIG.pinnacleEnchantment.pinnacleExperienceCost();
+            int repairCost = Main.CONFIG.pinnacleEnchantment.pinnacleBaseExperienceCost() + Main.CONFIG.pinnacleEnchantment.pinnacleExperienceCostIncrease() * menu.slots.get(3).getItem().getOrDefault(Main.PINNACLE_COUNT, 0);
             Component component = Component.translatable("container.repair.cost", repairCost);
             int textColor = (minecraft.player.hasInfiniteMaterials() || minecraft.player.experienceLevel >= repairCost) ? 8453920 : 0xFF6060;
             int x = imageWidth - 8 - font.width(component) - 2;

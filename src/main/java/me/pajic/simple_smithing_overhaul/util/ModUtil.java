@@ -5,6 +5,7 @@ import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.compat.EDCompat;
 import me.pajic.simple_smithing_overhaul.compat.ReArmCompat;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
+import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -175,6 +176,7 @@ public class ModUtil {
             EnchantmentHelper.updateEnchantments(original, mutable ->
                     mutable.upgrade(toUpgrade.enchantment, toUpgrade.level + 1)
             );
+            original.set(Main.PINNACLE_COUNT, original.getOrDefault(Main.PINNACLE_COUNT, 0) + 1);
         }
         return original;
     }
@@ -207,8 +209,8 @@ public class ModUtil {
     }
 
     public static boolean itemSupportsEnchantment(Holder<Enchantment> enchantment, ItemStack stack) {
-        if (REARM_LOADED) return ReArmCompat.itemSupportsEnchantment(enchantment, stack).orElseGet(() -> enchantment.value().isSupportedItem(stack));
-        else return enchantment.value().isSupportedItem(stack);
+        if (REARM_LOADED) return ReArmCompat.itemSupportsEnchantment(enchantment, stack).orElseGet(() -> stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE));
+        else return stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE);
     }
 
     public static boolean areCompatible(Holder<Enchantment> e1, Holder<Enchantment> e2, Collection<EnchantmentInstance> itemEnchantments) {

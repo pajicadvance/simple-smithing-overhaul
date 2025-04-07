@@ -33,7 +33,8 @@ public class ConfigModel {
 
     public static class PinnacleEnchantment {
         @RestartRequired public boolean enablePinnacleEnchantment = true;
-        @PredicateConstraint("greaterThanZero") public int pinnacleExperienceCost = 30;
+        @PredicateConstraint("greaterThanZero") public int pinnacleBaseExperienceCost = 30;
+        @PredicateConstraint("greaterThanZero") public int pinnacleExperienceCostIncrease = 5;
         public List<String> excludedFromMaxedOutCheck = List.of();
 
         public static boolean greaterThanZero(int value) {

@@ -128,19 +128,23 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
                 Set<EnchantmentInstance> itemEnchantments = itemStack.getEnchantments().entrySet()
                         .stream().map(entry -> new EnchantmentInstance(entry.getKey(), entry.getIntValue()))
                         .collect(Collectors.toSet());
-                if (itemEnchantments.stream().allMatch(ei -> ei.level == ei.enchantment.value().getMaxLevel() && !registry.getOrThrow(EnchantmentTags.CURSE).contains(ei.enchantment))) {
+                if (itemEnchantments.stream().allMatch(ei -> ei.level >= ei.enchantment.value().getMaxLevel() && !registry.getOrThrow(EnchantmentTags.CURSE).contains(ei.enchantment))) {
                     Set<EnchantmentInstance> maxedOutEnchantments = new HashSet<>();
                     registry.listElements().forEach(ref -> {
-                        if (ref.value().isSupportedItem(itemStack) && ModUtil.enchantmentEligible(ref))
+                        if (ModUtil.itemSupportsEnchantment(ref, itemStack) && ModUtil.enchantmentEligible(ref))
                             maxedOutEnchantments.add(new EnchantmentInstance(ref, ref.value().getMaxLevel()));
                     });
                     maxedOutEnchantments.removeIf(ei -> registry.getOrThrow(EnchantmentTags.CURSE).contains(ei.enchantment));
                     itemEnchantments.forEach(ei -> maxedOutEnchantments.removeIf(ei1 -> !ModUtil.areCompatible(ei1.enchantment, ei.enchantment, itemEnchantments)));
                     if (maxedOutEnchantments.isEmpty()) {
                         success = true;
+                        ModUtil.cost = Main.CONFIG.pinnacleEnchantment.pinnacleBaseExperienceCost() + Main.CONFIG.pinnacleEnchantment.pinnacleExperienceCostIncrease() * itemStack.getOrDefault(Main.PINNACLE_COUNT, 0);
                         ItemStack updatedStack = slots.get(1).getItem().copy();
                         updatedStack.set(DataComponents.CUSTOM_NAME, Component.translatable("text.item.simple_smithing_overhaul.pinnacleCustomName").withStyle(ChatFormatting.LIGHT_PURPLE));
-                        updatedStack.set(Main.PINNACLE_COUNT, updatedStack.getOrDefault(Main.PINNACLE_COUNT, 0) + 1);
+                        itemEnchantments.stream().filter(ei ->
+                            ei.level > ei.enchantment.value().getMaxLevel()).findFirst().ifPresent(enchantmentInstance ->
+                                EnchantmentHelper.updateEnchantments(updatedStack, mutable ->
+                                    mutable.set(enchantmentInstance.enchantment, enchantmentInstance.enchantment.value().getMaxLevel())));
                         stack.set(updatedStack);
                     }
                 }
@@ -169,7 +173,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
                 Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment() &&
                 ModUtil.isPinnacleEnchantmentRecipe(slots)
         ) {
-            return player.hasInfiniteMaterials() || player.experienceLevel >= Main.CONFIG.pinnacleEnchantment.pinnacleExperienceCost();
+            return (player.hasInfiniteMaterials() || player.experienceLevel >= ModUtil.cost) && ModUtil.cost > 0;
         }
         return original;
     }
@@ -192,7 +196,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
                 Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment() &&
                 ModUtil.isPinnacleEnchantmentRecipe(slots)
         ) {
-            if (!player.getAbilities().instabuild) player.giveExperienceLevels(-Main.CONFIG.pinnacleEnchantment.pinnacleExperienceCost());
+            if (!player.getAbilities().instabuild) player.giveExperienceLevels(-ModUtil.cost);
             if (player instanceof ServerPlayer p) {
                 ModCriteria.APPLY_PINNACLE_ENCHANTMENT.trigger(p);
                 if (itemStack.getOrDefault(Main.PINNACLE_COUNT, 0) == 10) ModCriteria.BAD_RNG.trigger(p);
