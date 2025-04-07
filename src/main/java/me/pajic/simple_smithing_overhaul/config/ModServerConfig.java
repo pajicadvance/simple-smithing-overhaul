@@ -16,7 +16,8 @@ public class ModServerConfig {
     private static final ModConfigSpec.IntValue UPGRADING_BASE_EXPERIENCE_COST;
     private static final ModConfigSpec.BooleanValue IGNORE_TOO_EXPENSIVE;
 
-    private static final ModConfigSpec.IntValue PINNACLE_EXPERIENCE_COST;
+    private static final ModConfigSpec.IntValue PINNACLE_BASE_EXPERIENCE_COST;
+    private static final ModConfigSpec.IntValue PINNACLE_EXPERIENCE_COST_INCREASE;
     private static final ModConfigSpec.ConfigValue<List<? extends String>> EXCLUDED_FROM_MAXED_OUT_CHECK;
 
     private static final ModConfigSpec.BooleanValue MODIFY_REPAIR_UNIT_COSTS;
@@ -87,9 +88,12 @@ public class ModServerConfig {
         BUILDER.pop();
 
         BUILDER.push("pinnacleEnchantment");
-            PINNACLE_EXPERIENCE_COST = BUILDER
-                    .translation("text.config.simple_smithing_overhaul.option.pinnacleEnchantment.pinnacleExperienceCost")
-                    .defineInRange("pinnacleExperienceCost", 30, 1, Integer.MAX_VALUE);
+            PINNACLE_BASE_EXPERIENCE_COST = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.pinnacleEnchantment.pinnacleBaseExperienceCost")
+                    .defineInRange("pinnacleBaseExperienceCost", 30, 1, Integer.MAX_VALUE);
+            PINNACLE_EXPERIENCE_COST_INCREASE = BUILDER
+                    .translation("text.config.simple_smithing_overhaul.option.pinnacleEnchantment.pinnacleExperienceCostIncrease")
+                    .defineInRange("pinnacleExperienceCostIncrease", 5, 1, Integer.MAX_VALUE);
             EXCLUDED_FROM_MAXED_OUT_CHECK = BUILDER
                     .translation("text.config.simple_smithing_overhaul.option.pinnacleEnchantment.excludedFromMaxedOutCheck")
                     .defineListAllowEmpty("excludedFromMaxedOutCheck",List.of(), () -> "", o -> true);
@@ -266,7 +270,8 @@ public class ModServerConfig {
     public static boolean upgradingHasExperienceCost;
     public static int upgradingBaseExperienceCost;
     public static boolean ignoreTooExpensive;
-    public static int pinnacleExperienceCost;
+    public static int pinnacleBaseExperienceCost;
+    public static int pinnacleExperienceCostIncrease;
     public static List<String> excludedFromMaxedOutCheck;
     public static boolean modifyAnvilRepairUnitCosts;
     public static int headArmorUnits;
@@ -330,7 +335,8 @@ public class ModServerConfig {
             upgradingHasExperienceCost = UPGRADING_HAS_EXPERIENCE_COST.get();
             upgradingBaseExperienceCost = UPGRADING_BASE_EXPERIENCE_COST.get();
             ignoreTooExpensive = IGNORE_TOO_EXPENSIVE.get();
-            pinnacleExperienceCost = PINNACLE_EXPERIENCE_COST.get();
+            pinnacleBaseExperienceCost = PINNACLE_BASE_EXPERIENCE_COST.get();
+            pinnacleExperienceCostIncrease = PINNACLE_EXPERIENCE_COST_INCREASE.get();
             excludedFromMaxedOutCheck = new ArrayList<>(EXCLUDED_FROM_MAXED_OUT_CHECK.get());
             modifyAnvilRepairUnitCosts = MODIFY_REPAIR_UNIT_COSTS.get();
             headArmorUnits = HEAD_ARMOR_UNITS.get();

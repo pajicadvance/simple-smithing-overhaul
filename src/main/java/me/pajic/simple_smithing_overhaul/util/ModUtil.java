@@ -1,6 +1,7 @@
 package me.pajic.simple_smithing_overhaul.util;
 
 import it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair;
+import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.compat.EDCompat;
 import me.pajic.simple_smithing_overhaul.config.ModCommonConfig;
 import me.pajic.simple_smithing_overhaul.config.ModServerConfig;
@@ -176,6 +177,7 @@ public class ModUtil {
             EnchantmentHelper.updateEnchantments(original, mutable ->
                     mutable.upgrade(toUpgrade.enchantment, toUpgrade.level + 1)
             );
+            original.set(Main.PINNACLE_COUNT, original.getOrDefault(Main.PINNACLE_COUNT, 0) + 1);
         }
         return original;
     }

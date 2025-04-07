@@ -49,7 +49,13 @@ public abstract class ItemCombinerMenuMixin extends AbstractContainerMenu {
         ) {
             return (player.hasInfiniteMaterials() || player.experienceLevel >= ModUtil.cost) && ModUtil.cost > 0;
         }
-        return hasStack;
+        if (
+                ModCommonConfig.enablePinnacleEnchantment &&
+                ModUtil.isPinnacleEnchantmentRecipe(slots)
+        ) {
+            return (player.hasInfiniteMaterials() || player.experienceLevel >= ModUtil.cost) && ModUtil.cost > 0;
+        }
+        return original.call(player, hasStack);
     }
     *///?}
 }
