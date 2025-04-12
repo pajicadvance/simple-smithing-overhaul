@@ -99,6 +99,7 @@ dependencies {
     if (stonecutter.eval(stonecutter.current.version, "1.21.1")) {
         implementation "dev.emi:emi-neoforge:${property("emi_version")}"
     }
+    compileOnly "maven.modrinth:tax-free-levels:${property("taxfreelevels_version")}"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

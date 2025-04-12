@@ -3,6 +3,7 @@ package me.pajic.simple_smithing_overhaul.util;
 import it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair;
 import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.compat.EDCompat;
+import me.pajic.simple_smithing_overhaul.compat.TFLCompat;
 import me.pajic.simple_smithing_overhaul.config.ModCommonConfig;
 import me.pajic.simple_smithing_overhaul.config.ModServerConfig;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
@@ -18,6 +19,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.SmithingMenu;
@@ -48,6 +50,7 @@ public class ModUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger("SimpleSmithingOverhaul-Util");
 
     public static final boolean ED_LOADED = ModList.get().isLoaded("enchantmentdisabler");
+    public static final boolean TAX_FREE_LEVELS_LOADED = ModList.get().isLoaded("taxfreelevels");
     public static final List<ObjectObjectImmutablePair<Item, Ingredient>> additionalRepairables = new ArrayList<>();
     public static int cost = 0;
 
@@ -222,5 +225,10 @@ public class ModUtil {
             if (stack.is(repair.left())) return repair.right().test(repairCandidate);
         }
         return false;
+    }
+
+    public static void payXpCost(Player player, int cost) {
+        if (TAX_FREE_LEVELS_LOADED) TFLCompat.payXpCost(player, cost);
+        else player.giveExperienceLevels(-cost);
     }
 }
