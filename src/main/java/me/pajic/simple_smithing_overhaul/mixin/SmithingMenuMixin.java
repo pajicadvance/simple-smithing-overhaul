@@ -189,14 +189,14 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
                 Main.CONFIG.enchantmentUpgrading.upgradingHasExperienceCost() &&
                 (ModUtil.isEnchantedBookOrWhetstoneUpgradeRecipe(slots) || ModUtil.isEnchantedItemUpgradeRecipe(slots))
         ) {
-            if (!player.getAbilities().instabuild) player.giveExperienceLevels(-ModUtil.cost);
+            if (!player.getAbilities().instabuild) ModUtil.payXpCost(player, ModUtil.cost);
             if (player instanceof ServerPlayer p) ModCriteria.APPLY_ENCHANTMENT_UPGRADE.trigger(p);
         }
         if (
                 Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment() &&
                 ModUtil.isPinnacleEnchantmentRecipe(slots)
         ) {
-            if (!player.getAbilities().instabuild) player.giveExperienceLevels(-ModUtil.cost);
+            if (!player.getAbilities().instabuild) ModUtil.payXpCost(player, ModUtil.cost);
             if (player instanceof ServerPlayer p) {
                 ModCriteria.APPLY_PINNACLE_ENCHANTMENT.trigger(p);
                 if (itemStack.getOrDefault(Main.PINNACLE_COUNT, 0) == 10) ModCriteria.BAD_RNG.trigger(p);
