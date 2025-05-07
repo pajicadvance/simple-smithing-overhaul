@@ -7,6 +7,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
+import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -37,7 +38,7 @@ public abstract class GrindstoneMenuOutputSlotMixin {
     )
     private int modifyXpCalculation(int original, @Local Object2IntMap.Entry<Holder<Enchantment>> entry) {
         if (Main.CONFIG.grindstoneImprovements.increasedDisenchantXpGain()) {
-            return entry.getKey().value().getMaxCost(entry.getIntValue());
+            return ModUtil.calculateGrindstoneReward(entry);
         }
         return original;
     }
