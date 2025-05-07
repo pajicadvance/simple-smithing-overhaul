@@ -1,5 +1,6 @@
 package me.pajic.simple_smithing_overhaul.util;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair;
 import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.compat.EDCompat;
@@ -116,6 +117,14 @@ public class ModUtil {
         }
 
         return 4;
+    }
+
+    public static int calculateGrindstoneReward(Object2IntMap.Entry<Holder<Enchantment>> entry) {
+        Enchantment e = entry.getKey().value();
+        int level = entry.getIntValue();
+        int min = e.getMinCost(level);
+        int max = e.getMaxCost(level);
+        return Math.round(min + (max - min) * ((float) level / e.getMaxLevel()));
     }
 
     public static void initAdditionalRepairables() {
