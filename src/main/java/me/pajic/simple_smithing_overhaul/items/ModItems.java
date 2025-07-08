@@ -57,7 +57,7 @@ public class ModItems {
                     ResourceLocation.withDefaultNamespace("item/empty_slot_pickaxe")
             ),
             List.of(ResourceLocation.parse("item/empty_slot_lapis_lazuli")),
-            Main.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading()
+            Main.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading.get()
     );
 
     public static final Item PINNACLE_ENCHANTMENT_SMITHING_TEMPLATE = new SmithingTemplateFoilItem(
@@ -93,7 +93,7 @@ public class ModItems {
                     ResourceLocation.withDefaultNamespace("item/empty_slot_pickaxe")
             ),
             List.of(ResourceLocation.parse("simple_smithing_overhaul:item/empty_slot_echo_shard")),
-            Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment()
+            Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment.get()
     );
     //?}
 
@@ -115,7 +115,7 @@ public class ModItems {
                     "item",
                     ResourceLocation.parse("simple_smithing_overhaul.smithing_template.enchantment_upgrade.additions_slot_description")
             )),
-            //? if <= 1.21.3 {
+            //? if < 1.21.4 {
             List.of(
                     ResourceLocation.parse("simple_smithing_overhaul:item/empty_slot_enchanted_book"),
                     ResourceLocation.parse("simple_smithing_overhaul:item/empty_slot_whetstone"),
@@ -131,7 +131,7 @@ public class ModItems {
             ),
             List.of(ResourceLocation.parse("item/empty_slot_lapis_lazuli")),
             //?}
-            //? if 1.21.4 {
+            //? if >= 1.21.4 {
             /^List.of(
                     ResourceLocation.parse("simple_smithing_overhaul:container/slot/enchanted_book"),
                     ResourceLocation.parse("simple_smithing_overhaul:container/slot/whetstone"),
@@ -151,7 +151,7 @@ public class ModItems {
                     Registries.ITEM,
                     ResourceLocation.fromNamespaceAndPath("simple_smithing_overhaul", "enchantment_upgrade")
             )),
-            Main.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading()
+            Main.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading.get()
     );
 
     public static final Item PINNACLE_ENCHANTMENT_SMITHING_TEMPLATE = new SmithingTemplateFoilItem(
@@ -171,7 +171,7 @@ public class ModItems {
                     "item",
                     ResourceLocation.parse("simple_smithing_overhaul.smithing_template.pinnacle_enchantment.additions_slot_description")
             )),
-            //? if <= 1.21.3 {
+            //? if < 1.21.4 {
             List.of(
                     ResourceLocation.withDefaultNamespace("item/empty_armor_slot_helmet"),
                     ResourceLocation.withDefaultNamespace("item/empty_armor_slot_chestplate"),
@@ -185,7 +185,7 @@ public class ModItems {
             ),
             List.of(ResourceLocation.parse("simple_smithing_overhaul:item/empty_slot_echo_shard")),
             //?}
-            //? if 1.21.4 {
+            //? if >= 1.21.4 {
             /^List.of(
                     ResourceLocation.withDefaultNamespace("container/slot/helmet"),
                     ResourceLocation.withDefaultNamespace("container/slot/chestplate"),
@@ -203,7 +203,7 @@ public class ModItems {
                     Registries.ITEM,
                     ResourceLocation.fromNamespaceAndPath("simple_smithing_overhaul", "pinnacle_enchantment")
             )),
-            Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment()
+            Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment.get()
     );
     *///?}
 

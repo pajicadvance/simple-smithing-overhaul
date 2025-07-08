@@ -2,6 +2,7 @@ package me.pajic.simple_smithing_overhaul.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
+import me.pajic.simple_smithing_overhaul.Main;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -21,7 +22,9 @@ public class EnchantmentMixin {
                                                     @Local(argsOnly = true) Holder<Enchantment> enchantment,
                                                     @Local(argsOnly = true) int level
     ) {
-        if (level > enchantment.value().getMaxLevel()) return ChatFormatting.LIGHT_PURPLE;
+        if (Main.CONFIG.pinnacleEnchantment.colorPinnacleItemName.get() && level > enchantment.value().getMaxLevel()) {
+            return ChatFormatting.getByName(Main.CONFIG.pinnacleEnchantment.pinnacleItemNameColor.get().replace(" ", "_").toUpperCase());
+        }
         return original;
     }
 }

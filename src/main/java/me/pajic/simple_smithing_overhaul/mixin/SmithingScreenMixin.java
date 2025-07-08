@@ -1,6 +1,7 @@
 package me.pajic.simple_smithing_overhaul.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import me.pajic.simple_smithing_overhaul.Initializer;
 import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.client.gui.GuiGraphics;
@@ -29,19 +30,19 @@ public abstract class SmithingScreenMixin extends ItemCombinerScreen<SmithingMen
     protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
         super.renderLabels(guiGraphics, mouseX, mouseY);
         if (
-                Main.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading() &&
-                Main.CONFIG.enchantmentUpgrading.upgradingHasExperienceCost() &&
+                Main.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading.get() &&
+                Main.CONFIG.enchantmentUpgrading.upgradingHasExperienceCost.get() &&
                 (ModUtil.isEnchantedItemUpgradeRecipe(menu.slots) || ModUtil.isEnchantedBookOrWhetstoneUpgradeRecipe(menu.slots)) &&
                 menu.slots.get(2).getItem().is(Items.LAPIS_LAZULI) &&
                 menu.slots.get(3).hasItem()
         ) {
             ItemStack stack = menu.slots.get(1).getItem();
-            int repairCost = Main.CONFIG.enchantmentUpgrading.upgradingBaseExperienceCost() +
+            int repairCost = Main.CONFIG.enchantmentUpgrading.upgradingBaseExperienceCost.get() +
                     stack.getOrDefault(DataComponents.REPAIR_COST, 0);
             if (repairCost > 0) {
                 Component component = Component.translatable("container.repair.cost", repairCost);
-                int textColor = (minecraft.player.hasInfiniteMaterials() || minecraft.player.experienceLevel >= repairCost) && repairCost > 0 ? 8453920 : 0xFF6060;
-                if (!Main.CONFIG.enchantmentUpgrading.ignoreTooExpensive() && repairCost >= 40) {
+                int textColor = (minecraft.player.hasInfiniteMaterials() || minecraft.player.experienceLevel >= repairCost) && repairCost > 0 ? 0xFF80FF20 : 0xFFFF6060;
+                if (!Main.CONFIG.enchantmentUpgrading.ignoreTooExpensive.get() && repairCost >= 40) {
                     component = Component.translatable("container.repair.expensive");
                     textColor = 0xFF6060;
                 }
@@ -51,13 +52,13 @@ public abstract class SmithingScreenMixin extends ItemCombinerScreen<SmithingMen
             }
         }
         if (
-                Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment() &&
+                Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment.get() &&
                 ModUtil.isPinnacleEnchantmentRecipe(menu.slots) &&
                 menu.slots.get(3).hasItem()
         ) {
-            int repairCost = Main.CONFIG.pinnacleEnchantment.pinnacleBaseExperienceCost() + Main.CONFIG.pinnacleEnchantment.pinnacleExperienceCostIncrease() * menu.slots.get(3).getItem().getOrDefault(Main.PINNACLE_COUNT, 0);
+            int repairCost = Main.CONFIG.pinnacleEnchantment.pinnacleBaseExperienceCost.get() + Main.CONFIG.pinnacleEnchantment.pinnacleExperienceCostIncrease.get() * menu.slots.get(3).getItem().getOrDefault(Initializer.PINNACLE_COUNT, 0);
             Component component = Component.translatable("container.repair.cost", repairCost);
-            int textColor = (minecraft.player.hasInfiniteMaterials() || minecraft.player.experienceLevel >= repairCost) ? 8453920 : 0xFF6060;
+            int textColor = (minecraft.player.hasInfiniteMaterials() || minecraft.player.experienceLevel >= repairCost) ? 0xFF80FF20 : 0xFFFF6060;
             int x = imageWidth - 8 - font.width(component) - 2;
             guiGraphics.fill(x - 2, 67, imageWidth - 8, 79, 0x4F000000);
             guiGraphics.drawString(font, component, x, 69, textColor);
@@ -66,15 +67,24 @@ public abstract class SmithingScreenMixin extends ItemCombinerScreen<SmithingMen
 
     @ModifyExpressionValue(
             method = "renderBg",
-            at = @At(value = "CONSTANT", args = "intValue=75")
+            at = @At(
+                    value = "CONSTANT",
+                    //? if < 1.21.7
+                    args = "intValue=75"
+                    //? if >= 1.21.7
+                    /*args = "intValue=20"*/
+            )
     )
     private int nudgeArmorStandUp(int original) {
         if (
-                (Main.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading() &&
-                Main.CONFIG.enchantmentUpgrading.upgradingHasExperienceCost()) ||
-                Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment()
+                (Main.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading.get() &&
+                Main.CONFIG.enchantmentUpgrading.upgradingHasExperienceCost.get()) ||
+                Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment.get()
         ) {
+            //? if < 1.21.7
             return original - 10;
+            //? if >= 1.21.7
+            /*return original - 20;*/
         }
         return original;
     }

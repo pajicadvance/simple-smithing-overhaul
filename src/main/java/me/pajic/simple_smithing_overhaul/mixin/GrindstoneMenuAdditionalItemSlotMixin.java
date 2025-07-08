@@ -16,7 +16,7 @@ public class GrindstoneMenuAdditionalItemSlotMixin {
             at = @At("RETURN")
     )
     private boolean modifyMayPlace(boolean original, @Local(argsOnly = true) ItemStack stack) {
-        if (Main.CONFIG.grindstoneImprovements.repairCostReductionRecipe()) {
+        if (Main.CONFIG.grindstoneImprovements.repairCostReductionRecipe.get()) {
             return original || stack.is(Items.NETHERITE_SCRAP);
         }
         return original;

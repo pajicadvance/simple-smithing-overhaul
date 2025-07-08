@@ -30,7 +30,7 @@ public abstract class AnvilScreenMixin extends ItemCombinerScreen<AnvilMenu> {
             )
     )
     private int noXPCostIfUnenchanted(AnvilMenu instance, Operation<Integer> original) {
-        if (Main.CONFIG.anvilImprovements.freeUnenchantedRepairs() &&
+        if (Main.CONFIG.anvilImprovements.freeUnenchantedRepairs.get() &&
                 !menu.getSlot(2).getItem().isEnchanted() &&
                 menu.getSlot(2).getItem().getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty()
         ) {
@@ -47,7 +47,7 @@ public abstract class AnvilScreenMixin extends ItemCombinerScreen<AnvilMenu> {
             )
     )
     private int ignoreTooExpensive(int original) {
-        if (Main.CONFIG.anvilImprovements.noTooExpensive()) {
+        if (Main.CONFIG.anvilImprovements.noTooExpensive.get()) {
             return Integer.MAX_VALUE;
         }
         return original;

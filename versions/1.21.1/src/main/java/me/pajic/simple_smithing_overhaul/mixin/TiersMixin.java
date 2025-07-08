@@ -27,7 +27,7 @@ public class TiersMixin {
     }
 
     @Unique
-    private Ingredient getRepairIngredient() {
+    public Ingredient getRepairIngredient() {
         return Ingredient.of(ModUtil.getNetheriteRepairMaterial());
     }
 }

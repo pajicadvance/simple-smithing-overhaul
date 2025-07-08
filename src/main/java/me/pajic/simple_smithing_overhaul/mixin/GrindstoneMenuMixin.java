@@ -14,7 +14,7 @@ public class GrindstoneMenuMixin {
 
     @WrapMethod(method = "computeResult")
     private ItemStack tryHalveRepairCost(ItemStack inputItem, ItemStack additionalItem, Operation<ItemStack> original) {
-        if (Main.CONFIG.grindstoneImprovements.repairCostReductionRecipe() && additionalItem.is(Items.NETHERITE_SCRAP)) {
+        if (Main.CONFIG.grindstoneImprovements.repairCostReductionRecipe.get() && additionalItem.is(Items.NETHERITE_SCRAP)) {
             if (inputItem.isEmpty() || !inputItem.has(DataComponents.REPAIR_COST) || additionalItem.getCount() > 1) return ItemStack.EMPTY;
             ItemStack updatedStack = inputItem.copy();
             updatedStack.set(DataComponents.REPAIR_COST, inputItem.get(DataComponents.REPAIR_COST) / 2);

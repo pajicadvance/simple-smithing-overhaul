@@ -21,7 +21,7 @@ public class EnchantmentMenuMixin {
             )
     )
     private boolean getEnchantmentList_handleWhetstoneEnchanting(boolean original, @Local(argsOnly = true) ItemStack stack) {
-        if (Main.CONFIG.whetstone.enableWhetstone()) {
+        if (Main.CONFIG.whetstone.enableWhetstone.get()) {
             return original || stack.is(ModItems.WHETSTONE);
         }
         return original;
@@ -35,7 +35,7 @@ public class EnchantmentMenuMixin {
             )
     )
     private boolean slotsChanged_handleWhetstoneEnchanting(boolean original, @Local ItemStack stack) {
-        if (Main.CONFIG.whetstone.enableWhetstone() && stack.is(ModItems.WHETSTONE)) {
+        if (Main.CONFIG.whetstone.enableWhetstone.get() && stack.is(ModItems.WHETSTONE)) {
             return original && stack.get(DataComponents.STORED_ENCHANTMENTS).isEmpty();
         }
         return original;
@@ -49,7 +49,7 @@ public class EnchantmentMenuMixin {
             )
     )
     private boolean limitTablePower(boolean original, @Local int ix) {
-        if (Main.CONFIG.enchantmentLimits.limitEnchantingTablePower() && ix >= Main.CONFIG.enchantmentLimits.enchantingTablePowerLimit()) {
+        if (Main.CONFIG.enchantmentLimits.limitEnchantingTablePower.get() && ix >= Main.CONFIG.enchantmentLimits.enchantingTablePowerLimit.get()) {
             return false;
         }
         return original;

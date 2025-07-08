@@ -13,8 +13,10 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import dev.emi.emi.recipe.EmiAnvilRecipe;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
+import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
@@ -54,18 +56,32 @@ public class EmiCompat implements EmiPlugin {
 
         // Add anvil repair recipes for every item made repairable by the mod
         final int[] counter = {1};
-        ModUtil.additionalRepairables.forEach(repair -> {
+        ModUtil.additionalRepairables.forEach((key, value) -> {
             emiRegistry.addRecipe(new EmiAnvilRecipe(
-                    EmiStack.of(repair.left()),
-                    EmiIngredient.of(repair.right()),
+                    EmiStack.of(key),
+                    EmiIngredient.of(value),
                     EmiPort.id(
                             "emi",
                             "/" + "anvil/repairing/material" +
-                                    "/" + EmiUtil.subId(repair.left()) +
+                                    "/" + EmiUtil.subId(key) +
                                     "/" + counter[0]
                     )
             ));
             counter[0]++;
+        });
+        ModUtil.additionalTagRepairables.forEach((key, value) -> {
+            for (ItemStack stack : key.getItems()) {
+                emiRegistry.addRecipe(new EmiAnvilRecipe(
+                        EmiStack.of(stack),
+                        EmiIngredient.of(value),
+                        EmiPort.id(
+                                "emi",
+                                "/" + "anvil/repairing/material" +
+                                        "/" + EmiUtil.subId(stack.getItem()) +
+                                        "/" + counter[0]
+                        )
+                ));
+            }
         });
 
         // Hide the "base" enchantment upgrading smithing recipe.
@@ -124,12 +140,22 @@ public class EmiCompat implements EmiPlugin {
                     counter[0]++;
                 }
             // Mod repairables
-            } else ModUtil.additionalRepairables.forEach(repair -> {
-                if (item.equals(repair.left())) {
-                    addWhetstoneRepairRecipe(emiRegistry, repair.left(), repair.right(), counter[0]);
-                    counter[0]++;
-                }
-            });
+            } else {
+                ModUtil.additionalRepairables.forEach((key, value) -> {
+                    if (item.equals(key)) {
+                        addWhetstoneRepairRecipe(emiRegistry, key, value, counter[0]);
+                        counter[0]++;
+                    }
+                });
+                ModUtil.additionalTagRepairables.forEach((key, value) -> {
+                    for (ItemStack stack : key.getItems()) {
+                        if (item.equals(stack.getItem())) {
+                            addWhetstoneRepairRecipe(emiRegistry, stack.getItem(), value, counter[0]);
+                            counter[0]++;
+                        }
+                    }
+                });
+            }
         }
         //?}
     }
@@ -200,7 +226,7 @@ public class EmiCompat implements EmiPlugin {
             List<EnchantmentInstance> enchantmentInstances;
             Set<Holder<Enchantment>> enchantmentSet = new HashSet<>();
             EmiPort.getEnchantmentRegistry().holders().forEach(e -> {
-                if (ModUtil.itemSupportsEnchantment(e, this.input.getItemStack()) && ModUtil.enchantmentEligible(e)) enchantmentSet.add(e);
+                if (this.input.getItemStack().canBeEnchantedWith(e, EnchantingContext.ACCEPTABLE) && ModUtil.enchantmentEligible(e)) enchantmentSet.add(e);
             });
             enchantmentInstances = EnchantmentHelper.selectEnchantment(RandomSource.create(), input.getItemStack(), 30, enchantmentSet.stream());
 
@@ -300,7 +326,7 @@ public class EmiCompat implements EmiPlugin {
             List<EnchantmentInstance> enchantmentInstances;
             Set<Holder<Enchantment>> enchantmentSet = new HashSet<>();
             EmiPort.getEnchantmentRegistry().holders().forEach(e -> {
-                if (((inputStack.is(Items.ENCHANTED_BOOK) || inputStack.is(ModItems.WHETSTONE)) || ModUtil.itemSupportsEnchantment(e, inputStack)) && ModUtil.enchantmentEligible(e)) enchantmentSet.add(e);
+                if (((inputStack.is(Items.ENCHANTED_BOOK) || inputStack.is(ModItems.WHETSTONE)) || inputStack.canBeEnchantedWith(e, EnchantingContext.ACCEPTABLE)) && ModUtil.enchantmentEligible(e)) enchantmentSet.add(e);
             });
             enchantmentInstances = EnchantmentHelper.selectEnchantment(RandomSource.create(), inputStack, 30, enchantmentSet.stream());
             if (enchantmentInstances.isEmpty()) {
@@ -434,7 +460,7 @@ public class EmiCompat implements EmiPlugin {
             ItemStack inputStack = this.input.getItemStack().copy();
             List<EnchantmentInstance> allEnchantments = new ArrayList<>();
             EmiPort.getEnchantmentRegistry().holders().forEach(ref -> {
-                if (ModUtil.itemSupportsEnchantment(ref, inputStack) && ModUtil.enchantmentEligible(ref))
+                if (inputStack.canBeEnchantedWith(ref, EnchantingContext.ACCEPTABLE) && ModUtil.enchantmentEligible(ref))
                     allEnchantments.add(new EnchantmentInstance(ref, ref.value().getMaxLevel()));
             });
             Collections.shuffle(allEnchantments);
@@ -442,7 +468,7 @@ public class EmiCompat implements EmiPlugin {
             allEnchantments.forEach(ei -> {
                 if (
                         !EmiPort.getEnchantmentRegistry().getTag(EnchantmentTags.CURSE).orElseThrow().contains(ei.enchantment) &&
-                        filteredEnchantments.stream().allMatch(e1 -> ModUtil.areCompatible(ei.enchantment, e1.enchantment, filteredEnchantments))
+                        filteredEnchantments.stream().allMatch(e1 -> Enchantment.areCompatible(ei.enchantment, e1.enchantment))
                 ) {
                     filteredEnchantments.add(new EnchantmentInstance(ei.enchantment, ei.level));
                 }
@@ -459,7 +485,7 @@ public class EmiCompat implements EmiPlugin {
         }
 
         private EmiStack getOutput(ItemStack stack, ItemEnchantments enchantments, Random r) {
-            stack.set(DataComponents.CUSTOM_NAME, stack.getItem().getName(stack).copy().withStyle(ChatFormatting.LIGHT_PURPLE));
+            stack.set(DataComponents.CUSTOM_NAME, stack.getItem().getName(stack).copy().withStyle(ChatFormatting.getByName(Main.CONFIG.pinnacleEnchantment.pinnacleItemNameColor.get().replace(" ", "_").toUpperCase())));
             stack.set(DataComponents.ENCHANTMENTS, enchantments);
             List<EnchantmentInstance> possibleUpgrades = new ArrayList<>(enchantments.entrySet()
                     .stream().map(entry -> new EnchantmentInstance(entry.getKey(), entry.getIntValue())).toList());

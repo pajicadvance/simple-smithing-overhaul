@@ -18,8 +18,8 @@ public class EnchantWithLevelsFunctionMixin {
             index = 2
     )
     private int limitMaxEnchantmentLevel(int level) {
-        if (Main.CONFIG.enchantmentLimits.limitEnchantedLootPower() && level > Main.CONFIG.enchantmentLimits.enchantedLootPowerLimit()) {
-            return Main.CONFIG.enchantmentLimits.enchantedLootPowerLimit();
+        if (Main.CONFIG.enchantmentLimits.limitEnchantedLootPower.get() && level > Main.CONFIG.enchantmentLimits.enchantedLootPowerLimit.get()) {
+            return Main.CONFIG.enchantmentLimits.enchantedLootPowerLimit.get();
         }
         return level;
     }

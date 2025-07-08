@@ -26,7 +26,7 @@ public class WhetstoneItem extends Item {
 
     @Override
     public boolean isEnabled(@NotNull FeatureFlagSet enabledFeatures) {
-        return Main.CONFIG.whetstone.enableWhetstone();
+        return Main.CONFIG.whetstone.enableWhetstone.get();
     }
 
     @Override

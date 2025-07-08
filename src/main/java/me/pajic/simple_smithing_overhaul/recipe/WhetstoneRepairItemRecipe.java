@@ -1,6 +1,6 @@
 package me.pajic.simple_smithing_overhaul.recipe;
 
-import me.pajic.simple_smithing_overhaul.Main;
+import me.pajic.simple_smithing_overhaul.Initializer;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.HolderLookup;
@@ -74,7 +74,7 @@ public class WhetstoneRepairItemRecipe extends CustomRecipe {
     public @NotNull ItemStack assemble(@NotNull CraftingInput input, HolderLookup.@NotNull Provider registries) {
         ItemStack outputItem = itemToRepair.copy();
         outputItem.setDamageValue(outputItem.getDamageValue() - ((outputItem.getMaxDamage() / unitCost) * repairMaterials.size()));
-        outputItem.set(Main.REPAIR_COUNT, outputItem.getOrDefault(Main.REPAIR_COUNT, 0) + 1);
+        outputItem.set(Initializer.REPAIR_COUNT, outputItem.getOrDefault(Initializer.REPAIR_COUNT, 0) + 1);
         return outputItem;
     }
 
@@ -105,6 +105,6 @@ public class WhetstoneRepairItemRecipe extends CustomRecipe {
 
     @Override
     public @NotNull RecipeSerializer<?/*? if > 1.21.1 {*/ /*extends CustomRecipe*//*?}*/> getSerializer() {
-        return Main.WHETSTONE_REPAIR_ITEM;
+        return Initializer.WHETSTONE_REPAIR_ITEM;
     }
 }

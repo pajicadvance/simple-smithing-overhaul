@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import me.pajic.simple_smithing_overhaul.Main;
-import me.pajic.simple_smithing_overhaul.loot.LootUtil;
+import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -29,8 +29,8 @@ public class EnchantBookForEmeraldsMixin {
             )
     )
     private MerchantOffer limitTradeUses(ItemCost baseCostA, Optional costB, ItemStack result, int maxUses, int xp, float priceMultiplier, Operation<MerchantOffer> original) {
-        if (Main.CONFIG.enchantmentLimits.limitBookTradeUses()) {
-            return original.call(baseCostA, costB, result, Main.CONFIG.enchantmentLimits.bookTradeUsesLimit(), xp, priceMultiplier);
+        if (Main.CONFIG.enchantmentLimits.limitBookTradeUses.get()) {
+            return original.call(baseCostA, costB, result, Main.CONFIG.enchantmentLimits.bookTradeUsesLimit.get(), xp, priceMultiplier);
         }
         else {
             return original.call(baseCostA, costB, result, maxUses, xp, priceMultiplier);
@@ -45,9 +45,9 @@ public class EnchantBookForEmeraldsMixin {
             )
     )
     private int limitMaxEnchantmentLevel(int original, @Local Holder<Enchantment> enchantment, @Local(argsOnly = true) RandomSource randomSource) {
-        int value = LootUtil.calculateNewEnchantmentLevel(enchantment.value().getMaxLevel(), randomSource, original);
-        if (Main.CONFIG.enchantmentLimits.limitBookTradeLevel() && value > Main.CONFIG.enchantmentLimits.bookTradeLevelLimit()) {
-            value = Main.CONFIG.enchantmentLimits.bookTradeLevelLimit();
+        int value = ModUtil.calculateNewEnchantmentLevel(enchantment.value().getMaxLevel(), randomSource, original);
+        if (Main.CONFIG.enchantmentLimits.limitBookTradeLevel.get() && value > Main.CONFIG.enchantmentLimits.bookTradeLevelLimit.get()) {
+            value = Main.CONFIG.enchantmentLimits.bookTradeLevelLimit.get();
         }
         return value;
     }

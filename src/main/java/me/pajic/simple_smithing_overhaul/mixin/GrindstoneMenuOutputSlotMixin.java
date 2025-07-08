@@ -37,7 +37,7 @@ public abstract class GrindstoneMenuOutputSlotMixin {
             )
     )
     private int modifyXpCalculation(int original, @Local Object2IntMap.Entry<Holder<Enchantment>> entry) {
-        if (Main.CONFIG.grindstoneImprovements.increasedDisenchantXpGain()) {
+        if (Main.CONFIG.grindstoneImprovements.increasedDisenchantXpGain.get()) {
             return ModUtil.calculateGrindstoneReward(entry);
         }
         return original;
@@ -51,7 +51,7 @@ public abstract class GrindstoneMenuOutputSlotMixin {
             )
     )
     private int modifyXpAmount(int original, @Local(ordinal = 0) int i) {
-        if (Main.CONFIG.grindstoneImprovements.increasedDisenchantXpGain()) {
+        if (Main.CONFIG.grindstoneImprovements.increasedDisenchantXpGain.get()) {
             return i;
         }
         return original;
@@ -66,7 +66,7 @@ public abstract class GrindstoneMenuOutputSlotMixin {
             )
     )
     private Container preventXpAwardIfRepairCostReductionRecipe(Container original, @Cancellable CallbackInfoReturnable<Integer> ci) {
-        if (Main.CONFIG.grindstoneImprovements.repairCostReductionRecipe() && original.getItem(1).is(Items.NETHERITE_SCRAP)) {
+        if (Main.CONFIG.grindstoneImprovements.repairCostReductionRecipe.get() && original.getItem(1).is(Items.NETHERITE_SCRAP)) {
             ci.setReturnValue(0);
         }
         return original;

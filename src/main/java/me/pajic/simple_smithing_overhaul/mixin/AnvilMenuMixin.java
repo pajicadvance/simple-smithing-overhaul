@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.moulberry.mixinconstraints.annotations.IfModLoaded;
+import me.pajic.simple_smithing_overhaul.Initializer;
 import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
@@ -59,7 +60,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
             )
     )
     private boolean allowAddingEnchantmentsToWhetstone(boolean original, @Local(ordinal = 0) ItemStack itemStack) {
-        if (Main.CONFIG.whetstone.enableWhetstone()) {
+        if (Main.CONFIG.whetstone.enableWhetstone.get()) {
             return original || itemStack.is(ModItems.WHETSTONE);
         }
         return original;
@@ -84,8 +85,8 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
             )
     )
     private static float modifyDegradationChance(float original) {
-        if (Main.CONFIG.anvilImprovements.modifyDegradationChance()) {
-            return Main.CONFIG.anvilImprovements.degradationChance() / 100;
+        if (Main.CONFIG.anvilImprovements.modifyDegradationChance.get()) {
+            return Main.CONFIG.anvilImprovements.degradationChance.get() / 100;
         }
         return original;
     }
@@ -96,7 +97,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
     )
     private void noXPCostIfUnenchanted(Player player, ItemStack itemStack, CallbackInfo ci) {
         if (
-                Main.CONFIG.anvilImprovements.freeUnenchantedRepairs() &&
+                Main.CONFIG.anvilImprovements.freeUnenchantedRepairs.get() &&
                 !itemStack.isEnchanted() &&
                 itemStack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty()
         ) {
@@ -111,12 +112,12 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
     private void grantAdvancements(Player player, ItemStack stack, CallbackInfo ci) {
         if (resultSlots.getItem(0).getDamageValue() < inputSlots.getItem(0).getDamageValue()) {
             if (player instanceof ServerPlayer p) ModCriteria.REPAIR_ITEM.trigger(p);
-            int repairCount = stack.getOrDefault(Main.REPAIR_COUNT, 0);
+            int repairCount = stack.getOrDefault(Initializer.REPAIR_COUNT, 0);
             if (player instanceof ServerPlayer p) {
                 if (repairCount + 1 == 100) ModCriteria.ITEM_REPAIR_COUNT.trigger(p);
                 if (repairCount + 1 == 1000) ModCriteria.ITEM_REPAIR_COUNT_BIG.trigger(p);
             }
-            stack.set(Main.REPAIR_COUNT, repairCount + 1);
+            stack.set(Initializer.REPAIR_COUNT, repairCount + 1);
         }
         if (inputSlots.getItem(1).is(Items.ENCHANTED_BOOK) && !inputSlots.getItem(0).is(Items.ENCHANTED_BOOK)) {
             if (player instanceof ServerPlayer p) ModCriteria.ANVIL_ENCHANT_COMBINE.trigger(p);
@@ -143,7 +144,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
     )
     private long modifyXPCost(long value, @Local long l, @Local(ordinal = 1) int j) {
         // deduct cost of rename from total cost if option is enabled
-        if (Main.CONFIG.anvilImprovements.freeRenames()) {
+        if (Main.CONFIG.anvilImprovements.freeRenames.get()) {
             value -= j;
         }
         // if cost ends up consisting of just prior work cost, ignore it
@@ -151,7 +152,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
             value = 0;
         }
         // if there is an "actual" cost, deduct prior work cost from total cost if option is enabled
-        if (value != 0 && Main.CONFIG.anvilImprovements.noPriorWorkCost()) {
+        if (value != 0 && Main.CONFIG.anvilImprovements.noPriorWorkCost.get()) {
             value -= l;
         }
         return value;
@@ -168,7 +169,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
     )
     private void interceptRenameCostSet(CallbackInfo ci, @Local(ordinal = 0) int i, @Local(ordinal = 1) int j) {
         // tax free levels forcibly sets the rename cost to 1, this injects after it to revert the cost
-        if (Main.CONFIG.anvilImprovements.freeRenames() && j > 0 && j == i) {
+        if (Main.CONFIG.anvilImprovements.freeRenames.get() && j > 0 && j == i) {
             cost.set(0);
         }
     }
@@ -193,11 +194,11 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
             )
     )
     private int preventPriorWorkCostIncrease(int oldRepairCost, Operation<Integer> original) {
-        if (Main.CONFIG.anvilImprovements.noPriorWorkCost()) {
+        if (Main.CONFIG.anvilImprovements.noPriorWorkCost.get()) {
             return oldRepairCost;
         }
         if (
-                Main.CONFIG.anvilImprovements.noWorkCostIncreaseOnRepair() &&
+                Main.CONFIG.anvilImprovements.noWorkCostIncreaseOnRepair.get() &&
                 inputSlots.getItem(0).isDamageableItem() &&
                 //? if <= 1.21.1
                 (ModUtil.hasAdditionalRepair(inputSlots.getItem(0), inputSlots.getItem(1)) || inputSlots.getItem(0).getItem().isValidRepairItem(inputSlots.getItem(0), inputSlots.getItem(1)))
@@ -221,7 +222,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
             )
     )
     private int ignoreTooExpensive(int original) {
-        if (Main.CONFIG.anvilImprovements.noTooExpensive()) {
+        if (Main.CONFIG.anvilImprovements.noTooExpensive.get()) {
             return Integer.MAX_VALUE;
         }
         return original;

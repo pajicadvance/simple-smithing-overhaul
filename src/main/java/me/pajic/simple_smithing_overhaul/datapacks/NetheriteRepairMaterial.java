@@ -7,17 +7,16 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
 
 public class NetheriteRepairMaterial {
-
     public static void init() {
-        FabricLoader.getInstance().getModContainer("simple_smithing_overhaul").ifPresent(modContainer -> {
-            switch (Main.CONFIG.streamlinedRepairs.netheriteRepairMaterial()) {
+        FabricLoader.getInstance().getModContainer(Main.MOD_ID).ifPresent(modContainer -> {
+            switch (Main.CONFIG.streamlinedRepairs.netheriteRepairMaterial.get()) {
                 case DIAMOND -> ResourceManagerHelper.registerBuiltinResourcePack(
-                        ResourceLocation.parse("simple_smithing_overhaul:netherite_repair_diamond"),
+                        ResourceLocation.fromNamespaceAndPath(Main.MOD_ID, "netherite_repair_diamond"),
                         modContainer,
                         ResourcePackActivationType.ALWAYS_ENABLED
                 );
                 case NETHERITE_SCRAP -> ResourceManagerHelper.registerBuiltinResourcePack(
-                        ResourceLocation.parse("simple_smithing_overhaul:netherite_repair_scrap"),
+                        ResourceLocation.fromNamespaceAndPath(Main.MOD_ID, "netherite_repair_scrap"),
                         modContainer,
                         ResourcePackActivationType.ALWAYS_ENABLED
                 );

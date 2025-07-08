@@ -1,7 +1,7 @@
 package me.pajic.simple_smithing_overhaul.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import me.pajic.simple_smithing_overhaul.util.ModUtil;
+import me.pajic.simple_smithing_overhaul.recipe.UpgradeRecipeHandler;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
@@ -25,6 +25,6 @@ public class AbstractContainerMenuMixin {
             )
     )
     private ItemStack upgradeItemAfterTake(final ItemStack original, @Local(argsOnly = true) Slot slot) {
-        return ModUtil.applyPinnacleUpgrade(original, slot, (AbstractContainerMenu) (Object) this, slots);
+        return UpgradeRecipeHandler.applyPinnacleUpgrade(original, slot, (AbstractContainerMenu) (Object) this, slots);
     }
 }

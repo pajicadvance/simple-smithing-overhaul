@@ -1,0 +1,34 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.pajic.simple_smithing_overhaul.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "com.moulberry.mixinconstraints.ConstraintsMixinPlugin",
+  "mixins": [
+    "AbstractContainerMenuMixin",
+    "AnvilMenuMixin",
+    "EnchantBookForEmeraldsMixin",
+    "EnchantmentHelperMixin",
+    "EnchantmentMenuMixin",
+    "EnchantmentMixin",
+    "EnchantRandomlyFunctionMixin",
+    "EnchantWithLevelsFunctionMixin",
+    "GrindstoneMenuAdditionalItemSlotMixin",
+    "GrindstoneMenuMixin",
+    "GrindstoneMenuOutputSlotMixin",
+    "ItemCombinerMenuMixin",
+    "RecipeCraftingHolderMixin",
+    "ServerPlayerContainerListenerMixin",
+    "SmithingMenuMixin",
+    "ThrownExperienceBottleMixin",
+    "VanillaRecipeProviderMixin",
+    "compat.emi.EmiAnvilRecipeMixin"
+  ],
+  "client": [
+    "AnvilScreenMixin",
+    "SmithingScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

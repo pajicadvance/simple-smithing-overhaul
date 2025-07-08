@@ -1,0 +1,14 @@
+- Updated to Minecraft 1.21.7.
+- Switched config API to Fzzy Config:
+  - More user-friendly config menu layout.
+  - Config menu now shows suggestions where applicable (items, item tags, loot tables etc.).
+  - Built-in validation to prevent inputting invalid values.
+- Default config values have been updated:
+  - The default repair material for netherite items are now diamonds.
+  - Further increased chance for loot chests to have enchanted books.
+  - Changed repair unit costs for a few items.
+  - Added unpopular enchantments as excluded from the pinnacle upgrade check by default.
+- Pinnacle item name color can now be configured, with the default still being Light Purple.
+- Fixed a bug where loading tags which don't exist from the mod config would crash the game on startup.
+- Fixed a bug where mods which make enchanted books stackable would allow duping the enchantment upgrade smithing recipe.
+- Fixed a bug which sometimes caused the XP cost for smithing recipes from the mod to be incorrect on multiplayer servers.

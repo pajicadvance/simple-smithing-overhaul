@@ -1,10 +1,9 @@
-package me.pajic.simple_smithing_overhaul.loot;
+package me.pajic.simple_smithing_overhaul.mixson;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-public class LootConstants {
-
+public class Constants {
     public static final JsonElement singleItemChancePool = JsonParser.parseString("""
     {
         "rolls": 1.0,
@@ -20,7 +19,6 @@ public class LootConstants {
          ]
     }
     """);
-
     public static final JsonElement enchantedBookPool = JsonParser.parseString("""
     {
         "rolls": 1.0,

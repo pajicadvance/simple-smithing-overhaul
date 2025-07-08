@@ -2,7 +2,7 @@ package me.pajic.simple_smithing_overhaul.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import me.pajic.simple_smithing_overhaul.loot.LootUtil;
+import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -24,6 +24,6 @@ public class EnchantRandomlyFunctionMixin {
                                               @Local(argsOnly = true) Holder<Enchantment> enchantmentHolder,
                                               @Local(argsOnly = true) RandomSource randomSource
     ) {
-        return LootUtil.calculateNewEnchantmentLevel(enchantmentHolder.value().getMaxLevel(), randomSource, original);
+        return ModUtil.calculateNewEnchantmentLevel(enchantmentHolder.value().getMaxLevel(), randomSource, original);
     }
 }
