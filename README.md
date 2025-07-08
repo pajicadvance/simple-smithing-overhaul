@@ -16,9 +16,9 @@ Many aspects of the mod are configurable. The mod description below reflects the
 - [**EMI**](https://modrinth.com/mod/emi): Simple Smithing Overhaul has full EMI integration and is recommended for seeing recipes and changes from the mod in-game.
 - [**Tax Free Levels**](https://modrinth.com/mod/tax-free-levels): Fully compatible with Simple Smithing Overhaul and greatly complements its changes.
 
-Fabric version requires [Fabric API](https://modrinth.com/mod/fabric-api) and [owo-lib](https://modrinth.com/mod/owo-lib). Use [Mod Menu](https://modrinth.com/mod/modmenu) to change settings in-game.
+Fabric version requires [Fabric API](https://modrinth.com/mod/fabric-api) and [Fzzy Config](https://modrinth.com/mod/fzzy-config). Use [Mod Menu](https://modrinth.com/mod/modmenu) to change settings in-game.
 
-NeoForge version has no dependencies. Use the Mods screen to change settings in-game.
+NeoForge version requires [Fzzy Config](https://modrinth.com/mod/fzzy-config). Use the Mods screen to change settings in-game.
 
 # Core Changes
 
