@@ -83,9 +83,9 @@ public class ModConfig extends Config {
                 .valueHandler(new ValidatedString("diamond", new AllowableStrings(ModUtil.itemSuggestions::contains, () -> ModUtil.itemSuggestions)))
                 .defaults(Map.of(
                         "another_furniture:furniture_hammer", "#minecraft:planks",
-                        "guarding:netherite_shield", "minecraft:netherite_scrap",
-                        "rearm:netherite_bow", "minecraft:netherite_scrap",
-                        "rearm:netherite_crossbow", "minecraft:netherite_scrap",
+                        "guarding:netherite_shield", "minecraft:diamond",
+                        "rearm:netherite_bow", "minecraft:diamond",
+                        "rearm:netherite_crossbow", "minecraft:diamond",
                         "#chalk:chalks", "minecraft:calcite",
                         "#chalk:glow_chalks", "minecraft:glow_ink_sac"
                 ))

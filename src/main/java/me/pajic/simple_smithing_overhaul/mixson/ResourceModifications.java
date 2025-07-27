@@ -24,7 +24,7 @@ public class ResourceModifications {
                     .addProperty("name", "simple_smithing_overhaul:enchantment_upgrade");
             pool.getAsJsonObject()
                     .getAsJsonArray("conditions").get(0).getAsJsonObject()
-                    .addProperty("chance", 10);
+                    .addProperty("chance", 0.1);
             Mixson.registerEvent(
                     Mixson.DEFAULT_PRIORITY,
                     "minecraft:loot_table/chests/end_city_treasure",
@@ -40,7 +40,7 @@ public class ResourceModifications {
                     .addProperty("name", "simple_smithing_overhaul:pinnacle_enchantment");
             pool.getAsJsonObject()
                     .getAsJsonArray("conditions").get(0).getAsJsonObject()
-                    .addProperty("chance", 10);
+                    .addProperty("chance", 0.1);
             Mixson.registerEvent(
                     Mixson.DEFAULT_PRIORITY,
                     "minecraft:loot_table/chests/ancient_city",
