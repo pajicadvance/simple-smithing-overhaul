@@ -8,7 +8,6 @@ import me.pajic.simple_smithing_overhaul.mixson.ResourceModifications;
 import me.pajic.simple_smithing_overhaul.recipe.WhetstoneRepairItemRecipe;
 import me.pajic.simple_smithing_overhaul.util.CompatFlags;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientWorldEvents;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistrySetupCallback;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -82,16 +81,8 @@ public class Initializer {
                 Registries.ENCHANTMENT,
                 (rawId, id, object) -> ModUtil.enchantmentSuggestions.add(id)
         ));
-        // Populate item and item tag suggestions used by the config
-        // Runs after every world change, clears the list and renews it
-        ClientWorldEvents.AFTER_CLIENT_WORLD_CHANGE.register((server, world) -> {
-            ModUtil.itemSuggestions.clear();
-            ModUtil.itemSuggestions.addAll(BuiltInRegistries.ITEM.keySet().stream().map(ResourceLocation::toString).toList());
-            BuiltInRegistries.ITEM./*? if > 1.21.1 {*//*listTagIds()*//*?}*//*? if 1.21.1 {*/getTagNames()/*?}*/.forEach(tag -> ModUtil.itemSuggestions.add("#" + tag.location()));
-        });
     }
 
-    @SuppressWarnings("deprecation")
     private static void initAdditionalRepairables() {
         // Custom repairs 101
         // 2 maps, item to ingredient and ingredient to ingredient, populated in the initializer

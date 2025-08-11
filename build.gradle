@@ -39,7 +39,9 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${property("fabric_version")}"
     include(implementation("com.moulberry:mixinconstraints:${project.mixinconstraints_version}"))
-    include(modImplementation("com.github.ramixin:mixson-fabric:${project.mixson_version}"))
+    include(modImplementation("com.github.ramixin:mixson-fabric:${project.mixson_version}")) {
+        exclude group: "net.fabricmc.fabric-api", module: "fabric-api"
+    }
     modImplementation("com.terraformersmc:modmenu:${property("modmenu_version")}")
     modImplementation "me.fzzyhmstrs:fzzy_config:${property("fzzy_version")}"
     modCompileOnly "dev.emi:emi-fabric:${property("emi_version")}"

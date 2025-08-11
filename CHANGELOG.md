@@ -1,3 +1,2 @@
-- Fixed loot chances for the new smithing templates being incorrect.
-- Adjusted default config values.
-- Marked as compatible with Minecraft 1.21.8.
+- Fixed server crash.
+- Fixed a mixin error in 1.21.1.

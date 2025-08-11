@@ -22,12 +22,12 @@ public class TiersMixin {
     )
     private void modifyTiers(String string, int ordinal, TagKey incorrectBlockForDrops, int _uses, float speed, float damage, int enchantmentValue, Supplier<Ingredient> repairIngredient, CallbackInfo ci) {
         if (ordinal == 5) {
-            this.repairIngredient = this::getRepairIngredient;
+            this.repairIngredient = this::getNetheriteRepairIngredient;
         }
     }
 
     @Unique
-    public Ingredient getRepairIngredient() {
+    public Ingredient getNetheriteRepairIngredient() {
         return Ingredient.of(ModUtil.getNetheriteRepairMaterial());
     }
 }

@@ -13,6 +13,9 @@
     "main": [
       "me.pajic.simple_smithing_overhaul.Main"
     ],
+    "client": [
+      "me.pajic.simple_smithing_overhaul.ClientMain"
+    ],
     "emi": [
       "me.pajic.simple_smithing_overhaul.compat.EmiCompat"
     ]
