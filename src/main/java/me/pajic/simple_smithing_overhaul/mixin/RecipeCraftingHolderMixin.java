@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import me.pajic.simple_smithing_overhaul.Initializer;
 import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
-import me.pajic.simple_smithing_overhaul.recipe.WhetstoneRepairItemRecipe;
+import me.pajic.simple_smithing_overhaul.recipe.PortableItemRepairRecipe;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.RecipeCraftingHolder;
@@ -28,7 +28,7 @@ public interface RecipeCraftingHolderMixin {
             )
     )
     private void grantAdvancement(Player player, List<ItemStack> items, CallbackInfo ci, @Local RecipeHolder<?> recipeHolder) {
-        if (recipeHolder.value() instanceof WhetstoneRepairItemRecipe && player instanceof ServerPlayer p) {
+        if (recipeHolder.value() instanceof PortableItemRepairRecipe && player instanceof ServerPlayer p) {
             ItemStack repairedItem = items.stream().filter(itemStack -> itemStack.isDamageableItem() && !itemStack.is(ModItems.WHETSTONE)).findFirst().orElse(null);
             if (repairedItem != null) {
                 ModCriteria.REPAIR_ITEM_WHETSTONE.trigger(p);

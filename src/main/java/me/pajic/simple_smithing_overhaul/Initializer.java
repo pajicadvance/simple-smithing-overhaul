@@ -5,10 +5,9 @@ import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.datapacks.ChalkItemTags;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import me.pajic.simple_smithing_overhaul.mixson.ResourceModifications;
-import me.pajic.simple_smithing_overhaul.recipe.WhetstoneRepairItemRecipe;
+import me.pajic.simple_smithing_overhaul.recipe.PortableItemRepairRecipe;
 import me.pajic.simple_smithing_overhaul.util.CompatFlags;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
-import net.fabricmc.fabric.api.event.registry.DynamicRegistrySetupCallback;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -51,12 +50,12 @@ public class Initializer {
             DataComponentType.<Integer>builder().persistent(Codec.INT).build()
     );
     private static final Logger LOGGER = LoggerFactory.getLogger("Simple Smithing Overhaul");
-    public static RecipeSerializer<WhetstoneRepairItemRecipe> WHETSTONE_REPAIR_ITEM = RecipeSerializer.register(
-            "crafting_special_whetstone_repairitem",
+    public static RecipeSerializer<PortableItemRepairRecipe> PORTABLE_ITEM_REPAIR = RecipeSerializer.register(
+            "crafting_special_portable_repairitem",
             //? if <= 1.21.1
-            new SimpleCraftingRecipeSerializer<>(WhetstoneRepairItemRecipe::new)
+            new SimpleCraftingRecipeSerializer<>(PortableItemRepairRecipe::new)
             //? if > 1.21.1
-            /*new CustomRecipe.Serializer<>(WhetstoneRepairItemRecipe::new)*/
+            /*new CustomRecipe.Serializer<>(PortableItemRepairRecipe::new)*/
     );
 
     // Main initializer method
@@ -75,12 +74,6 @@ public class Initializer {
         initAdditionalRepairables();
         // Item tags for Chalk mod so that I don't have to put 64 entries inside the config
         if (CompatFlags.CHALK_LOADED) ChalkItemTags.init();
-        // Populate enchantment suggestions used by the config
-        // Runs once for each registered enchantment
-        DynamicRegistrySetupCallback.EVENT.register(registryView -> registryView.registerEntryAdded(
-                Registries.ENCHANTMENT,
-                (rawId, id, object) -> ModUtil.enchantmentSuggestions.add(id)
-        ));
     }
 
     private static void initAdditionalRepairables() {

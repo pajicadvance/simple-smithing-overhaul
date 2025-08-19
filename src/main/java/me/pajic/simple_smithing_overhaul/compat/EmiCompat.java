@@ -162,14 +162,14 @@ public class EmiCompat implements EmiPlugin {
 
     //? if <= 1.21.1 {
     private void addWhetstoneRepairRecipe(EmiRegistry emiRegistry, Item item, Ingredient repairIngredient, int counter) {
-        emiRegistry.addRecipe(new EmiWhetstoneRepairRecipe(
-                ResourceLocation.fromNamespaceAndPath("simple_smithing_overhaul", "/whetstone_repair_" + counter),
+        emiRegistry.addRecipe(new EmiPortableRepairRecipe(
+                ResourceLocation.fromNamespaceAndPath("simple_smithing_overhaul", "/portable_repair_" + counter),
                 EmiStack.of(item),
                 EmiIngredient.of(repairIngredient)
         ));
     }
 
-    private class EmiWhetstoneRepairRecipe implements EmiRecipe {
+    private class EmiPortableRepairRecipe implements EmiRecipe {
         protected final ResourceLocation id;
         protected final EmiStack input;
         protected final EmiStack whetstone;
@@ -178,7 +178,7 @@ public class EmiCompat implements EmiPlugin {
         private final int uniq2;
         private boolean enchanted;
 
-        private EmiWhetstoneRepairRecipe(ResourceLocation id, EmiStack input, EmiIngredient repairIngredient) {
+        private EmiPortableRepairRecipe(ResourceLocation id, EmiStack input, EmiIngredient repairIngredient) {
             this.id = id;
             this.input = input;
             this.whetstone = EmiStack.of(ModItems.WHETSTONE);
@@ -259,7 +259,7 @@ public class EmiCompat implements EmiPlugin {
             return EmiStack.of(stack);
         }
 
-        private EmiStack getWhetstone(Random r, List<EnchantmentInstance> enchantments) {
+        private EmiIngredient getWhetstone(Random r, List<EnchantmentInstance> enchantments) {
             ItemStack stack = this.whetstone.getItemStack().copy();
             if (!enchantments.isEmpty() && enchanted) {
                 enchantments.forEach(enchantment -> stack.enchant(enchantment.enchantment, enchantment.level));
@@ -268,7 +268,7 @@ public class EmiCompat implements EmiPlugin {
                 int d = r.nextInt(stack.getMaxDamage());
                 stack.setDamageValue(d);
             }
-            return EmiStack.of(stack);
+            return enchanted ? EmiStack.of(stack) : EmiIngredient.of(List.of(EmiStack.of(stack), EmiStack.of(Items.FLINT)));
         }
     }
 

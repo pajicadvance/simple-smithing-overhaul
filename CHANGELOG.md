@@ -1,2 +1,2 @@
-- Fixed server crash.
-- Fixed a mixin error in 1.21.1.
+- Flint can now be used to repair unenchanted items on the go, as an early game alternative to whetstones. Flint is good for one repair and is consumed on use.
+- Disabled enchantment suggestions in the configuration screen due to issues.

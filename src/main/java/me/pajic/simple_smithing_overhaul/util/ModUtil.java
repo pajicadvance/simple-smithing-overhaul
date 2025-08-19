@@ -36,7 +36,6 @@ public class ModUtil {
     public static final Map<Ingredient, Ingredient> additionalTagRepairables = new HashMap<>();
     public static final Map<Item, Ingredient> additionalRepairables = new HashMap<>();
     public static final List<String> itemSuggestions = new ArrayList<>();
-    public static final List<ResourceLocation> enchantmentSuggestions = new ArrayList<>();
 
     public static int determineUnitCost(ItemStack stack) {
         if (Main.CONFIG.streamlinedRepairs.modifyAnvilRepairUnitCosts.get() && !stack.is(Items.AIR)) {

@@ -4,7 +4,6 @@ import me.fzzyhmstrs.fzzy_config.annotations.*;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 import me.fzzyhmstrs.fzzy_config.util.AllowableStrings;
-import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedChoiceList;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedMap;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIdentifier;
@@ -14,12 +13,10 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.util.ChanceAndCount;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 
 import java.lang.Integer;
-import java.util.List;
 import java.util.Map;
 
 @Version(version = 1)
@@ -53,10 +50,7 @@ public class ModConfig extends Config {
         public ValidatedInt pinnacleExperienceCostIncrease = new ValidatedInt(5, Integer.MAX_VALUE, 1);
         public ValidatedBoolean colorPinnacleItemName = new ValidatedBoolean(true);
         public ValidatedString pinnacleItemNameColor = new ValidatedString("Light Purple", new AllowableStrings(ModUtil.nameColors::contains, () -> ModUtil.nameColors));
-        public ValidatedList<ResourceLocation> excludedFromMaxedOutCheck = ValidatedIdentifier.ofSuppliedList(
-                ResourceLocation.withDefaultNamespace("mending"),
-                () -> ModUtil.enchantmentSuggestions
-        ).toList(
+        public ValidatedList<ResourceLocation> excludedFromMaxedOutCheck = new ValidatedIdentifier(ResourceLocation.withDefaultNamespace("mending")).toList(
                 ResourceLocation.withDefaultNamespace("mending"),
                 ResourceLocation.withDefaultNamespace("thorns"),
                 ResourceLocation.withDefaultNamespace("fire_aspect"),
@@ -288,7 +282,7 @@ public class ModConfig extends Config {
         public ValidatedInt legArmorUnits = new ValidatedInt(7, 9, 1);
         public ValidatedInt footArmorUnits = new ValidatedInt(4, 9, 1);
         public ValidatedInt horseArmorUnits = new ValidatedInt(6, 9, 1);
-        public ValidatedInt wolfArmorUnits = new ValidatedInt(6, 9, 1);;
+        public ValidatedInt wolfArmorUnits = new ValidatedInt(6, 9, 1);
     }
 
     public static class Tools extends ConfigSection {

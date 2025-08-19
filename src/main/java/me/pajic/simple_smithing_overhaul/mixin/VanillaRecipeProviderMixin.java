@@ -1,6 +1,6 @@
 package me.pajic.simple_smithing_overhaul.mixin;
 
-import me.pajic.simple_smithing_overhaul.recipe.WhetstoneRepairItemRecipe;
+import me.pajic.simple_smithing_overhaul.recipe.PortableItemRepairRecipe;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.data.recipes.packs.VanillaRecipeProvider;
@@ -22,12 +22,12 @@ public abstract class VanillaRecipeProviderMixin /*? if > 1.21.1 {*//*extends Re
     )
     //? if <= 1.21.1 {
     private void buildWhetstoneRepairItemRecipe(RecipeOutput recipeOutput, CallbackInfo ci) {
-        SpecialRecipeBuilder.special(WhetstoneRepairItemRecipe::new).save(recipeOutput, "whetstone_repair_item");
+        SpecialRecipeBuilder.special(PortableItemRepairRecipe::new).save(recipeOutput, "whetstone_repair_item");
     }
     //?}
     //? if > 1.21.1 {
     /*private void buildWhetstoneRepairItemRecipe(CallbackInfo ci) {
-        SpecialRecipeBuilder.special(WhetstoneRepairItemRecipe::new).save(output, "whetstone_repair_item");
+        SpecialRecipeBuilder.special(PortableItemRepairRecipe::new).save(output, "whetstone_repair_item");
     }
 
     protected VanillaRecipeProviderMixin(HolderLookup.Provider registries, RecipeOutput output) {

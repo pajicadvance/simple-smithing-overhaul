@@ -47,13 +47,13 @@ These features are fully configurable for mod support. Modded items can be made 
 
 # New Mechanics
 
-## Whetstone
+## Portable Item Repair
 
-Crafted from quartz, whetstones let you repair your gear on the go, directly in the crafting menu. It's as easy as combining the tool you want to repair, the repair material, and a whetstone. Any item that's repairable in the anvil can be repaired with a whetstone, too.
+Gear can now be repaired on the go using flint or a new item, the whetstone, directly in the crafting menu. It's as easy as combining the tool you want to repair, the repair material, and flint or a whetstone. Any item that's repairable in the anvil can be repaired on the go, too.
 
-Regular whetstones can repair unenchanted items only. In order to repair enchanted items, the whetstone has to contain all enchantments that are on the enchanted item you want to repair at levels equal or higher than the ones on the item. Enchantments can be added to whetstones by enchanting them in the enchanting table like books or in the anvil by combining them with enchanted books.
+Flint and regular whetstones can repair unenchanted items only. Enchanted items can only be repaired with enchanted whetstones. The enchanted whetstone has to contain all enchantments that are on the enchanted item you want to repair at levels equal or higher than the ones on the item. Enchantments can be added to whetstones by enchanting them in the enchanting table like books or in the anvil by combining them with enchanted books.
 
-Whetstones have a fixed durability of 12, with each repair taking off 1 durability. Whetstones themselves can only be repaired in the anvil with quartz.
+Flint is good for one repair and is consumed on use. Whetstones have a fixed durability of 12, with each repair taking off 1 durability. Whetstones themselves can only be repaired in the anvil with quartz.
 
 ![whetstone](https://cdn.modrinth.com/data/cached_images/281069961f02641377ef6b08c5134a0c4d55007b.png)
 
