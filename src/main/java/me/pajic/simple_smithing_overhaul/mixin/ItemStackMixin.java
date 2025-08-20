@@ -35,6 +35,9 @@ public abstract class ItemStackMixin implements DataComponentHolder {
     @Shadow
     public abstract boolean isEnchanted();
 
+    @Shadow
+    public abstract boolean isDamageableItem();
+
     @Unique
     private final ItemStack thisStack = (ItemStack) (Object) this;
 
@@ -43,7 +46,7 @@ public abstract class ItemStackMixin implements DataComponentHolder {
             at = @At("HEAD")
     )
     private <T> void manageBrokenState(DataComponentType<? super T> component, T value, CallbackInfoReturnable<T> cir) {
-        if (component == DataComponents.DAMAGE) {
+        if (component == DataComponents.DAMAGE && isDamageableItem()) {
             if ((int) value < getMaxDamage()) remove(ModDataComponents.BROKEN);
             else switch (Main.CONFIG.streamlinedRepairs.preventItemDestruction.get()) {
                 case ALL -> set(ModDataComponents.BROKEN, true);
