@@ -16,6 +16,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -35,12 +36,13 @@ public class PortableItemRepairRecipe extends CustomRecipe {
         List<ItemStack> flint = input.items().stream().filter(itemStack -> itemStack.is(Items.FLINT)).toList();
         if (whetstones.isEmpty() ^ flint.isEmpty()) {
             if (whetstones.size() == 1) {
+                ItemStack whetstone = whetstones.getFirst();
                 repairableItems = input.items().stream().filter(itemStack ->
                         itemStack.isDamageableItem() && !itemStack.is(ModItems.WHETSTONE)).toList();
                 if (!repairableItems.isEmpty()) {
                     itemToRepair = repairableItems.getFirst();
-                    if (itemToRepair.isDamaged()) {
-                        ItemEnchantments whetstoneEnchantments = whetstones.getFirst().getOrDefault(
+                    if (itemToRepair.isDamaged() && whetstone.getDamageValue() < whetstone.getMaxDamage()) {
+                        ItemEnchantments whetstoneEnchantments = whetstone.getOrDefault(
                                 DataComponents.STORED_ENCHANTMENTS,
                                 ItemEnchantments.EMPTY
                         );
@@ -50,7 +52,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
                                         entry.getKey().value().getMaxLevel()
                                 )
                         )) {
-                            return processRepair(input, itemToRepair);
+                            return processRepair(input, itemToRepair, whetstone);
                         }
                     }
                 }
@@ -60,7 +62,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
                 if (!repairableItems.isEmpty()) {
                     itemToRepair = repairableItems.getFirst();
                     if (itemToRepair.isDamaged() && !itemToRepair.isEnchanted()) {
-                        return processRepair(input, itemToRepair);
+                        return processRepair(input, itemToRepair, null);
                     }
                 }
             }
@@ -68,7 +70,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
         return false;
     }
 
-    private boolean processRepair(CraftingInput input, ItemStack itemToRepair) {
+    private boolean processRepair(CraftingInput input, ItemStack itemToRepair, @Nullable ItemStack whetstone) {
         unitCost = ModUtil.determineUnitCost(itemToRepair);
         int damageRepairedPerUnit = itemToRepair.getMaxDamage() / unitCost;
         int unitsToMaxRepair = itemToRepair.getDamageValue() / damageRepairedPerUnit;
@@ -85,7 +87,8 @@ public class PortableItemRepairRecipe extends CustomRecipe {
                 return false;
             }).toList();
         *///?}
-        return !repairMaterials.isEmpty() && repairMaterials.size() <= unitsToMaxRepair + 1;
+        boolean hasEnoughDurability = whetstone == null || (whetstone.getMaxDamage() - whetstone.getDamageValue() >= repairMaterials.size());
+        return !repairMaterials.isEmpty() && repairMaterials.size() <= unitsToMaxRepair + 1 && hasEnoughDurability;
     }
 
     @Override
@@ -104,9 +107,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
             ItemStack itemStack = input.getItem(i);
             if (itemStack.is(ModItems.WHETSTONE)) {
                 itemStack.setDamageValue(itemStack.getDamageValue() + repairMaterials.size());
-                if (itemStack.getDamageValue() < itemStack.getMaxDamage()) {
-                    remainingItems.set(i, itemStack.copy());
-                }
+                remainingItems.set(i, itemStack.copy());
             } else if (otherGear.contains(itemStack)) {
                 remainingItems.set(i, itemStack.copy());
             } else if (!itemStack.is(Items.FLINT) && !itemStack.is(repairMaterials.getFirst().getItem()) && !itemStack.is(repairableItems.getFirst().getItem())) {

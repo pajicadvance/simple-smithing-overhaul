@@ -1,2 +1,1 @@
-- Items now won't be destroyed when they break. Instead, they will remain at 0 durability but will be non-functional until repaired. Can be configured to only apply to enchanted items or turned off entirely.
-- Changed the description and icon of the Pocket Smith advancement.
+- Updated portable repair to handle broken whetstones correctly.

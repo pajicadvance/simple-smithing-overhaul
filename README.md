@@ -2,7 +2,7 @@
 
 **_Fully-Featured, Vanilla Friendly._**
 
-Smithing in Minecraft is incredibly stingy. The excessively high cost of managing gear deters players from ever interacting with the mechanic and steers them towards relying exclusively on Mending for item repair. This mod opens up new ways to upgrade and maintain your gear by **improving the usability of vanilla smithing mechanics, introducing new smithing templates, and rebalancing enchantment sources**. The goal is to ease up the harsh costs and restrictions of smithing mechanics and make those mechanics more important for obtaining enchanted gear instead of solely relying on the enchanting table and looted items, in turn making them more rewarding.
+Smithing in Minecraft is incredibly stingy. The excessively high cost of managing gear deters players from ever interacting with the mechanic and steers them towards relying exclusively on Mending for item repair. This mod opens up new ways to upgrade and maintain your gear by **improving the usability of vanilla smithing mechanics, introducing new smithing templates, and rebalancing enchantment sources**. The goal is to ease up the harsh costs and restrictions of smithing mechanics and make those mechanics more important for obtaining enchanted gear instead of solely relying on the enchanting table, looted items and villager trades, in turn making them more rewarding.
 
 All the features, changes and rebalances in the mod result in **generally faster enchanted item acquisition** and **higher enchanting flexibility**, all while making the entire process **feel more rewarding** at the same time.
 
@@ -28,7 +28,7 @@ The amount of material required to repair an item from zero to full durability i
 
 For example, a diamond pickaxe is crafted with 3 diamonds, which means that only 3 diamonds are required to fully repair it instead of 4. This applies to every repairable item in the game.
 
-Additionally, repair recipes were added for all vanilla items which did not have one, and netherite gear is repaired with netherite scrap instead of netherite ingots.
+Additionally, repair recipes were added for all vanilla items which did not have one, and netherite gear is repaired with diamonds instead of netherite ingots.
 
 These features are fully configurable for mod support. Modded items can be made repairable, and the amount of material required to fully repair them can be defined in the mod configuration. I've already added values for some mods I play with, so you can use them as examples.
 
@@ -45,6 +45,23 @@ These features are fully configurable for mod support. Modded items can be made 
 - Combining an enchanted item with a piece of netherite scrap in the grindstone halves the repair cost of the item.
 - Disenchanting items in the grindstone now grants more XP.
 
+## Enchanting and Enchanted Loot Changes
+
+In order to emphasize the importance of smithing mechanics, some limits have been imposed on how strong items obtained from the enchanting table and loot can be, while increasing the chances of finding enchanted books and experience bottles in loot, and increasing the amount of experience awarded from experience bottles.
+
+The goal is to make the road to maxed out enchanted items more involved and rewarding instead of relying on villager trading or lucking out on the enchanting table or loot chests.
+
+- The maximum amount of bookshelves the enchanting table can accept is reduced to 10 down from 15.
+- Looted enchanted items can also only come with enchantments that the enchanting table allows at 10 bookshelves at most.
+- Higher level enchanted books are way less common in loot compared to lower level books.
+- Enchanted books sold by villagers will always be level 1.
+- Enchanted book villager trades can only be used 3 times before having to restock, down from 12.
+
+However:
+
+- Enchanted books and experience bottles are way more common in loot chests, and can be found in more places.
+- Experience bottles give way more experience (30-50, up from 3-11).
+
 # New Mechanics
 
 ## Portable Item Repair
@@ -56,6 +73,12 @@ Flint and regular whetstones can repair unenchanted items only. Enchanted items 
 Flint is good for one repair and is consumed on use. Whetstones have a fixed durability of 12, with each repair taking off 1 durability. Whetstones themselves can only be repaired in the anvil with quartz.
 
 ![whetstone](https://cdn.modrinth.com/data/cached_images/281069961f02641377ef6b08c5134a0c4d55007b.png)
+
+## Item Destruction Prevention
+
+Items now won't be destroyed when they break. Instead, they will remain at 0 durability but will be non-functional until repaired. To indicate that an item is broken, its name will change to red and a "Broken" prefix will be applied to the name.
+
+![broken_item](https://cdn.modrinth.com/data/cached_images/68cc4149afb7874c5f0420a059a1b510097f96a0.png)
 
 ## Enchantment Upgrade Smithing Template
 
@@ -74,25 +97,8 @@ Items are considered "maxed out" when they are enchanted with all possible encha
 - Fortune III, Efficiency V, Unbreaking III, Mending
 - Silk Touch, Efficiency V, Unbreaking III, Mending
 
-Items can be upgraded this way **only once**, and you cannot see what the resulting item is going to be before applying the upgrade. For example, if you want Fortune IV on a pickaxe but got Efficiency VI instead, that pickaxe cannot be rerolled and you will have to max out another pickaxe and try again. Enchantments that have a max level of 1 such as Mending aren't considered in the upgrade. Cursed items cannot be upgraded.
+Items can be pinnacle upgraded multiple times in order to reroll the upgraded enchantment, however, the XP cost increases with each reroll. Enchantments that have a max level of 1 such as Mending aren't considered in the upgrade. Cursed items cannot be upgraded.
 
 Pinnacle items can still be repaired with whetstones - the whetstone does not need to have the upgraded enchantment at the same level as the item, only at the regular max enchantment level.
 
 ![pinnacle_smithing](https://cdn.modrinth.com/data/cached_images/e61cee46b69c9a3a62505436fbb7ef56d9f27004.png) ![pinnacle_duplication](https://cdn.modrinth.com/data/cached_images/8a62c4ea281dd8829754a6ab8f3e2713b3148702.png)
-
-# Enchanting and Enchanted Loot Changes
-
-In order to emphasize the importance of smithing mechanics, some limits have been imposed on how strong items obtained from the enchanting table and loot can be, while increasing the chances of finding enchanted books and experience bottles in loot, and increasing the amount of experience awarded from experience bottles.
-
-The goal is to make the road to maxed out enchanted items more involved and rewarding instead of relying on lucking out on the enchanting table or end city loot.
-
-- The maximum amount of bookshelves the enchanting table can accept is reduced to 10 down from 15.
-- Looted enchanted items can also only come with enchantments that the enchanting table allows at 10 bookshelves at most.
-- Higher level enchanted books are way less common in loot compared to lower level books.
-- Enchanted books sold by villagers will always be level 1.
-- Enchanted book villager trades can only be used 3 times before having to restock, down from 12.
-
-However:
-
-- Enchanted books and experience bottles are way more common in loot chests, and can be found in more places.
-- Experience bottles give way more experience (30-50, up from 3-11).

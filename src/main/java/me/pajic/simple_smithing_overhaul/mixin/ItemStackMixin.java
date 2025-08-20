@@ -32,8 +32,27 @@ public abstract class ItemStackMixin implements DataComponentHolder {
     @Shadow
     public abstract int getMaxDamage();
 
+    @Shadow
+    public abstract boolean isEnchanted();
+
     @Unique
     private final ItemStack thisStack = (ItemStack) (Object) this;
+
+    @Inject(
+            method = "set",
+            at = @At("HEAD")
+    )
+    private <T> void manageBrokenState(DataComponentType<? super T> component, T value, CallbackInfoReturnable<T> cir) {
+        if (component == DataComponents.DAMAGE) {
+            if ((int) value < getMaxDamage()) remove(ModDataComponents.BROKEN);
+            else switch (Main.CONFIG.streamlinedRepairs.preventItemDestruction.get()) {
+                case ALL -> set(ModDataComponents.BROKEN, true);
+                case ENCHANTED -> {
+                    if (isEnchanted()) set(ModDataComponents.BROKEN, true);
+                }
+            }
+        }
+    }
 
     @WrapWithCondition(
             //? if <= 1.21.1
@@ -45,31 +64,8 @@ public abstract class ItemStackMixin implements DataComponentHolder {
                     target = "Lnet/minecraft/world/item/ItemStack;shrink(I)V"
             )
     )
-    private boolean setBrokenState(ItemStack instance, int decrement) {
-        switch (Main.CONFIG.streamlinedRepairs.preventItemDestruction.get()) {
-            case ALL -> {
-                set(ModDataComponents.BROKEN, true);
-                return false;
-            }
-            case ENCHANTED -> {
-                if (instance.isEnchanted()) {
-                    set(ModDataComponents.BROKEN, true);
-                    return false;
-                }
-                return true;
-            }
-            default -> {
-                return true;
-            }
-        }
-    }
-
-    @Inject(
-            method = "set",
-            at = @At("HEAD")
-    )
-    private <T> void clearBrokenStateOnRepair(DataComponentType<? super T> component, T value, CallbackInfoReturnable<T> cir) {
-        if (component == DataComponents.DAMAGE && (int) value < getMaxDamage()) remove(ModDataComponents.BROKEN);
+    private boolean preventDestruction(ItemStack instance, int decrement) {
+        return !ModUtil.isBroken(instance);
     }
 
     @ModifyReturnValue(
