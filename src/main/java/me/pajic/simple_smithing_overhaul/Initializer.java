@@ -1,14 +1,14 @@
 package me.pajic.simple_smithing_overhaul;
 
-import com.mojang.serialization.Codec;
 import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.datapacks.ChalkItemTags;
+import me.pajic.simple_smithing_overhaul.event.ModEvents;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import me.pajic.simple_smithing_overhaul.mixson.ResourceModifications;
 import me.pajic.simple_smithing_overhaul.recipe.PortableItemRepairRecipe;
 import me.pajic.simple_smithing_overhaul.util.CompatFlags;
+import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +19,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.minecraft.core.component.DataComponentType;
 import java.util.Optional;
 //? if > 1.21.1 {
 /*import net.minecraft.world.item.enchantment.Repairable;
@@ -39,16 +38,6 @@ import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 
 public class Initializer {
     // Static initializers
-    public static final DataComponentType<Integer> REPAIR_COUNT = Registry.register(
-            BuiltInRegistries.DATA_COMPONENT_TYPE,
-            ResourceLocation.fromNamespaceAndPath(Main.MOD_ID, "repair_count"),
-            DataComponentType.<Integer>builder().persistent(Codec.INT).build()
-    );
-    public static final DataComponentType<Integer> PINNACLE_COUNT = Registry.register(
-            BuiltInRegistries.DATA_COMPONENT_TYPE,
-            ResourceLocation.fromNamespaceAndPath(Main.MOD_ID, "pinnacle_count"),
-            DataComponentType.<Integer>builder().persistent(Codec.INT).build()
-    );
     private static final Logger LOGGER = LoggerFactory.getLogger("Simple Smithing Overhaul");
     public static RecipeSerializer<PortableItemRepairRecipe> PORTABLE_ITEM_REPAIR = RecipeSerializer.register(
             "crafting_special_portable_repairitem",
@@ -60,6 +49,10 @@ public class Initializer {
 
     // Main initializer method
     public static void init() {
+        // Data components
+        ModDataComponents.init();
+        // Events
+        ModEvents.init();
         // Items
         ModItems.init();
         // Loot and language patches

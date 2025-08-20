@@ -150,6 +150,10 @@ public class ModUtil {
         return false;
     }
 
+    public static boolean isBroken(ItemStack stack) {
+        return stack.getOrDefault(ModDataComponents.BROKEN, false);
+    }
+
     public static void payXpCost(Player player, int cost) {
         if (CompatFlags.TAX_FREE_LEVELS_LOADED) TFLCompat.payXpCost(player, cost);
         else player.giveExperienceLevels(-cost);

@@ -1,10 +1,10 @@
 package me.pajic.simple_smithing_overhaul.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import me.pajic.simple_smithing_overhaul.Initializer;
 import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import me.pajic.simple_smithing_overhaul.recipe.PortableItemRepairRecipe;
+import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.RecipeCraftingHolder;
@@ -32,8 +32,8 @@ public interface RecipeCraftingHolderMixin {
             ItemStack repairedItem = items.stream().filter(itemStack -> itemStack.isDamageableItem() && !itemStack.is(ModItems.WHETSTONE)).findFirst().orElse(null);
             if (repairedItem != null) {
                 ModCriteria.REPAIR_ITEM_WHETSTONE.trigger(p);
-                if (repairedItem.getOrDefault(Initializer.REPAIR_COUNT, 0) == 99) ModCriteria.ITEM_REPAIR_COUNT.trigger(p);
-                if (repairedItem.getOrDefault(Initializer.REPAIR_COUNT, 0) == 999) ModCriteria.ITEM_REPAIR_COUNT_BIG.trigger(p);
+                if (repairedItem.getOrDefault(ModDataComponents.REPAIR_COUNT, 0) == 99) ModCriteria.ITEM_REPAIR_COUNT.trigger(p);
+                if (repairedItem.getOrDefault(ModDataComponents.REPAIR_COUNT, 0) == 999) ModCriteria.ITEM_REPAIR_COUNT_BIG.trigger(p);
                 if (repairedItem.isEnchanted()) ModCriteria.REPAIR_ITEM_WHETSTONE_ENCHANTED.trigger(p);
             }
         }

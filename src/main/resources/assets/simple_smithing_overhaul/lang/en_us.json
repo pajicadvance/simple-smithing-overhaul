@@ -19,6 +19,11 @@
   "simple_smithing_overhaul.config.pinnacleEnchantment.excludedFromMaxedOutCheck.desc": "Items can be turned into pinnacle items even if they don't have the enchantments in this list",
 
   "simple_smithing_overhaul.config.streamlinedRepairs": "Streamlined repairs",
+  "simple_smithing_overhaul.config.streamlinedRepairs.preventItemDestruction": "Prevent item destruction",
+  "simple_smithing_overhaul.config.streamlinedRepairs.preventItemDestruction.desc": "When items break, they won't be destroyed, but will remain non-functional until repaired.",
+  "simple_smithing_overhaul.destructionPreventMode.ALL": "For all items",
+  "simple_smithing_overhaul.destructionPreventMode.ENCHANTED": "For enchanted items only",
+  "simple_smithing_overhaul.destructionPreventMode.NONE": "No prevention",
   "simple_smithing_overhaul.config.streamlinedRepairs.netheriteRepairMaterial": "Netherite repair material",
   "simple_smithing_overhaul.netheriteRepairMaterials.NETHERITE_INGOT": "Netherite ingot",
   "simple_smithing_overhaul.netheriteRepairMaterials.NETHERITE_SCRAP": "Netherite scrap",
@@ -118,6 +123,7 @@
   "item.simple_smithing_overhaul.whetstone": "Whetstone",
   "item.simple_smithing_overhaul.enchanted_whetstone": "Enchanted Whetstone",
   "item.minecraft.experience_bottle.override": "Experience Bottle",
+  "item.simple_smithing_overhaul.broken": "Broken ",
   "entity.minecraft.experience_bottle.override": "Thrown Experience Bottle",
 
   "tag.item.simple_smithing_overhaul.enchantment_upgradeable": "Enchantment Upgradeable",
@@ -131,7 +137,7 @@
   "advancements.smithing.ship_of_theseus.title": "Ship of Theseus",
   "advancements.smithing.ship_of_theseus.description": "...Is it still the same ship? (Repaired the same item 1000 times)",
   "advancements.smithing.pocket_smith.title": "Pocket Smith",
-  "advancements.smithing.pocket_smith.description": "Craft a whetstone from quartz and repair an item with it",
+  "advancements.smithing.pocket_smith.description": "Repair an item on the go using flint or a whetstone",
   "advancements.smithing.shiny_pockets.title": "Shiny Pockets",
   "advancements.smithing.shiny_pockets.description": "Repair an enchanted item with an appropriate enchanted whetstone",
   "advancements.smithing.very_shiny.title": "Shine of a Thousand Suns",

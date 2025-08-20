@@ -65,6 +65,7 @@ public class ModConfig extends Config {
     }
 
     public static class StreamlinedRepairs extends ConfigSection {
+        public ValidatedEnum<DestructionPreventMode> preventItemDestruction = new ValidatedEnum<>(DestructionPreventMode.ALL);
         @RequiresAction(action = Action.RESTART)
         public ValidatedEnum<NetheriteRepairMaterials> netheriteRepairMaterial = new ValidatedEnum<>(NetheriteRepairMaterials.DIAMOND);
         public ValidatedBoolean modifyAnvilRepairUnitCosts = new ValidatedBoolean(true);

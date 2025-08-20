@@ -2,6 +2,7 @@ package me.pajic.simple_smithing_overhaul.recipe;
 
 import me.pajic.simple_smithing_overhaul.Initializer;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
+import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -91,7 +92,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
     public @NotNull ItemStack assemble(@NotNull CraftingInput input, HolderLookup.@NotNull Provider registries) {
         ItemStack outputItem = itemToRepair.copy();
         outputItem.setDamageValue(outputItem.getDamageValue() - ((outputItem.getMaxDamage() / unitCost) * repairMaterials.size()));
-        outputItem.set(Initializer.REPAIR_COUNT, outputItem.getOrDefault(Initializer.REPAIR_COUNT, 0) + 1);
+        outputItem.set(ModDataComponents.REPAIR_COUNT, outputItem.getOrDefault(ModDataComponents.REPAIR_COUNT, 0) + 1);
         return outputItem;
     }
 

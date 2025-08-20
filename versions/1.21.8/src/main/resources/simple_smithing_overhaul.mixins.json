@@ -17,6 +17,7 @@
     "GrindstoneMenuMixin",
     "GrindstoneMenuOutputSlotMixin",
     "ItemCombinerMenuMixin",
+    "ItemStackMixin",
     "RecipeCraftingHolderMixin",
     "ServerPlayerContainerListenerMixin",
     "SmithingMenuMixin",

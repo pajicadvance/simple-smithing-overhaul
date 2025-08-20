@@ -2,11 +2,11 @@ package me.pajic.simple_smithing_overhaul.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import me.pajic.simple_smithing_overhaul.Initializer;
 import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.recipe.UpgradeRecipeHandler;
 import me.pajic.simple_smithing_overhaul.util.CostAccess;
+import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -106,7 +106,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
             if (!player.getAbilities().instabuild) ModUtil.payXpCost(player, ((CostAccess) this).sso$getCost());
             if (player instanceof ServerPlayer p) {
                 ModCriteria.APPLY_PINNACLE_ENCHANTMENT.trigger(p);
-                if (itemStack.getOrDefault(Initializer.PINNACLE_COUNT, 0) == 10) ModCriteria.BAD_RNG.trigger(p);
+                if (itemStack.getOrDefault(ModDataComponents.PINNACLE_COUNT, 0) == 10) ModCriteria.BAD_RNG.trigger(p);
             }
         }
     }

@@ -1,7 +1,7 @@
 package me.pajic.simple_smithing_overhaul.mixin;
 
-import me.pajic.simple_smithing_overhaul.Initializer;
 import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
+import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
@@ -31,17 +31,17 @@ public class ServerPlayerContainerListenerMixin {
     private void grantAdvancement(AbstractContainerMenu containerToSend, int dataSlotIndex, ItemStack stack, CallbackInfo ci) {
         int pinnacleCount = 0;
         for (ItemStack item : field_29183.getInventory()./*? if > 1.21.4 {*//*getNonEquipmentItems()*//*?}*//*? if <= 1.21.4 {*/items/*?}*/) {
-            if (item.has(Initializer.PINNACLE_COUNT)) pinnacleCount++;
+            if (item.has(ModDataComponents.PINNACLE_COUNT)) pinnacleCount++;
         }
         //? if <= 1.21.4 {
         for (ItemStack item : field_29183.getInventory().armor) {
-            if (item.has(Initializer.PINNACLE_COUNT)) pinnacleCount++;
+            if (item.has(ModDataComponents.PINNACLE_COUNT)) pinnacleCount++;
         }
         //?}
         //? if > 1.21.4 {
         /*for (EquipmentSlot slot : Inventory.EQUIPMENT_SLOT_MAPPING.values()) {
             ItemStack item = field_29183.getInventory().equipment.get(slot);
-            if (item.has(Initializer.PINNACLE_COUNT)) pinnacleCount++;
+            if (item.has(ModDataComponents.PINNACLE_COUNT)) pinnacleCount++;
         }
         *///?}
         if (pinnacleCount >= 8) ModCriteria.MAXED_OUT.trigger(field_29183);

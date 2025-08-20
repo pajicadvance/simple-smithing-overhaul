@@ -2,9 +2,9 @@ package me.pajic.simple_smithing_overhaul.recipe;
 
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import me.pajic.simple_smithing_overhaul.Initializer;
 import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.util.CostAccess;
+import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.ChatFormatting;
@@ -110,7 +110,7 @@ public class UpgradeRecipeHandler {
                         itemEnchantments.forEach(ei -> maxedOutEnchantments.removeIf(ei1 -> !Enchantment.areCompatible(ei1.enchantment/*? if > 1.21.4 {*//*()*//*?}*/, ei.enchantment/*? if > 1.21.4 {*//*()*//*?}*/)));
                         if (maxedOutEnchantments.isEmpty()) {
                             success = true;
-                            ((CostAccess) menu).sso$setCost(Main.CONFIG.pinnacleEnchantment.pinnacleBaseExperienceCost.get() + Main.CONFIG.pinnacleEnchantment.pinnacleExperienceCostIncrease.get() * itemStack.getOrDefault(Initializer.PINNACLE_COUNT, 0));
+                            ((CostAccess) menu).sso$setCost(Main.CONFIG.pinnacleEnchantment.pinnacleBaseExperienceCost.get() + Main.CONFIG.pinnacleEnchantment.pinnacleExperienceCostIncrease.get() * itemStack.getOrDefault(ModDataComponents.PINNACLE_COUNT, 0));
                             ItemStack updatedStack = slots.get(1).getItem().copy();
                             updatedStack.set(DataComponents.CUSTOM_NAME, Component.translatable("text.item.simple_smithing_overhaul.pinnacleCustomName").withStyle(ChatFormatting.LIGHT_PURPLE));
                             itemEnchantments.stream().filter(ei ->
@@ -140,7 +140,7 @@ public class UpgradeRecipeHandler {
             EnchantmentHelper.updateEnchantments(original, mutable ->
                     mutable.upgrade(toUpgrade.enchantment/*? if > 1.21.4 {*//*()*//*?}*/, toUpgrade.level/*? if > 1.21.4 {*//*()*//*?}*/ + 1)
             );
-            original.set(Initializer.PINNACLE_COUNT, original.getOrDefault(Initializer.PINNACLE_COUNT, 0) + 1);
+            original.set(ModDataComponents.PINNACLE_COUNT, original.getOrDefault(ModDataComponents.PINNACLE_COUNT, 0) + 1);
         }
         return original;
     }

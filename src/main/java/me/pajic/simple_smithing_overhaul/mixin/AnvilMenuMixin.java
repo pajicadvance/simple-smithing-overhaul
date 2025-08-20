@@ -5,10 +5,10 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.moulberry.mixinconstraints.annotations.IfModLoaded;
-import me.pajic.simple_smithing_overhaul.Initializer;
 import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
+import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -112,12 +112,12 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
     private void grantAdvancements(Player player, ItemStack stack, CallbackInfo ci) {
         if (resultSlots.getItem(0).getDamageValue() < inputSlots.getItem(0).getDamageValue()) {
             if (player instanceof ServerPlayer p) ModCriteria.REPAIR_ITEM.trigger(p);
-            int repairCount = stack.getOrDefault(Initializer.REPAIR_COUNT, 0);
+            int repairCount = stack.getOrDefault(ModDataComponents.REPAIR_COUNT, 0);
             if (player instanceof ServerPlayer p) {
                 if (repairCount + 1 == 100) ModCriteria.ITEM_REPAIR_COUNT.trigger(p);
                 if (repairCount + 1 == 1000) ModCriteria.ITEM_REPAIR_COUNT_BIG.trigger(p);
             }
-            stack.set(Initializer.REPAIR_COUNT, repairCount + 1);
+            stack.set(ModDataComponents.REPAIR_COUNT, repairCount + 1);
         }
         if (inputSlots.getItem(1).is(Items.ENCHANTED_BOOK) && !inputSlots.getItem(0).is(Items.ENCHANTED_BOOK)) {
             if (player instanceof ServerPlayer p) ModCriteria.ANVIL_ENCHANT_COMBINE.trigger(p);

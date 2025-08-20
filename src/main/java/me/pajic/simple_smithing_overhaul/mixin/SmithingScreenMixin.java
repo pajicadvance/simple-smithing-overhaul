@@ -1,8 +1,8 @@
 package me.pajic.simple_smithing_overhaul.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import me.pajic.simple_smithing_overhaul.Initializer;
 import me.pajic.simple_smithing_overhaul.Main;
+import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.ItemCombinerScreen;
@@ -56,7 +56,7 @@ public abstract class SmithingScreenMixin extends ItemCombinerScreen<SmithingMen
                 ModUtil.isPinnacleEnchantmentRecipe(menu.slots) &&
                 menu.slots.get(3).hasItem()
         ) {
-            int repairCost = Main.CONFIG.pinnacleEnchantment.pinnacleBaseExperienceCost.get() + Main.CONFIG.pinnacleEnchantment.pinnacleExperienceCostIncrease.get() * menu.slots.get(3).getItem().getOrDefault(Initializer.PINNACLE_COUNT, 0);
+            int repairCost = Main.CONFIG.pinnacleEnchantment.pinnacleBaseExperienceCost.get() + Main.CONFIG.pinnacleEnchantment.pinnacleExperienceCostIncrease.get() * menu.slots.get(3).getItem().getOrDefault(ModDataComponents.PINNACLE_COUNT, 0);
             Component component = Component.translatable("container.repair.cost", repairCost);
             int textColor = (minecraft.player.hasInfiniteMaterials() || minecraft.player.experienceLevel >= repairCost) ? 0xFF80FF20 : 0xFFFF6060;
             int x = imageWidth - 8 - font.width(component) - 2;
