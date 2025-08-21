@@ -1,1 +1,1 @@
-- Updated portable repair to handle broken whetstones correctly.
+- Fixed issue with netherite upgrade recipes in 1.21.4+.

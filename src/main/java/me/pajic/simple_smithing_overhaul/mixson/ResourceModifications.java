@@ -100,6 +100,24 @@ public class ResourceModifications {
             });
         }
 
+        //? if >= 1.21.4 {
+        /*Mixson.registerEvent(
+                Mixson.DEFAULT_PRIORITY,
+                rl -> rl.getPath().startsWith("recipe/") && !rl.getNamespace().equals("emi"),
+                "simple_smithing_overhaul:modify_recipes",
+                context -> {
+                    String type = context.getFile().getAsJsonObject().getAsJsonPrimitive("type").getAsString();
+                    if (type.equals("minecraft:smithing_transform")) {
+                        String addition = context.getFile().getAsJsonObject().getAsJsonPrimitive("addition").getAsString();
+                        if (addition.equals("#minecraft:netherite_tool_materials")) {
+                            context.getFile().getAsJsonObject().addProperty("addition", "minecraft:netherite_ingot");
+                        }
+                    }
+                },
+                true
+        );
+        *///?}
+
         // Ridiculous hack to get language patches to support different languages
         // Registers an event for all available lang files and runs the patch if the lang file name contains the current client language code
         Mixson.registerEvent(
