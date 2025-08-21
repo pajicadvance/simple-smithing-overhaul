@@ -1,1 +1,1 @@
-- Fixed equipped items and their enchantments being functional even when broken.
+- Fixed break sounds not playing.
