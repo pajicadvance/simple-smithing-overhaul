@@ -1,1 +1,1 @@
-- Fixed issue with netherite upgrade recipes in 1.21.4+.
+- Fixed equipped items and their enchantments being functional even when broken.
