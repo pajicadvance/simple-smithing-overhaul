@@ -122,6 +122,20 @@ public class ResourceModifications {
         // Registers an event for all available lang files and runs the patch if the lang file name contains the current client language code
         Mixson.registerEvent(
                 Mixson.DEFAULT_PRIORITY,
+                MixsonUtil.getLocatorFromString("minecraft:lang/*"),
+                "minecraft:modify_lang",
+                context -> {
+                    if (context.getResourceId().getPath().contains(Minecraft.getInstance().getLanguageManager().getSelected())) {
+                        if (Main.CONFIG.improvedExperienceBottle.renameToExperienceBottle.get()) {
+                            context.getFile().getAsJsonObject().remove("entity.minecraft.experience_bottle");
+                            context.getFile().getAsJsonObject().remove("item.minecraft.experience_bottle");
+                        }
+                    }
+                },
+                true
+        );
+        Mixson.registerEvent(
+                Mixson.DEFAULT_PRIORITY,
                 MixsonUtil.getLocatorFromString("simple_smithing_overhaul:lang/*"),
                 "simple_smithing_overhaul:modify_lang",
                 context -> {

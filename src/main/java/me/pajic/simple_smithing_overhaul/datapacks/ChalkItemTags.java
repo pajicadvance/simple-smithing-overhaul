@@ -8,12 +8,15 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ChalkItemTags {
     public static void init() {
-        FabricLoader.getInstance().getModContainer(Main.MOD_ID).ifPresent(modContainer ->
-                ResourceManagerHelper.registerBuiltinResourcePack(
-                        ResourceLocation.fromNamespaceAndPath(Main.MOD_ID, "chalk_item_tags"),
-                        modContainer,
-                        ResourcePackActivationType.ALWAYS_ENABLED
-                )
-        );
+        FabricLoader.getInstance().getModContainer(Main.MOD_ID).ifPresent(modContainer -> {
+            String path = "chalk_item_tags";
+            //? if >= 1.21.4
+            /*path = path.concat("_new");*/
+            ResourceManagerHelper.registerBuiltinResourcePack(
+                    ResourceLocation.fromNamespaceAndPath(Main.MOD_ID, path),
+                    modContainer,
+                    ResourcePackActivationType.ALWAYS_ENABLED
+            );
+        });
     }
 }

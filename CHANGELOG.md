@@ -1,1 +1,2 @@
-- Fixed break sounds not playing.
+- Fixed a bug causing language file patches to not work.
+- Fixed item tags for Chalk mod in 1.21.4 and above.
