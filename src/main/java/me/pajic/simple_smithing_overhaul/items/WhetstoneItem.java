@@ -4,6 +4,7 @@ import me.pajic.simple_smithing_overhaul.Main;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -36,9 +37,19 @@ public class WhetstoneItem extends Item {
 
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
-        return this.isFoil(stack) ?
-                super.getName(stack).copy().withStyle(ChatFormatting.YELLOW) :
-                super.getName(stack);
+        MutableComponent name = super.getName(stack).copy();
+        int damage = stack.getDamageValue();
+        if (damage == 2 || damage == 3) {
+            MutableComponent updatedName = Component.translatable("item.simple_smithing_overhaul.chipped");
+            updatedName.append(name);
+            name = updatedName;
+        }
+        else if (damage == 4 || damage == 5) {
+            MutableComponent updatedName = Component.translatable("item.simple_smithing_overhaul.damaged");
+            updatedName.append(name);
+            name = updatedName;
+        }
+        return this.isFoil(stack) ? name.withStyle(ChatFormatting.YELLOW) : name;
     }
 
     //? if <= 1.21.1 {
@@ -49,7 +60,7 @@ public class WhetstoneItem extends Item {
 
     @Override
     public int getEnchantmentValue() {
-        return 1;
+        return 22;
     }
     //?}
 }

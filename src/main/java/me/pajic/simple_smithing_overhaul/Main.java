@@ -14,4 +14,8 @@ public class Main implements ModInitializer {
     public void onInitialize() {
         Initializer.init();
     }
+
+    public static ResourceLocation withModNamespace(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    }
 }

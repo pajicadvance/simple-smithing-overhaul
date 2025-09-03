@@ -1,6 +1,37 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "simple_smithing_overhaul:item/whetstone"
+    "type": "minecraft:range_dispatch",
+    "property": "minecraft:damage",
+    "normalize": false,
+    "entries": [
+      {
+        "threshold": 1,
+        "model": {
+          "type": "minecraft:model",
+          "model": "simple_smithing_overhaul:item/whetstone"
+        }
+      },
+      {
+        "threshold": 3,
+        "model": {
+          "type": "minecraft:model",
+          "model": "simple_smithing_overhaul:item/whetstone_chipped"
+        }
+      },
+      {
+        "threshold": 5,
+        "model": {
+          "type": "minecraft:model",
+          "model": "simple_smithing_overhaul:item/whetstone_damaged"
+        }
+      },
+      {
+        "threshold": 6,
+        "model": {
+          "type": "minecraft:model",
+          "model": "simple_smithing_overhaul:item/whetstone_broken"
+        }
+      }
+    ]
   }
 }

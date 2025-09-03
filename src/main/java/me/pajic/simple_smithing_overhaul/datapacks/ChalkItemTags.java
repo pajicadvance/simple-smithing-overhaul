@@ -4,7 +4,6 @@ import me.pajic.simple_smithing_overhaul.Main;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.resources.ResourceLocation;
 
 public class ChalkItemTags {
     public static void init() {
@@ -13,7 +12,7 @@ public class ChalkItemTags {
             //? if >= 1.21.4
             /*path = path.concat("_new");*/
             ResourceManagerHelper.registerBuiltinResourcePack(
-                    ResourceLocation.fromNamespaceAndPath(Main.MOD_ID, path),
+                    Main.withModNamespace(path),
                     modContainer,
                     ResourcePackActivationType.ALWAYS_ENABLED
             );

@@ -1,6 +1,7 @@
 package me.pajic.simple_smithing_overhaul.items;
 
 import me.pajic.simple_smithing_overhaul.Main;
+import me.pajic.simple_smithing_overhaul.blocks.ModBlocks;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -11,10 +12,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 import java.util.List;
@@ -44,8 +42,8 @@ public class ModItems {
                     ResourceLocation.parse("simple_smithing_overhaul.smithing_template.enchantment_upgrade.additions_slot_description")
             )),
             List.of(
-                    ResourceLocation.parse("simple_smithing_overhaul:item/empty_slot_enchanted_book"),
-                    ResourceLocation.parse("simple_smithing_overhaul:item/empty_slot_whetstone"),
+                    Main.withModNamespace("item/empty_slot_enchanted_book"),
+                    Main.withModNamespace("item/empty_slot_whetstone"),
                     ResourceLocation.withDefaultNamespace("item/empty_armor_slot_helmet"),
                     ResourceLocation.withDefaultNamespace("item/empty_armor_slot_chestplate"),
                     ResourceLocation.withDefaultNamespace("item/empty_armor_slot_leggings"),
@@ -133,8 +131,8 @@ public class ModItems {
             //?}
             //? if >= 1.21.4 {
             /^List.of(
-                    ResourceLocation.parse("simple_smithing_overhaul:container/slot/enchanted_book"),
-                    ResourceLocation.parse("simple_smithing_overhaul:container/slot/whetstone"),
+                    Main.withModNamespace("container/slot/enchanted_book"),
+                    Main.withModNamespace("container/slot/whetstone"),
                     ResourceLocation.withDefaultNamespace("container/slot/helmet"),
                     ResourceLocation.withDefaultNamespace("container/slot/chestplate"),
                     ResourceLocation.withDefaultNamespace("container/slot/leggings"),
@@ -149,7 +147,7 @@ public class ModItems {
             ^///?}
             new Item.Properties().rarity(Rarity.RARE).setId(ResourceKey.create(
                     Registries.ITEM,
-                    ResourceLocation.fromNamespaceAndPath("simple_smithing_overhaul", "enchantment_upgrade")
+                    Main.withModNamespace("enchantment_upgrade")
             )),
             Main.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading.get()
     );
@@ -197,11 +195,11 @@ public class ModItems {
                     ResourceLocation.withDefaultNamespace("container/slot/shovel"),
                     ResourceLocation.withDefaultNamespace("container/slot/pickaxe")
             ),
-            List.of(ResourceLocation.parse("simple_smithing_overhaul:container/slot/echo_shard")),
+            List.of(Main.withModNamespace("container/slot/echo_shard")),
             ^///?}
             new Item.Properties().rarity(Rarity.EPIC).setId(ResourceKey.create(
                     Registries.ITEM,
-                    ResourceLocation.fromNamespaceAndPath("simple_smithing_overhaul", "pinnacle_enchantment")
+                    Main.withModNamespace("pinnacle_enchantment")
             )),
             Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment.get()
     );
@@ -209,22 +207,32 @@ public class ModItems {
 
     public static final Item WHETSTONE = new WhetstoneItem(
             new Item.Properties()
-                    .durability(12)
+                    .durability(6)
                     .component(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY)
                     //? if > 1.21.1 {
                     /*.repairable(Items.QUARTZ)
-                    .enchantable(1)
+                    .enchantable(22)
                     .setId(ResourceKey.create(
                             Registries.ITEM,
-                            ResourceLocation.fromNamespaceAndPath("simple_smithing_overhaul", "whetstone")
+                            Main.withModNamespace("whetstone")
                     ))
                     *///?}
+    );
+
+    public static final Item BROKEN_ANVIL = new BlockItem(
+            ModBlocks.BROKEN_ANVIL, new Item.Properties()
+            //? if > 1.21.1 {
+            /*.setId(ResourceKey.create(
+                    Registries.ITEM,
+                    Main.withModNamespace("broken_anvil")
+            ))
+            *///?}
     );
 
     public static void init() {
         Registry.register(
                 BuiltInRegistries.ITEM,
-                ResourceLocation.parse("simple_smithing_overhaul:enchantment_upgrade"),
+                Main.withModNamespace("enchantment_upgrade"),
                 ENCHANTMENT_UPGRADE_SMITHING_TEMPLATE
         );
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS).register(contents -> contents.addAfter(
@@ -234,7 +242,7 @@ public class ModItems {
 
         Registry.register(
                 BuiltInRegistries.ITEM,
-                ResourceLocation.parse("simple_smithing_overhaul:pinnacle_enchantment"),
+                Main.withModNamespace("pinnacle_enchantment"),
                 PINNACLE_ENCHANTMENT_SMITHING_TEMPLATE
         );
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS).register(contents -> contents.addAfter(
@@ -244,12 +252,22 @@ public class ModItems {
 
         Registry.register(
                 BuiltInRegistries.ITEM,
-                ResourceLocation.parse("simple_smithing_overhaul:whetstone"),
+                Main.withModNamespace("whetstone"),
                 WHETSTONE
         );
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(contents -> contents.addAfter(
                 Items.NETHERITE_HOE,
                 WHETSTONE
+        ));
+
+        Registry.register(
+                BuiltInRegistries.ITEM,
+                Main.withModNamespace("broken_anvil"),
+                BROKEN_ANVIL
+        );
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS).register(contents -> contents.addAfter(
+                Items.DAMAGED_ANVIL,
+                BROKEN_ANVIL
         ));
     }
 }

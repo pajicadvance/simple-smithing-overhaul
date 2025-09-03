@@ -86,27 +86,20 @@ public class EmiCompat implements EmiPlugin {
 
         // Hide the "base" enchantment upgrading smithing recipe.
         // The behavior of this recipe is completely changed in the mod code so it's irrelevant.
-        emiRegistry.removeRecipes(ResourceLocation.fromNamespaceAndPath(
-                "simple_smithing_overhaul", "enchantment_upgrade_smithing")
-        );
+        emiRegistry.removeRecipes(Main.withModNamespace("enchantment_upgrade_smithing"));
         // Same for pinnacle enchantment smithing recipe
-        emiRegistry.removeRecipes(ResourceLocation.fromNamespaceAndPath(
-                "simple_smithing_overhaul", "pinnacle_enchantment_smithing")
-        );
+        emiRegistry.removeRecipes(Main.withModNamespace("pinnacle_enchantment_smithing"));
 
         // Add enchantment upgrade smithing recipes for every enchantable item.
         // See the enchantment_upgradable tag for the list of included items.
         EmiIngredient input = EmiIngredient.of(Ingredient.of(TagKey.create(
                 Registries.ITEM,
-                ResourceLocation.fromNamespaceAndPath(
-                        "simple_smithing_overhaul",
-                        "enchantment_upgradeable"
-                )
+                Main.withModNamespace("enchantment_upgradeable")
         )));
         counter[0] = 1;
         input.getEmiStacks().forEach(emiStack -> {
             emiRegistry.addRecipe(new EmiEnchantmentUpgradeSmithingRecipe(
-                    ResourceLocation.fromNamespaceAndPath("simple_smithing_overhaul", "/enchantment_upgrade_" + counter[0]),
+                    Main.withModNamespace("/enchantment_upgrade_" + counter[0]),
                     emiStack.getItemStack()
             ));
             counter[0]++;
@@ -119,7 +112,7 @@ public class EmiCompat implements EmiPlugin {
         counter[0] = 1;
         input1.getEmiStacks().forEach(emiStack -> {
             emiRegistry.addRecipe(new EmiPinnacleEnchantmentSmithingRecipe(
-                    ResourceLocation.fromNamespaceAndPath("simple_smithing_overhaul", "/pinnacle_enchantment_" + counter[0]),
+                    Main.withModNamespace("/pinnacle_enchantment_" + counter[0]),
                     emiStack.getItemStack()
             ));
             counter[0]++;
@@ -163,7 +156,7 @@ public class EmiCompat implements EmiPlugin {
     //? if <= 1.21.1 {
     private void addWhetstoneRepairRecipe(EmiRegistry emiRegistry, Item item, Ingredient repairIngredient, int counter) {
         emiRegistry.addRecipe(new EmiPortableRepairRecipe(
-                ResourceLocation.fromNamespaceAndPath("simple_smithing_overhaul", "/portable_repair_" + counter),
+                Main.withModNamespace("/portable_repair_" + counter),
                 EmiStack.of(item),
                 EmiIngredient.of(repairIngredient)
         ));

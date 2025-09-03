@@ -120,10 +120,14 @@
   "item.minecraft.simple_smithing_overhaul.smithing_template.pinnacle_enchantment.additions_slot_description": "Add Echo Shard",
   "text.item.simple_smithing_overhaul.pinnacleCustomName": "Pinnacle Item: +1 Level to Random Enchantment",
 
+  "block.simple_smithing_overhaul.broken_anvil": "Broken Anvil",
+  "item.simple_smithing_overhaul.broken_anvil": "Broken Anvil",
   "item.simple_smithing_overhaul.whetstone": "Whetstone",
   "item.simple_smithing_overhaul.enchanted_whetstone": "Enchanted Whetstone",
   "item.minecraft.experience_bottle.override": "Experience Bottle",
   "item.simple_smithing_overhaul.broken": "Broken ",
+  "item.simple_smithing_overhaul.chipped": "Chipped ",
+  "item.simple_smithing_overhaul.damaged": "Damaged ",
   "entity.minecraft.experience_bottle.override": "Thrown Experience Bottle",
 
   "tag.item.simple_smithing_overhaul.enchantment_upgradeable": "Enchantment Upgradeable",

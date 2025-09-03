@@ -1,5 +1,6 @@
 package me.pajic.simple_smithing_overhaul;
 
+import me.pajic.simple_smithing_overhaul.blocks.ModBlocks;
 import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.datapacks.ChalkItemTags;
 import me.pajic.simple_smithing_overhaul.event.ModEvents;
@@ -33,8 +34,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 *///?}
-//? if 1.21.1
+//? if 1.21.1 {
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
+import net.minecraft.client.renderer.item.ItemProperties;
+//?}
 
 public class Initializer {
     // Static initializers
@@ -53,6 +56,8 @@ public class Initializer {
         ModDataComponents.init();
         // Events
         ModEvents.init();
+        // Blocks (broken anvil)
+        ModBlocks.init();
         // Items
         ModItems.init();
         // Loot and language patches
@@ -67,6 +72,8 @@ public class Initializer {
         initAdditionalRepairables();
         // Item tags for Chalk mod so that I don't have to put 64 entries inside the config
         if (CompatFlags.CHALK_LOADED) ChalkItemTags.init();
+        // Item properties (whetstone stages)
+        initItemProperties();
     }
 
     private static void initAdditionalRepairables() {
@@ -193,5 +200,15 @@ public class Initializer {
             }
         });
         *///?}
+    }
+
+    private static void initItemProperties() {
+        //? if < 1.21.4 {
+        ItemProperties.register(
+                ModItems.WHETSTONE,
+                Main.withModNamespace("damage_state"),
+                (stack, level, entity, i) -> (float) stack.getDamageValue() / stack.getMaxDamage()
+        );
+        //?}
     }
 }

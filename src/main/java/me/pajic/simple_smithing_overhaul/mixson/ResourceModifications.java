@@ -100,6 +100,9 @@ public class ResourceModifications {
             });
         }
 
+        // This is stupid, but in vanilla the material that repairs netherite equipment is also
+        // used as the material that upgrades it to netherite in the first place,
+        // clearly I don't want this as the default repair material for netherite are diamonds in this mod
         //? if >= 1.21.4 {
         /*Mixson.registerEvent(
                 Mixson.DEFAULT_PRIORITY,
@@ -120,6 +123,7 @@ public class ResourceModifications {
 
         // Ridiculous hack to get language patches to support different languages
         // Registers an event for all available lang files and runs the patch if the lang file name contains the current client language code
+        // Also deletes the original translations just to make sure my overrides win because the load order is random
         Mixson.registerEvent(
                 Mixson.DEFAULT_PRIORITY,
                 MixsonUtil.getLocatorFromString("minecraft:lang/*"),

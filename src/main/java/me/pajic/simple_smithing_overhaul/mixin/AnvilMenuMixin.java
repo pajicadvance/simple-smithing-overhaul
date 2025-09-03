@@ -1,11 +1,13 @@
 package me.pajic.simple_smithing_overhaul.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.moulberry.mixinconstraints.annotations.IfModLoaded;
 import me.pajic.simple_smithing_overhaul.Main;
+import me.pajic.simple_smithing_overhaul.blocks.ModBlocks;
 import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
@@ -20,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,6 +33,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -50,6 +54,25 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
 
     @Shadow private int repairItemCountCost;
     @Shadow @Final private DataSlot cost;
+
+    @WrapMethod(method = "createResult")
+    private void nonFunctionalIfBroken(Operation<Void> original) {
+        Optional<Boolean> bl = access.evaluate((level, blockPos) -> level.getBlockState(blockPos).is(ModBlocks.BROKEN_ANVIL));
+        if (bl.isPresent() && !bl.get()) original.call();
+    }
+
+    @ModifyArg(
+            method = "method_24922",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/level/Level;levelEvent(ILnet/minecraft/core/BlockPos;I)V",
+                    ordinal = 1
+            ),
+            index = 0
+    )
+    private static int breakSoundIfBroken(int original, @Local(ordinal = 1) BlockState blockState2) {
+        return blockState2.is(ModBlocks.BROKEN_ANVIL) ? 1029 : original;
+    }
 
     @ModifyExpressionValue(
             method = "createResult",

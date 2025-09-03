@@ -1,2 +1,9 @@
-- Fixed a bug causing language file patches to not work.
-- Fixed item tags for Chalk mod in 1.21.4 and above.
+- Changed how whetstone durability works:
+  - Durability reduced from 12 to 6.
+  - Now has a chance to get damaged on use instead of always taking damage.
+  - Is twice as likely to get damaged on use compared to the anvil.
+  - Item name and texture change based on damage (Whetstone -> Chipped Whetstone -> Damaged Whetstone -> Broken Whetstone).
+- Anvils now turn into a Broken Anvil when used up instead of being destroyed.
+  - Right-clicking a broken anvil does not open the anvil screen.
+  - If the anvil breaks while you're in the anvil screen, you won't be able to do any operations.
+  - Right-clicking an anvil with an iron block repairs it by one stage.

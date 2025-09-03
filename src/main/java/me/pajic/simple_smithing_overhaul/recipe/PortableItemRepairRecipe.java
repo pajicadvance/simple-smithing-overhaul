@@ -1,12 +1,14 @@
 package me.pajic.simple_smithing_overhaul.recipe;
 
 import me.pajic.simple_smithing_overhaul.Initializer;
+import me.pajic.simple_smithing_overhaul.Main;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
@@ -25,6 +27,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
     private List<ItemStack> repairMaterials;
     private List<ItemStack> repairableItems;
     private int unitCost;
+    private RandomSource random;
 
     public PortableItemRepairRecipe(CraftingBookCategory category) {
         super(category);
@@ -32,6 +35,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
 
     @Override
     public boolean matches(@NotNull CraftingInput input, @NotNull Level level) {
+        random = level.getRandom();
         List<ItemStack> whetstones = input.items().stream().filter(itemStack -> itemStack.is(ModItems.WHETSTONE)).toList();
         List<ItemStack> flint = input.items().stream().filter(itemStack -> itemStack.is(Items.FLINT)).toList();
         if (whetstones.isEmpty() ^ flint.isEmpty()) {
@@ -106,7 +110,11 @@ public class PortableItemRepairRecipe extends CustomRecipe {
         for (int i = 0; i < remainingItems.size(); i++) {
             ItemStack itemStack = input.getItem(i);
             if (itemStack.is(ModItems.WHETSTONE)) {
-                itemStack.setDamageValue(itemStack.getDamageValue() + repairMaterials.size());
+                float degradationChance = Main.CONFIG.anvilImprovements.modifyDegradationChance.get() ?
+                        Main.CONFIG.anvilImprovements.degradationChance.get() / 50 : 0.24F;
+                if (random.nextFloat() < degradationChance) {
+                    itemStack.setDamageValue(itemStack.getDamageValue() + 1);
+                }
                 remainingItems.set(i, itemStack.copy());
             } else if (otherGear.contains(itemStack)) {
                 remainingItems.set(i, itemStack.copy());

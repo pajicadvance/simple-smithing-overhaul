@@ -6,6 +6,7 @@
   "plugin": "com.moulberry.mixinconstraints.ConstraintsMixinPlugin",
   "mixins": [
     "AbstractContainerMenuMixin",
+    "AnvilBlockMixin",
     "AnvilMenuMixin",
     "ArmorMaterialsMixin",
     "EnchantBookForEmeraldsMixin",
