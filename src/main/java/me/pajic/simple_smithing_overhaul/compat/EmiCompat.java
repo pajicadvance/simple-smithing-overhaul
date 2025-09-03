@@ -242,7 +242,7 @@ public class EmiCompat implements EmiPlugin {
             if (stack.getMaxDamage() > 0) {
                 int d = r.nextInt(stack.getMaxDamage());
                 if (repaired) {
-                    d -= stack.getMaxDamage() / ModUtil.determineUnitCost(stack);
+                    d -= Math.round((float) stack.getMaxDamage() / ModUtil.determineUnitCost(stack));
                     if (d <= 0) {
                         return EmiStack.of(stack);
                     }

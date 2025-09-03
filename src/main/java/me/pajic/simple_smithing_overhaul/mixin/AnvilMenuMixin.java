@@ -97,7 +97,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
             index = 1
     )
     private int modifyRepairUnitCost(int original, @Local(ordinal = 1) ItemStack itemStack) {
-        return itemStack.getMaxDamage() / ModUtil.determineUnitCost(itemStack);
+        return Math.round((float) itemStack.getMaxDamage() / ModUtil.determineUnitCost(itemStack));
     }
 
     @ModifyExpressionValue(

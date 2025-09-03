@@ -56,7 +56,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
                                         entry.getKey().value().getMaxLevel()
                                 )
                         )) {
-                            return processRepair(input, itemToRepair, whetstone);
+                            return processRepair(input, itemToRepair);
                         }
                     }
                 }
@@ -66,7 +66,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
                 if (!repairableItems.isEmpty()) {
                     itemToRepair = repairableItems.getFirst();
                     if (itemToRepair.isDamaged() && !itemToRepair.isEnchanted()) {
-                        return processRepair(input, itemToRepair, null);
+                        return processRepair(input, itemToRepair);
                     }
                 }
             }
@@ -74,9 +74,9 @@ public class PortableItemRepairRecipe extends CustomRecipe {
         return false;
     }
 
-    private boolean processRepair(CraftingInput input, ItemStack itemToRepair, @Nullable ItemStack whetstone) {
+    private boolean processRepair(CraftingInput input, ItemStack itemToRepair) {
         unitCost = ModUtil.determineUnitCost(itemToRepair);
-        int damageRepairedPerUnit = itemToRepair.getMaxDamage() / unitCost;
+        int damageRepairedPerUnit = Math.round((float) itemToRepair.getMaxDamage() / unitCost);
         int unitsToMaxRepair = itemToRepair.getDamageValue() / damageRepairedPerUnit;
         repairMaterials = input.items().stream().filter(itemStack ->
             //? if <= 1.21.1 {
@@ -91,14 +91,15 @@ public class PortableItemRepairRecipe extends CustomRecipe {
                 return false;
             }).toList();
         *///?}
-        boolean hasEnoughDurability = whetstone == null || (whetstone.getMaxDamage() - whetstone.getDamageValue() >= repairMaterials.size());
-        return !repairMaterials.isEmpty() && repairMaterials.size() <= unitsToMaxRepair + 1 && hasEnoughDurability;
+        return !repairMaterials.isEmpty() && repairMaterials.size() <= unitsToMaxRepair + 1;
     }
 
     @Override
     public @NotNull ItemStack assemble(@NotNull CraftingInput input, HolderLookup.@NotNull Provider registries) {
         ItemStack outputItem = itemToRepair.copy();
-        outputItem.setDamageValue(outputItem.getDamageValue() - ((outputItem.getMaxDamage() / unitCost) * repairMaterials.size()));
+        outputItem.setDamageValue(
+                outputItem.getDamageValue() - (Math.round((float) outputItem.getMaxDamage() / unitCost) * repairMaterials.size())
+        );
         outputItem.set(ModDataComponents.REPAIR_COUNT, outputItem.getOrDefault(ModDataComponents.REPAIR_COUNT, 0) + 1);
         return outputItem;
     }
