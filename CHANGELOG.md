@@ -1,9 +1,3 @@
-- Changed how whetstone durability works:
-  - Durability reduced from 12 to 6.
-  - Now has a chance to get damaged on use instead of always taking damage.
-  - Is twice as likely to get damaged on use compared to the anvil.
-  - Item name and texture change based on damage (Whetstone -> Chipped Whetstone -> Damaged Whetstone -> Broken Whetstone).
-- Anvils now turn into a Broken Anvil when used up instead of being destroyed.
-  - Right-clicking a broken anvil does not open the anvil screen.
-  - If the anvil breaks while you're in the anvil screen, you won't be able to do any operations.
-  - Right-clicking an anvil with an iron block repairs it by one stage.
+- Portable repair recipes now have their own category in EMI.
+- Added a new option to set the maximum allowed amount of pinnacle enchantments on the same item, allowing items to have multiple pinnacle enchantments at the same time by pinnacle upgrading them multiple times. The default is still 1.
+- Enchantments excluded from the pinnacle upgrade check in the configuration now won't be upgraded if they're on the item.

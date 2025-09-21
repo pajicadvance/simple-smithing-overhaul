@@ -48,6 +48,7 @@ public class ModConfig extends Config {
         public ValidatedBoolean enablePinnacleEnchantment = new ValidatedBoolean(true);
         public ValidatedInt pinnacleBaseExperienceCost = new ValidatedInt(30, Integer.MAX_VALUE, 1);
         public ValidatedInt pinnacleExperienceCostIncrease = new ValidatedInt(5, Integer.MAX_VALUE, 1);
+        public ValidatedInt maxPinnacleEnchantmentsOnItem = new ValidatedInt(1, Integer.MAX_VALUE, 1);
         public ValidatedBoolean colorPinnacleItemName = new ValidatedBoolean(true);
         public ValidatedString pinnacleItemNameColor = new ValidatedString("Light Purple", new AllowableStrings(ModUtil.nameColors::contains, () -> ModUtil.nameColors));
         public ValidatedList<ResourceLocation> excludedFromMaxedOutCheck = new ValidatedIdentifier(ResourceLocation.withDefaultNamespace("mending")).toList(
@@ -78,11 +79,11 @@ public class ModConfig extends Config {
                 .valueHandler(new ValidatedString("diamond", new AllowableStrings(ModUtil.itemSuggestions::contains, () -> ModUtil.itemSuggestions)))
                 .defaults(Map.of(
                         "another_furniture:furniture_hammer", "#minecraft:planks",
-                        "guarding:netherite_shield", "minecraft:diamond",
+                        "rearm:netherite_shield", "minecraft:diamond",
                         "rearm:netherite_bow", "minecraft:diamond",
                         "rearm:netherite_crossbow", "minecraft:diamond",
                         "#chalk:chalks", "minecraft:calcite",
-                        "#chalk:glow_chalks", "minecraft:glow_ink_sac"
+                        "#chalk:glow_chalks", "minecraft:calcite"
                 ))
                 .build();
         @SuppressWarnings("unchecked")
@@ -94,10 +95,10 @@ public class ModConfig extends Config {
                         "another_furniture:furniture_hammer", 3,
                         "rearm:netherite_bow", 3,
                         "rearm:netherite_crossbow", 3,
-                        "guarding:netherite_shield", 6,
+                        "rearm:netherite_shield", 3,
                         "vshorses:horseshoe", 3,
                         "#chalk:chalks", 2,
-                        "#chalk:glow_chalks", 1
+                        "#chalk:glow_chalks", 2
                 ))
                 .build();
     }

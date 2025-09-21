@@ -13,6 +13,7 @@
   "simple_smithing_overhaul.config.pinnacleEnchantment.enablePinnacleEnchantment": "Enable pinnacle enchantment",
   "simple_smithing_overhaul.config.pinnacleEnchantment.pinnacleBaseExperienceCost": "Upgrade base XP level cost",
   "simple_smithing_overhaul.config.pinnacleEnchantment.pinnacleExperienceCostIncrease": "Upgrade XP level cost increase",
+  "simple_smithing_overhaul.config.pinnacleEnchantment.maxPinnacleEnchantmentsOnItem": "Maximum pinnacle enchantments on one item",
   "simple_smithing_overhaul.config.pinnacleEnchantment.colorPinnacleItemName": "Color pinnacle item name",
   "simple_smithing_overhaul.config.pinnacleEnchantment.pinnacleItemNameColor": "Pinnacle item name color",
   "simple_smithing_overhaul.config.pinnacleEnchantment.excludedFromMaxedOutCheck": "Enchantments excluded from \"maxed out\" check",
@@ -131,6 +132,8 @@
   "entity.minecraft.experience_bottle.override": "Thrown Experience Bottle",
 
   "tag.item.simple_smithing_overhaul.enchantment_upgradeable": "Enchantment Upgradeable",
+
+  "emi.category.simple_smithing_overhaul.portable_repair": "Portable Repair",
 
   "advancements.smithing.root.title": "Smithing",
   "advancements.smithing.root.description": "Heat up the forge",

@@ -38,11 +38,22 @@ import java.util.function.Consumer;
 // EMI compatibility plugin for Simple Smithing Overhaul
 
 public class EmiCompat implements EmiPlugin {
+
+    //? if <= 1.21.1 {
+    private static final EmiRecipeCategory PORTABLE_REPAIR = new EmiRecipeCategory(
+            Main.withModNamespace("portable_repair"),
+            EmiStack.of(ModItems.WHETSTONE)
+    );
+    //?}
+
     @Override
     public void register(EmiRegistry emiRegistry) {
+
         //? if <= 1.21.1 {
 
         // Add anvil repair recipe for whetstones
+        emiRegistry.addCategory(PORTABLE_REPAIR);
+
         emiRegistry.addRecipe(new EmiAnvilRecipe(
                 EmiStack.of(ModItems.WHETSTONE),
                 EmiStack.of(Items.QUARTZ),
@@ -183,7 +194,7 @@ public class EmiCompat implements EmiPlugin {
 
         @Override
         public EmiRecipeCategory getCategory() {
-            return VanillaEmiRecipeCategories.CRAFTING;
+            return PORTABLE_REPAIR;
         }
 
         @Override
