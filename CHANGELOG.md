@@ -1,3 +1,1 @@
-- Portable repair recipes now have their own category in EMI.
-- Added a new option to set the maximum allowed amount of pinnacle enchantments on the same item, allowing items to have multiple pinnacle enchantments at the same time by pinnacle upgrading them multiple times. The default is still 1.
-- Enchantments excluded from the pinnacle upgrade check in the configuration now won't be upgraded if they're on the item.
+- Adjusted item damage state prefixes to be translation friendly.
