@@ -126,9 +126,9 @@
   "item.simple_smithing_overhaul.whetstone": "Whetstone",
   "item.simple_smithing_overhaul.enchanted_whetstone": "Enchanted Whetstone",
   "item.minecraft.experience_bottle.override": "Experience Bottle",
-  "item.simple_smithing_overhaul.broken": "Broken ",
-  "item.simple_smithing_overhaul.chipped": "Chipped ",
-  "item.simple_smithing_overhaul.damaged": "Damaged ",
+  "item.simple_smithing_overhaul.broken": "Broken %s",
+  "item.simple_smithing_overhaul.chipped": "Chipped %s",
+  "item.simple_smithing_overhaul.damaged": "Damaged %s",
   "entity.minecraft.experience_bottle.override": "Thrown Experience Bottle",
 
   "tag.item.simple_smithing_overhaul.enchantment_upgradeable": "Enchantment Upgradeable",

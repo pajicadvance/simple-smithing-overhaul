@@ -116,8 +116,7 @@ public abstract class ItemStackMixin implements DataComponentHolder {
     )
     private Component changeNameIfBroken(Component original) {
         if (ModUtil.isBroken(thisStack) || (is(Items.ELYTRA) && getMaxDamage() - getDamageValue() == 1)) {
-            MutableComponent name = Component.translatable("item.simple_smithing_overhaul.broken");
-            name.append(original);
+            MutableComponent name = Component.translatable("item.simple_smithing_overhaul.broken", original);
             name.withStyle(ChatFormatting.RED);
             return name;
         }

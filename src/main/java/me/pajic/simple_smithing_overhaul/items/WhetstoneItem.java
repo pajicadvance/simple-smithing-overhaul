@@ -40,14 +40,10 @@ public class WhetstoneItem extends Item {
         MutableComponent name = super.getName(stack).copy();
         int damage = stack.getDamageValue();
         if (damage == 2 || damage == 3) {
-            MutableComponent updatedName = Component.translatable("item.simple_smithing_overhaul.chipped");
-            updatedName.append(name);
-            name = updatedName;
+            name = Component.translatable("item.simple_smithing_overhaul.chipped", name);
         }
         else if (damage == 4 || damage == 5) {
-            MutableComponent updatedName = Component.translatable("item.simple_smithing_overhaul.damaged");
-            updatedName.append(name);
-            name = updatedName;
+            name = Component.translatable("item.simple_smithing_overhaul.damaged", name);
         }
         return this.isFoil(stack) ? name.withStyle(ChatFormatting.YELLOW) : name;
     }
