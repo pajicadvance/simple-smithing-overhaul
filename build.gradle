@@ -118,8 +118,7 @@ publishMods {
         accessToken = providers.environmentVariable("CF_KEY")
         projectId = "1179744"
         minecraftVersions.add(stonecutter.current.version)
-        javaVersions.add(stonecutter.eval(stonecutter.current.version, ">=1.20.5")
-                ? JavaVersion.VERSION_21 : JavaVersion.VERSION_17)
+        javaVersions.add(JavaVersion.VERSION_21)
         clientRequired = true
         serverRequired = true
         requires("fabric-api", "fzzy-config")
