@@ -8,9 +8,10 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.jetbrains.annotations.NotNull;
+//? if <= 1.21.1
+import net.minecraft.world.item.Items;
 
 public class WhetstoneItem extends Item {
 
@@ -51,7 +52,7 @@ public class WhetstoneItem extends Item {
     //? if <= 1.21.1 {
     @Override
     public boolean isEnchantable(@NotNull ItemStack stack) {
-        return stack.getCount() == 1 && stack.get(DataComponents.STORED_ENCHANTMENTS).isEmpty();
+        return stack.getCount() == 1 && stack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty();
     }
 
     @Override

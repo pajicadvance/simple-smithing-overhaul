@@ -21,21 +21,19 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-//? if 1.21.1
+//? if <= 1.21.1
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 
 @Mixin(SmithingMenu.class)
 public abstract class SmithingMenuMixin extends ItemCombinerMenu {
 
-    @Shadow @Final private Level level;
+    @Shadow @Final public Level level;
 
     //? if <= 1.21.1 {
     public SmithingMenuMixin(@Nullable MenuType<?> menuType, int i, Inventory inventory, ContainerLevelAccess containerLevelAccess) {
         super(menuType, i, inventory, containerLevelAccess);
     }
-    //?}
-
-    //? if > 1.21.1 {
+    //?} else {
     /*public SmithingMenuMixin(@Nullable MenuType<?> menuType, int containerId, Inventory inventory, ContainerLevelAccess access, ItemCombinerMenuSlotDefinition slotDefinition) {
         super(menuType, containerId, inventory, access, slotDefinition);
     }
@@ -48,8 +46,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/level/Level;enabledFeatures()Lnet/minecraft/world/flag/FeatureFlagSet;"
             ),
-            //?}
-            //? if > 1.21.1 {
+            //?} else {
             /*method = "method_64653",
             at = @At(
                     value = "FIELD",

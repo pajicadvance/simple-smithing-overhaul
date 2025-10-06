@@ -16,19 +16,17 @@ public abstract class ThrownExperienceBottleMixin extends ThrowableItemProjectil
         super(entityType, level);
     }
 
+    @SuppressWarnings("resource")
     @ModifyArg(
             method = "onHit",
             at = @At(
                     value = "INVOKE",
-                    //? if < 1.21.7
+                    //? if <= 1.21.1
                     target = "Lnet/minecraft/world/entity/ExperienceOrb;award(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/phys/Vec3;I)V"
-                    //? if >= 1.21.7
+                    //? if > 1.21.1
                     /*target = "Lnet/minecraft/world/entity/ExperienceOrb;awardWithDirection(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/Vec3;I)V"*/
             ),
-            //? if < 1.21.7
-            index = 2
-            //? if >= 1.21.7
-            /*index = 3*/
+            index = /*? if <= 1.21.1 {*/2/*?} else {*//*3*//*?}*/
     )
     private int setXpDropAmount(int original) {
         if (Main.CONFIG.improvedExperienceBottle.modifyXpReward.get()) {

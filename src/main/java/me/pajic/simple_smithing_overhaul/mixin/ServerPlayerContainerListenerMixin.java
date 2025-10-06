@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-//? if > 1.21.4 {
+//? if > 1.21.1 {
 /*import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 *///?}
@@ -30,15 +30,14 @@ public class ServerPlayerContainerListenerMixin {
     )
     private void grantAdvancement(AbstractContainerMenu containerToSend, int dataSlotIndex, ItemStack stack, CallbackInfo ci) {
         int pinnacleCount = 0;
-        for (ItemStack item : field_29183.getInventory()./*? if > 1.21.4 {*//*getNonEquipmentItems()*//*?}*//*? if <= 1.21.4 {*/items/*?}*/) {
+        for (ItemStack item : field_29183.getInventory()./*? if > 1.21.1 {*//*getNonEquipmentItems()*//*?} else {*/items/*?}*/) {
             if (item.has(ModDataComponents.PINNACLE_COUNT)) pinnacleCount++;
         }
-        //? if <= 1.21.4 {
+        //? if <= 1.21.1 {
         for (ItemStack item : field_29183.getInventory().armor) {
             if (item.has(ModDataComponents.PINNACLE_COUNT)) pinnacleCount++;
         }
-        //?}
-        //? if > 1.21.4 {
+        //?} else {
         /*for (EquipmentSlot slot : Inventory.EQUIPMENT_SLOT_MAPPING.values()) {
             ItemStack item = field_29183.getInventory().equipment.get(slot);
             if (item.has(ModDataComponents.PINNACLE_COUNT)) pinnacleCount++;

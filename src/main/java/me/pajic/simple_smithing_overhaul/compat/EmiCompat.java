@@ -1,9 +1,10 @@
 package me.pajic.simple_smithing_overhaul.compat;
 
-import dev.emi.emi.EmiPort;
-import dev.emi.emi.EmiUtil;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
+//? if <= 1.21.1 {
+import dev.emi.emi.EmiPort;
+import dev.emi.emi.EmiUtil;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
@@ -31,9 +32,9 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.*;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.*;
 import java.util.function.Consumer;
+//?}
 
 // EMI compatibility plugin for Simple Smithing Overhaul
 
@@ -46,6 +47,7 @@ public class EmiCompat implements EmiPlugin {
     );
     //?}
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void register(EmiRegistry emiRegistry) {
 
@@ -68,19 +70,6 @@ public class EmiCompat implements EmiPlugin {
         // Add anvil repair recipes for every item made repairable by the mod
         final int[] counter = {1};
         ModUtil.additionalRepairables.forEach((key, value) -> {
-            emiRegistry.addRecipe(new EmiAnvilRecipe(
-                    EmiStack.of(key),
-                    EmiIngredient.of(value),
-                    EmiPort.id(
-                            "emi",
-                            "/" + "anvil/repairing/material" +
-                                    "/" + EmiUtil.subId(key) +
-                                    "/" + counter[0]
-                    )
-            ));
-            counter[0]++;
-        });
-        ModUtil.additionalTagRepairables.forEach((key, value) -> {
             for (ItemStack stack : key.getItems()) {
                 emiRegistry.addRecipe(new EmiAnvilRecipe(
                         EmiStack.of(stack),
@@ -92,6 +81,7 @@ public class EmiCompat implements EmiPlugin {
                                         "/" + counter[0]
                         )
                 ));
+                counter[0]++;
             }
         });
 
@@ -146,12 +136,6 @@ public class EmiCompat implements EmiPlugin {
             // Mod repairables
             } else {
                 ModUtil.additionalRepairables.forEach((key, value) -> {
-                    if (item.equals(key)) {
-                        addWhetstoneRepairRecipe(emiRegistry, key, value, counter[0]);
-                        counter[0]++;
-                    }
-                });
-                ModUtil.additionalTagRepairables.forEach((key, value) -> {
                     for (ItemStack stack : key.getItems()) {
                         if (item.equals(stack.getItem())) {
                             addWhetstoneRepairRecipe(emiRegistry, stack.getItem(), value, counter[0]);
@@ -173,7 +157,7 @@ public class EmiCompat implements EmiPlugin {
         ));
     }
 
-    private class EmiPortableRepairRecipe implements EmiRecipe {
+    private static class EmiPortableRepairRecipe implements EmiRecipe {
         protected final ResourceLocation id;
         protected final EmiStack input;
         protected final EmiStack whetstone;
@@ -276,7 +260,7 @@ public class EmiCompat implements EmiPlugin {
         }
     }
 
-    private class EmiEnchantmentUpgradeSmithingRecipe implements EmiRecipe {
+    private static class EmiEnchantmentUpgradeSmithingRecipe implements EmiRecipe {
         protected final ResourceLocation id;
         protected final EmiStack template;
         protected final EmiStack input;
@@ -414,7 +398,7 @@ public class EmiCompat implements EmiPlugin {
         }
     }
 
-    private class EmiPinnacleEnchantmentSmithingRecipe implements EmiRecipe {
+    private static class EmiPinnacleEnchantmentSmithingRecipe implements EmiRecipe {
         protected final ResourceLocation id;
         protected final EmiStack template;
         protected final EmiStack input;

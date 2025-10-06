@@ -58,7 +58,7 @@ public class UpgradeRecipeHandler {
                     ItemStack updatedStack = slots.get(1).getItem().copy();
                     List<Component> enchantmentNames = new ArrayList<>();
                     Consumer<Component> consumer = enchantmentNames::add;
-                    itemEnchantments.addToTooltip(Item.TooltipContext.of(level), consumer, TooltipFlag.NORMAL/*? if > 1.21.4 {*//*, updatedStack.getComponents()*//*?}*/);
+                    itemEnchantments.addToTooltip(Item.TooltipContext.of(level), consumer, TooltipFlag.NORMAL/*? if > 1.21.1 {*//*, updatedStack.getComponents()*//*?}*/);
                     for (int i = 0; i < enchantmentNames.size(); i++) {
                         if (i + 1 == lapisAmount) {
                             Component enchantmentName = enchantmentNames.get(i);
@@ -99,19 +99,19 @@ public class UpgradeRecipeHandler {
                     Set<EnchantmentInstance> itemEnchantments = itemStack.getEnchantments().entrySet()
                             .stream().map(entry -> new EnchantmentInstance(entry.getKey(), entry.getIntValue()))
                             .collect(Collectors.toSet());
-                    if (itemEnchantments.stream().allMatch(ei -> ei.level/*? if > 1.21.4 {*//*()*//*?}*/ >= ei.enchantment/*? if > 1.21.4 {*//*()*//*?}*/.value().getMaxLevel() && !registry.getOrThrow(EnchantmentTags.CURSE).contains(ei.enchantment/*? if > 1.21.4 {*//*()*//*?}*/))) {
+                    if (itemEnchantments.stream().allMatch(ei -> ei.level/*? if > 1.21.1 {*//*()*//*?}*/ >= ei.enchantment/*? if > 1.21.1 {*//*()*//*?}*/.value().getMaxLevel() && !registry.getOrThrow(EnchantmentTags.CURSE).contains(ei.enchantment/*? if > 1.21.1 {*//*()*//*?}*/))) {
                         Set<EnchantmentInstance> maxedOutEnchantments = new HashSet<>();
                         registry.listElements().forEach(ref -> {
                             if (itemStack.canBeEnchantedWith(ref, EnchantingContext.ACCEPTABLE) && ModUtil.enchantmentEligible(ref))
                                 maxedOutEnchantments.add(new EnchantmentInstance(ref, ref.value().getMaxLevel()));
                         });
-                        maxedOutEnchantments.removeIf(ei -> registry.getOrThrow(EnchantmentTags.CURSE).contains(ei.enchantment/*? if > 1.21.4 {*//*()*//*?}*/));
-                        itemEnchantments.forEach(ei -> maxedOutEnchantments.removeIf(ei1 -> !Enchantment.areCompatible(ei1.enchantment/*? if > 1.21.4 {*//*()*//*?}*/, ei.enchantment/*? if > 1.21.4 {*//*()*//*?}*/)));
+                        maxedOutEnchantments.removeIf(ei -> registry.getOrThrow(EnchantmentTags.CURSE).contains(ei.enchantment/*? if > 1.21.1 {*//*()*//*?}*/));
+                        itemEnchantments.forEach(ei -> maxedOutEnchantments.removeIf(ei1 -> !Enchantment.areCompatible(ei1.enchantment/*? if > 1.21.1 {*//*()*//*?}*/, ei.enchantment/*? if > 1.21.1 {*//*()*//*?}*/)));
                         if (maxedOutEnchantments.isEmpty()) {
                             Set<EnchantmentInstance> possibleUpgrades = itemEnchantments.stream().filter(ei ->
-                                    (ei.enchantment/*? if > 1.21.4 {*//*()*//*?}*/.value().getMaxLevel() > 1) &&
-                                    (ei.level/*? if > 1.21.4 {*//*()*//*?}*/ <= ei.enchantment/*? if > 1.21.4 {*//*()*//*?}*/.value().getMaxLevel()) &&
-                                    ModUtil.enchantmentEligible(ei.enchantment/*? if > 1.21.4 {*//*()*//*?}*/)
+                                    (ei.enchantment/*? if > 1.21.1 {*//*()*//*?}*/.value().getMaxLevel() > 1) &&
+                                    (ei.level/*? if > 1.21.1 {*//*()*//*?}*/ <= ei.enchantment/*? if > 1.21.1 {*//*()*//*?}*/.value().getMaxLevel()) &&
+                                    ModUtil.enchantmentEligible(ei.enchantment/*? if > 1.21.1 {*//*()*//*?}*/)
                             ).collect(Collectors.toSet());
                             if (!possibleUpgrades.isEmpty()) {
                                 success = true;
@@ -138,26 +138,26 @@ public class UpgradeRecipeHandler {
             original.set(DataComponents.CUSTOM_NAME, itemName.copy().withStyle(ChatFormatting.getByName(Main.CONFIG.pinnacleEnchantment.pinnacleItemNameColor.get().replace(" ", "_").toUpperCase())));
             List<EnchantmentInstance> existingPinnacleEnchantments = original.getEnchantments().entrySet()
                     .stream().map(entry -> new EnchantmentInstance(entry.getKey(), entry.getIntValue()))
-                    .filter(ei -> ei.level/*? if > 1.21.4 {*//*()*//*?}*/ > ei.enchantment/*? if > 1.21.4 {*//*()*//*?}*/.value().getMaxLevel())
+                    .filter(ei -> ei.level/*? if > 1.21.1 {*//*()*//*?}*/ > ei.enchantment/*? if > 1.21.1 {*//*()*//*?}*/.value().getMaxLevel())
                     .toList();
             if (existingPinnacleEnchantments.size() >= Main.CONFIG.pinnacleEnchantment.maxPinnacleEnchantmentsOnItem.get()) {
                 int index = random.nextInt(existingPinnacleEnchantments.size());
                 EnchantmentInstance toDowngrade = existingPinnacleEnchantments.get(index);
                 EnchantmentHelper.updateEnchantments(original, mutable -> mutable.set(
-                        toDowngrade.enchantment/*? if > 1.21.4 {*//*()*//*?}*/,
-                        toDowngrade.enchantment/*? if > 1.21.4 {*//*()*//*?}*/.value().getMaxLevel()
+                        toDowngrade.enchantment/*? if > 1.21.1 {*//*()*//*?}*/,
+                        toDowngrade.enchantment/*? if > 1.21.1 {*//*()*//*?}*/.value().getMaxLevel()
                 ));
             }
             List<EnchantmentInstance> possibleUpgrades = new ArrayList<>(original.getEnchantments().entrySet()
                     .stream().map(entry -> new EnchantmentInstance(entry.getKey(), entry.getIntValue())).toList());
             possibleUpgrades.removeIf(ei ->
-                    (ei.enchantment/*? if > 1.21.4 {*//*()*//*?}*/.value().getMaxLevel() == 1) ||
-                    !ModUtil.enchantmentEligible(ei.enchantment/*? if > 1.21.4 {*//*()*//*?}*/) ||
-                    existingPinnacleEnchantments.stream().anyMatch(ei1 -> ei.enchantment/*? if > 1.21.4 {*//*()*//*?}*/.equals(ei1.enchantment/*? if > 1.21.4 {*//*()*//*?}*/))
+                    (ei.enchantment/*? if > 1.21.1 {*//*()*//*?}*/.value().getMaxLevel() == 1) ||
+                    !ModUtil.enchantmentEligible(ei.enchantment/*? if > 1.21.1 {*//*()*//*?}*/) ||
+                    existingPinnacleEnchantments.stream().anyMatch(ei1 -> ei.enchantment/*? if > 1.21.1 {*//*()*//*?}*/.equals(ei1.enchantment/*? if > 1.21.1 {*//*()*//*?}*/))
             );
             EnchantmentInstance toUpgrade = possibleUpgrades.get(random.nextInt(possibleUpgrades.size()));
             EnchantmentHelper.updateEnchantments(original, mutable ->
-                    mutable.upgrade(toUpgrade.enchantment/*? if > 1.21.4 {*//*()*//*?}*/, toUpgrade.level/*? if > 1.21.4 {*//*()*//*?}*/ + 1)
+                    mutable.upgrade(toUpgrade.enchantment/*? if > 1.21.1 {*//*()*//*?}*/, toUpgrade.level/*? if > 1.21.1 {*//*()*//*?}*/ + 1)
             );
             original.set(ModDataComponents.PINNACLE_COUNT, original.getOrDefault(ModDataComponents.PINNACLE_COUNT, 0) + 1);
         }

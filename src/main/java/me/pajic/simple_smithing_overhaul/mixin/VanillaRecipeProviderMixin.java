@@ -24,8 +24,7 @@ public abstract class VanillaRecipeProviderMixin /*? if > 1.21.1 {*//*extends Re
     private void buildWhetstoneRepairItemRecipe(RecipeOutput recipeOutput, CallbackInfo ci) {
         SpecialRecipeBuilder.special(PortableItemRepairRecipe::new).save(recipeOutput, "whetstone_repair_item");
     }
-    //?}
-    //? if > 1.21.1 {
+    //?} else {
     /*private void buildWhetstoneRepairItemRecipe(CallbackInfo ci) {
         SpecialRecipeBuilder.special(PortableItemRepairRecipe::new).save(output, "whetstone_repair_item");
     }

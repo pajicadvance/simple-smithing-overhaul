@@ -24,11 +24,10 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-//? if < 1.21.4 {
+//? if <= 1.21.1 {
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-//?}
-//? if >= 1.21.4 {
+//?} else {
 /*import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 *///?}
@@ -39,9 +38,9 @@ public abstract class AnvilBlockMixin extends FallingBlock {
         super(properties);
     }
 
-    //? if < 1.21.4
+    //? if <= 1.21.1
     @Shadow @Final public static DirectionProperty FACING;
-    //? if >= 1.21.4
+    //? if > 1.21.1
     /*@Shadow @Final public static EnumProperty<Direction> FACING;*/
 
     @ModifyReturnValue(
@@ -58,7 +57,7 @@ public abstract class AnvilBlockMixin extends FallingBlock {
     }
 
     @Override
-    protected @NotNull /*? if < 1.21.4 {*/ItemInteractionResult/*?}*//*? if >= 1.21.4 {*//*InteractionResult*//*?}*/ useItemOn(
+    protected @NotNull /*? if <= 1.21.1 {*/ItemInteractionResult/*?} else {*//*InteractionResult*//*?}*/ useItemOn(
             ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult
     ) {
         if (stack.is(Items.IRON_BLOCK) && !state.is(Blocks.ANVIL)) {
@@ -71,7 +70,7 @@ public abstract class AnvilBlockMixin extends FallingBlock {
             level.setBlock(pos, updatedState, 2);
             level.playSound(null, pos, SoundEvents.ANVIL_PLACE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.1F + 0.9F);
             stack.shrink(1);
-            return /*? if < 1.21.4 {*/ItemInteractionResult/*?}*//*? if >= 1.21.4 {*//*InteractionResult*//*?}*/.SUCCESS;
+            return /*? if <= 1.21.1 {*/ItemInteractionResult/*?} else {*//*InteractionResult*//*?}*/.SUCCESS;
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }

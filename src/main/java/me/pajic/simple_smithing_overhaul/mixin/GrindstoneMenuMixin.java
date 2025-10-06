@@ -17,7 +17,7 @@ public class GrindstoneMenuMixin {
         if (Main.CONFIG.grindstoneImprovements.repairCostReductionRecipe.get() && additionalItem.is(Items.NETHERITE_SCRAP)) {
             if (inputItem.isEmpty() || !inputItem.has(DataComponents.REPAIR_COST) || additionalItem.getCount() > 1) return ItemStack.EMPTY;
             ItemStack updatedStack = inputItem.copy();
-            updatedStack.set(DataComponents.REPAIR_COST, inputItem.get(DataComponents.REPAIR_COST) / 2);
+            updatedStack.set(DataComponents.REPAIR_COST, inputItem.getOrDefault(DataComponents.REPAIR_COST, 0) / 2);
             return updatedStack;
         }
         return original.call(inputItem, additionalItem);

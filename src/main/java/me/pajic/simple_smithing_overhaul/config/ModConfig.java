@@ -65,6 +65,7 @@ public class ModConfig extends Config {
         public ValidatedBoolean enableWhetstone = new ValidatedBoolean(true);
     }
 
+    @SuppressWarnings("rawtypes")
     public static class StreamlinedRepairs extends ConfigSection {
         public ValidatedEnum<DestructionPreventMode> preventItemDestruction = new ValidatedEnum<>(DestructionPreventMode.ALL);
         @RequiresAction(action = Action.RESTART)
@@ -118,6 +119,7 @@ public class ModConfig extends Config {
         public ValidatedBoolean increasedDisenchantXpGain = new ValidatedBoolean(true);
     }
 
+    @SuppressWarnings("rawtypes")
     public static class EnchantedBookLootTweaks extends ConfigSection {
         public ValidatedBoolean weightedLevels = new ValidatedBoolean(true);
         @RequiresAction(action = Action.RESTART)
@@ -190,6 +192,7 @@ public class ModConfig extends Config {
                 .build();
     }
 
+    @SuppressWarnings("rawtypes")
     public static class ImprovedExperienceBottle extends ConfigSection {
         public ValidatedBoolean modifyXpReward = new ValidatedBoolean(true);
         public ValidatedInt minXp = new ValidatedInt(30, Integer.MAX_VALUE, 1);

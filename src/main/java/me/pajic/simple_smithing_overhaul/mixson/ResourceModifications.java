@@ -103,7 +103,7 @@ public class ResourceModifications {
         // This is stupid, but in vanilla the material that repairs netherite equipment is also
         // used as the material that upgrades it to netherite in the first place,
         // clearly I don't want this as the default repair material for netherite are diamonds in this mod
-        //? if >= 1.21.4 {
+        //? if > 1.21.1 {
         /*Mixson.registerEvent(
                 Mixson.DEFAULT_PRIORITY,
                 rl -> rl.getPath().startsWith("recipe/") && !rl.getNamespace().equals("emi"),

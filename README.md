@@ -39,6 +39,8 @@ These features are fully configurable for mod support. Modded items can be made 
 - Renaming items no longer costs any XP levels.
 - Anvils are now twice as less likely to get damaged during use.
 - Removed "Too Expensive!" prompt, now allowing you to perform actions that cost more than 40 XP levels.
+- Anvils no longer get destroyed when they break, and instead turn into a Broken Anvil which cannot be used.
+- Right clicking an anvil with an iron block repairs it by one stage.
 
 ## Grindstone Improvements
 
@@ -70,7 +72,7 @@ Gear can now be repaired on the go using flint or a new item, the whetstone, dir
 
 Flint and regular whetstones can repair unenchanted items only. Enchanted items can only be repaired with enchanted whetstones. The enchanted whetstone has to contain all enchantments that are on the enchanted item you want to repair at levels equal or higher than the ones on the item. Enchantments can be added to whetstones by enchanting them in the enchanting table like books or in the anvil by combining them with enchanted books.
 
-Flint is good for one repair and is consumed on use. Whetstones have a fixed durability of 12, with each repair taking off 1 durability. Whetstones themselves can only be repaired in the anvil with quartz.
+Flint is good for one repair and is consumed on use. Whetstones have a durability of 6, with each repair having a chance to damage it by 1. Whetstones themselves can only be repaired in the anvil with quartz.
 
 ![whetstone](https://cdn.modrinth.com/data/cached_images/281069961f02641377ef6b08c5134a0c4d55007b.png)
 
@@ -82,7 +84,7 @@ Items now won't be destroyed when they break. Instead, they will remain at 0 dur
 
 ## Enchantment Upgrade Smithing Template
 
-Found in End City chests as rare loot, this smithing template can upgrade any enchantment on your enchanted item by one level, for an XP cost. Any enchanted item, including items which have stored enchantments like enchanted books, can be upgraded.
+Found in End City chests as rare loot, this smithing template can upgrade any enchantment on your enchanted item by one level, for an XP cost. Any enchanted item, including items which have stored enchantments like enchanted books, can be upgraded. Upgrading items increases their prior work penalty.
 
 If the item has multiple enchantments, the enchantment to upgrade can be selected by adding more lapis (2 lapis to upgrade the second enchantment, 3 lapis to upgrade the third enchantment, and so on).
 
@@ -92,7 +94,7 @@ If the item has multiple enchantments, the enchantment to upgrade can be selecte
 
 Found in Ancient City chests as rare loot, this smithing template will turn your "maxed out" enchanted item into a **pinnacle item**, upgrading a random enchantment on it by one level **above the max level limit**, for a hefty XP cost. This means you can get enchantments such as Fortune IV, Looting IV, and so on.
 
-Items are considered "maxed out" when they are enchanted with all possible enchantments they support at max level, excluding curses. This accounts for exclusive sets, so for example, the following pickaxes are both considered "maxed out" and can be turned into pinnacle items:
+Items are considered "maxed out" when they are enchanted with all possible enchantments they support at max level, excluding curses and enchantments excluded in the config. This accounts for exclusive sets, so for example, the following pickaxes are both considered "maxed out" and can be turned into pinnacle items:
 
 - Fortune III, Efficiency V, Unbreaking III, Mending
 - Silk Touch, Efficiency V, Unbreaking III, Mending

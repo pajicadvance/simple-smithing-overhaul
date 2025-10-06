@@ -23,9 +23,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
-//? if < 1.21.7
+//? if <= 1.21.1
 import net.minecraft.world.item.AnimalArmorItem;
-//? if >= 1.21.7 {
+//? if > 1.21.1 {
 /*import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.entity.EntityType;
 *///?}
@@ -33,28 +33,23 @@ import net.minecraft.world.entity.EntityType;
 import java.util.*;
 
 public class ModUtil {
-    public static final Map<Ingredient, Ingredient> additionalTagRepairables = new HashMap<>();
-    public static final Map<Item, Ingredient> additionalRepairables = new HashMap<>();
+    public static final Map<Ingredient, Ingredient> additionalRepairables = new HashMap<>();
     public static final List<String> itemSuggestions = new ArrayList<>();
 
+    //? if > 1.21.1
+    /*@SuppressWarnings("DataFlowIssue")*/
     public static int determineUnitCost(ItemStack stack) {
         if (Main.CONFIG.streamlinedRepairs.modifyAnvilRepairUnitCosts.get() && !stack.is(Items.AIR)) {
             if (stack.is(ItemTags.HEAD_ARMOR)) return Main.CONFIG.streamlinedRepairs.armor.headArmorUnits.get();
             if (stack.is(ItemTags.CHEST_ARMOR)) return Main.CONFIG.streamlinedRepairs.armor.chestArmorUnits.get();
             if (stack.is(ItemTags.LEG_ARMOR)) return Main.CONFIG.streamlinedRepairs.armor.legArmorUnits.get();
             if (stack.is(ItemTags.FOOT_ARMOR)) return Main.CONFIG.streamlinedRepairs.armor.footArmorUnits.get();
-            //? if < 1.21.7 {
+            //? if <= 1.21.1 {
             if (stack.getItem() instanceof AnimalArmorItem aai) {
-                AnimalArmorItem.BodyType type =
-                        //? if <= 1.21.1
-                        aai.getBodyType();
-                        //? if > 1.21.1
-                        /*aai.bodyType;*/
-                if (type.equals(AnimalArmorItem.BodyType.EQUESTRIAN)) return Main.CONFIG.streamlinedRepairs.armor.horseArmorUnits.get();
-                if (type.equals(AnimalArmorItem.BodyType.CANINE)) return Main.CONFIG.streamlinedRepairs.armor.wolfArmorUnits.get();
+                if (aai.getBodyType().equals(AnimalArmorItem.BodyType.EQUESTRIAN)) return Main.CONFIG.streamlinedRepairs.armor.horseArmorUnits.get();
+                if (aai.getBodyType().equals(AnimalArmorItem.BodyType.CANINE)) return Main.CONFIG.streamlinedRepairs.armor.wolfArmorUnits.get();
             }
-            //?}
-            //? if >= 1.21.7 {
+            //?} else {
             /*if (stack.has(DataComponents.EQUIPPABLE)) {
                 Equippable equippable = stack.get(DataComponents.EQUIPPABLE);
                 if (equippable.canBeEquippedBy(EntityType.WOLF)) return Main.CONFIG.streamlinedRepairs.armor.wolfArmorUnits.get();
@@ -141,11 +136,8 @@ public class ModUtil {
     }
 
     public static boolean hasAdditionalRepair(ItemStack stack, ItemStack repairCandidate) {
-        for (Map.Entry<Ingredient, Ingredient> tagRepair : additionalTagRepairables.entrySet()) {
+        for (Map.Entry<Ingredient, Ingredient> tagRepair : additionalRepairables.entrySet()) {
             if (tagRepair.getKey().test(stack)) return tagRepair.getValue().test(repairCandidate);
-        }
-        for (Map.Entry<Item, Ingredient> repair : additionalRepairables.entrySet()) {
-            if (stack.is(repair.getKey())) return repair.getValue().test(repairCandidate);
         }
         return false;
     }

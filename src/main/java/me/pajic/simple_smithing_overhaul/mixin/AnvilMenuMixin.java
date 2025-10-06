@@ -44,9 +44,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
     public AnvilMenuMixin(@Nullable MenuType<?> type, int containerId, Inventory playerInventory, ContainerLevelAccess access) {
         super(type, containerId, playerInventory, access);
     }
-    //?}
-
-    //? if > 1.21.1 {
+    //?} else {
     /*public AnvilMenuMixin(@Nullable MenuType<?> menuType, int containerId, Inventory inventory, ContainerLevelAccess access, ItemCombinerMenuSlotDefinition slotDefinition) {
         super(menuType, containerId, inventory, access, slotDefinition);
     }
@@ -128,6 +126,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
         }
     }
 
+    @SuppressWarnings("resource")
     @Inject(
             method = "onTake",
             at = @At("HEAD")
@@ -181,6 +180,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
         return value;
     }
 
+    @SuppressWarnings("LocalMayBeArgsOnly")
     @IfModLoaded("taxfreelevels")
     @Inject(
             method = "createResult",

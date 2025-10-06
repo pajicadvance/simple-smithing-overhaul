@@ -9,7 +9,7 @@ public class ChalkItemTags {
     public static void init() {
         FabricLoader.getInstance().getModContainer(Main.MOD_ID).ifPresent(modContainer -> {
             String path = "chalk_item_tags";
-            //? if >= 1.21.4
+            //? if > 1.21.1
             /*path = path.concat("_new");*/
             ResourceManagerHelper.registerBuiltinResourcePack(
                     Main.withModNamespace(path),

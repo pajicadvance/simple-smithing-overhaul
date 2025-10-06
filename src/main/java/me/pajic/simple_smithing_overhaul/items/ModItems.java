@@ -8,12 +8,14 @@ import net.minecraft.Util;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
+//? if > 1.21.1 {
+/*import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+*///?}
 
 import java.util.List;
 
@@ -93,9 +95,7 @@ public class ModItems {
             List.of(ResourceLocation.parse("simple_smithing_overhaul:item/empty_slot_echo_shard")),
             Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment.get()
     );
-    //?}
-
-    //? if > 1.21.1 {
+    //?} else {
     /*public static final Item ENCHANTMENT_UPGRADE_SMITHING_TEMPLATE = new SmithingTemplateFoilItem(
             Component.translatable(Util.makeDescriptionId(
                     "item",
@@ -113,24 +113,7 @@ public class ModItems {
                     "item",
                     ResourceLocation.parse("simple_smithing_overhaul.smithing_template.enchantment_upgrade.additions_slot_description")
             )),
-            //? if < 1.21.4 {
             List.of(
-                    ResourceLocation.parse("simple_smithing_overhaul:item/empty_slot_enchanted_book"),
-                    ResourceLocation.parse("simple_smithing_overhaul:item/empty_slot_whetstone"),
-                    ResourceLocation.withDefaultNamespace("item/empty_armor_slot_helmet"),
-                    ResourceLocation.withDefaultNamespace("item/empty_armor_slot_chestplate"),
-                    ResourceLocation.withDefaultNamespace("item/empty_armor_slot_leggings"),
-                    ResourceLocation.withDefaultNamespace("item/empty_armor_slot_boots"),
-                    ResourceLocation.withDefaultNamespace("item/empty_slot_hoe"),
-                    ResourceLocation.withDefaultNamespace("item/empty_slot_axe"),
-                    ResourceLocation.withDefaultNamespace("item/empty_slot_sword"),
-                    ResourceLocation.withDefaultNamespace("item/empty_slot_shovel"),
-                    ResourceLocation.withDefaultNamespace("item/empty_slot_pickaxe")
-            ),
-            List.of(ResourceLocation.parse("item/empty_slot_lapis_lazuli")),
-            //?}
-            //? if >= 1.21.4 {
-            /^List.of(
                     Main.withModNamespace("container/slot/enchanted_book"),
                     Main.withModNamespace("container/slot/whetstone"),
                     ResourceLocation.withDefaultNamespace("container/slot/helmet"),
@@ -144,7 +127,6 @@ public class ModItems {
                     ResourceLocation.withDefaultNamespace("container/slot/pickaxe")
             ),
             List.of(ResourceLocation.parse("container/slot/lapis_lazuli")),
-            ^///?}
             new Item.Properties().rarity(Rarity.RARE).setId(ResourceKey.create(
                     Registries.ITEM,
                     Main.withModNamespace("enchantment_upgrade")
@@ -169,22 +151,7 @@ public class ModItems {
                     "item",
                     ResourceLocation.parse("simple_smithing_overhaul.smithing_template.pinnacle_enchantment.additions_slot_description")
             )),
-            //? if < 1.21.4 {
             List.of(
-                    ResourceLocation.withDefaultNamespace("item/empty_armor_slot_helmet"),
-                    ResourceLocation.withDefaultNamespace("item/empty_armor_slot_chestplate"),
-                    ResourceLocation.withDefaultNamespace("item/empty_armor_slot_leggings"),
-                    ResourceLocation.withDefaultNamespace("item/empty_armor_slot_boots"),
-                    ResourceLocation.withDefaultNamespace("item/empty_slot_hoe"),
-                    ResourceLocation.withDefaultNamespace("item/empty_slot_axe"),
-                    ResourceLocation.withDefaultNamespace("item/empty_slot_sword"),
-                    ResourceLocation.withDefaultNamespace("item/empty_slot_shovel"),
-                    ResourceLocation.withDefaultNamespace("item/empty_slot_pickaxe")
-            ),
-            List.of(ResourceLocation.parse("simple_smithing_overhaul:item/empty_slot_echo_shard")),
-            //?}
-            //? if >= 1.21.4 {
-            /^List.of(
                     ResourceLocation.withDefaultNamespace("container/slot/helmet"),
                     ResourceLocation.withDefaultNamespace("container/slot/chestplate"),
                     ResourceLocation.withDefaultNamespace("container/slot/leggings"),
@@ -196,7 +163,6 @@ public class ModItems {
                     ResourceLocation.withDefaultNamespace("container/slot/pickaxe")
             ),
             List.of(Main.withModNamespace("container/slot/echo_shard")),
-            ^///?}
             new Item.Properties().rarity(Rarity.EPIC).setId(ResourceKey.create(
                     Registries.ITEM,
                     Main.withModNamespace("pinnacle_enchantment")

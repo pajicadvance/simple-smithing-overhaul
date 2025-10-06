@@ -69,10 +69,7 @@ public abstract class SmithingScreenMixin extends ItemCombinerScreen<SmithingMen
             method = "renderBg",
             at = @At(
                     value = "CONSTANT",
-                    //? if < 1.21.7
-                    args = "intValue=75"
-                    //? if >= 1.21.7
-                    /*args = "intValue=20"*/
+                    args = /*? if <= 1.21.1 {*/"intValue=75"/*?} else {*//*"intValue=20"*//*?}*/
             )
     )
     private int nudgeArmorStandUp(int original) {
@@ -81,10 +78,7 @@ public abstract class SmithingScreenMixin extends ItemCombinerScreen<SmithingMen
                 Main.CONFIG.enchantmentUpgrading.upgradingHasExperienceCost.get()) ||
                 Main.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment.get()
         ) {
-            //? if < 1.21.7
-            return original - 10;
-            //? if >= 1.21.7
-            /*return original - 20;*/
+            return original - /*? if <= 1.21.1 {*/10/*?} else {*//*20*//*?}*/;
         }
         return original;
     }

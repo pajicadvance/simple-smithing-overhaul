@@ -21,8 +21,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
-import org.apache.commons.lang3.function.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,6 +28,10 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+//? if > 1.21.1 {
+/*import net.minecraft.world.item.component.ItemAttributeModifiers;
+import org.apache.commons.lang3.function.TriConsumer;
+*///?}
 
 import java.util.function.BiConsumer;
 
@@ -60,6 +62,7 @@ public abstract class ItemStackMixin implements DataComponentHolder {
     @Unique
     private final ItemStack thisStack = (ItemStack) (Object) this;
 
+    @SuppressWarnings("ConstantValue")
     @Inject(
             method = "set",
             at = @At("HEAD")
@@ -96,15 +99,15 @@ public abstract class ItemStackMixin implements DataComponentHolder {
     }
 
     @WrapMethod(
-            //? if < 1.21.8
+            //? if <= 1.21.1
             method = "forEachModifier(Lnet/minecraft/world/entity/EquipmentSlotGroup;Ljava/util/function/BiConsumer;)V"
-            //? if >= 1.21.8
+            //? if > 1.21.1
             /*method = "forEachModifier(Lnet/minecraft/world/entity/EquipmentSlotGroup;Lorg/apache/commons/lang3/function/TriConsumer;)V"*/
     )
     private void noAttributesIfBroken(
-            //? if < 1.21.8
+            //? if <= 1.21.1
             EquipmentSlotGroup slotGroup, BiConsumer<Holder<Attribute>, AttributeModifier> action, Operation<Void> original
-            //? if >= 1.21.8
+            //? if > 1.21.1
             /*EquipmentSlotGroup slotGroup, TriConsumer<Holder<Attribute>, AttributeModifier, ItemAttributeModifiers.Display> action, Operation<Void> original*/
     ) {
         if (!ModUtil.isBroken(thisStack)) original.call(slotGroup, action);

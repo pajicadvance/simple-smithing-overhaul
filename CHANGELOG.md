@@ -1,1 +1,2 @@
-- Adjusted item damage state prefixes to be translation friendly.
+- Updated to Minecraft 1.21.9.
+- Code improvements.

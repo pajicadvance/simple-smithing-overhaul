@@ -18,7 +18,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -74,6 +73,8 @@ public class PortableItemRepairRecipe extends CustomRecipe {
         return false;
     }
 
+    //? if > 1.21.1
+    /*@SuppressWarnings("DataFlowIssue")*/
     private boolean processRepair(CraftingInput input, ItemStack itemToRepair) {
         unitCost = ModUtil.determineUnitCost(itemToRepair);
         int damageRepairedPerUnit = Math.round((float) itemToRepair.getMaxDamage() / unitCost);
@@ -82,8 +83,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
             //? if <= 1.21.1 {
             ModUtil.hasAdditionalRepair(itemToRepair, itemStack) ||
             itemToRepair.getItem().isValidRepairItem(itemToRepair, itemStack)).toList();
-            //?}
-            //? if > 1.21.1 {
+            //?} else {
             /*{
                 if (itemToRepair.has(DataComponents.REPAIRABLE)) {
                     return itemToRepair.get(DataComponents.REPAIRABLE).isValidRepairItem(itemStack);

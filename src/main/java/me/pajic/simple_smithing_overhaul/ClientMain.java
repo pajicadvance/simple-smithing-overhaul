@@ -14,7 +14,7 @@ public class ClientMain implements ClientModInitializer {
         ClientWorldEvents.AFTER_CLIENT_WORLD_CHANGE.register((server, world) -> {
             ModUtil.itemSuggestions.clear();
             ModUtil.itemSuggestions.addAll(BuiltInRegistries.ITEM.keySet().stream().map(ResourceLocation::toString).toList());
-            BuiltInRegistries.ITEM./*? if > 1.21.1 {*//*listTagIds()*//*?}*//*? if 1.21.1 {*/getTagNames()/*?}*/.forEach(tag -> ModUtil.itemSuggestions.add("#" + tag.location()));
+            BuiltInRegistries.ITEM./*? if > 1.21.1 {*//*listTagIds()*//*?} else {*/getTagNames()/*?}*/.forEach(tag -> ModUtil.itemSuggestions.add("#" + tag.location()));
         });
     }
 }
