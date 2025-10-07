@@ -49,6 +49,7 @@ dependencies {
     modCompileOnly "maven.modrinth:rearm:${property("rearm_version")}"
     modImplementation "maven.modrinth:tax-free-levels:${property("taxfreelevels_version")}"
     modRuntimeOnly "maven.modrinth:cloth-config:${property("cloth_version")}"
+    modCompileOnly "maven.modrinth:enchiridion:0.1.0+1.21.1-fabric"
 
     if (stonecutter.eval(stonecutter.current.version, "1.21.1")) {
         modImplementation "dev.emi:emi-fabric:${property("emi_version")}"

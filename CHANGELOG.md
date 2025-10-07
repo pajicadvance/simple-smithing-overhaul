@@ -1,2 +1,2 @@
-- Updated to Minecraft 1.21.9.
-- Code improvements.
+- Bump version to 1.21.10.
+- Fixed additional repairs using item tags not working.

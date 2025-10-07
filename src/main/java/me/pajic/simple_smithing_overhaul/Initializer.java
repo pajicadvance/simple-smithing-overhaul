@@ -15,6 +15,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -100,13 +101,13 @@ public class Initializer {
                 if (repairItem.startsWith("#")) {
                     if (repairMaterial.startsWith("#")) {
                         ModUtil.additionalRepairables.put(
-                                Ingredient.of(registry.get(ResourceLocation.tryParse(repairItem.substring(1)))/*? if > 1.21.1 {*//*.orElseThrow().value()*//*?}*/),
-                                Ingredient.of(registry.get(ResourceLocation.tryParse(repairMaterial.substring(1)))/*? if > 1.21.1 {*//*.orElseThrow().value()*//*?}*/)
+                                ingredientFromItemTag(repairItem, registry),
+                                ingredientFromItemTag(repairMaterial, registry)
                         );
                     } else {
                         registry.getOptional(ResourceLocation.tryParse(repairMaterial)).ifPresent(value ->
                                 ModUtil.additionalRepairables.put(
-                                        Ingredient.of(registry.get(ResourceLocation.tryParse(repairItem.substring(1)))/*? if > 1.21.1 {*//*.orElseThrow().value()*//*?}*/),
+                                        ingredientFromItemTag(repairItem, registry),
                                         Ingredient.of(value)
                                 )
                         );
@@ -117,7 +118,7 @@ public class Initializer {
                         if (repairMaterial.startsWith("#")) {
                             ModUtil.additionalRepairables.put(
                                     Ingredient.of(item.get()),
-                                    Ingredient.of(registry.get(ResourceLocation.tryParse(repairMaterial.substring(1)))/*? if > 1.21.1 {*//*.orElseThrow().value()*//*?}*/)
+                                    ingredientFromItemTag(repairMaterial, registry)
                             );
                         } else {
                             registry.getOptional(ResourceLocation.parse(repairMaterial)).ifPresent(value ->
@@ -128,7 +129,7 @@ public class Initializer {
                 }
             // Catch anything that explodes above because I cannot be bothered
             } catch (Throwable t) {
-                LOGGER.warn("Unable to load additional repair, skipping: {}", t.getMessage());
+                LOGGER.warn("Unable to load additional repair {} with {}, skipping: {}", repairItem, repairMaterial, t.getMessage());
             }
         });
         // Patch item components to add the repairable component
@@ -155,5 +156,9 @@ public class Initializer {
                 (stack, level, entity, i) -> (float) stack.getDamageValue() / stack.getMaxDamage()
         );
         //?}
+    }
+
+    private static Ingredient ingredientFromItemTag(String s, Registry<Item> registry) {
+        return Ingredient.of(/*? if > 1.21.1 {*//*registry.get(*//*?}*/TagKey.create(registry.key(), ResourceLocation.tryParse(s.substring(1)))/*? if > 1.21.1 {*//*).orElseThrow()*//*?}*/);
     }
 }
