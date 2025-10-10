@@ -16,6 +16,7 @@ repositories {
     maven { url = "https://maven.fzzyhmstrs.me/"}
     maven { url = "https://maven.shedaniel.me/" }
     maven { url = "https://jitpack.io" }
+    maven { url = "https://repo.sleeping.town/" }
     exclusiveContent {
         forRepository {
             maven {
@@ -50,6 +51,9 @@ dependencies {
     modImplementation "maven.modrinth:tax-free-levels:${property("taxfreelevels_version")}"
     modRuntimeOnly "maven.modrinth:cloth-config:${property("cloth_version")}"
     modCompileOnly "maven.modrinth:enchiridion:0.1.0+1.21.1-fabric"
+
+    modRuntimeOnly("maven.modrinth:item-descriptions:${property("enchdesc_version")}")
+    modRuntimeOnly("folk.sisby:kaleido-config:${property("kaleido_version")}")
 
     if (stonecutter.eval(stonecutter.current.version, "1.21.1")) {
         modImplementation "dev.emi:emi-fabric:${property("emi_version")}"

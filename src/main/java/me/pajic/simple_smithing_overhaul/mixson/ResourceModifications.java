@@ -122,8 +122,7 @@ public class ResourceModifications {
         *///?}
 
         // Ridiculous hack to get language patches to support different languages
-        // Registers an event for all available lang files and runs the patch if the lang file name contains the current client language code
-        // Also deletes the original translations just to make sure my overrides win because the load order is random
+        // Deletes the original translations just to make sure my overrides win because lang files are stupid and load order is random
         Mixson.registerEvent(
                 Mixson.DEFAULT_PRIORITY,
                 MixsonUtil.getLocatorFromString("minecraft:lang/*"),
@@ -138,26 +137,16 @@ public class ResourceModifications {
                 },
                 true
         );
-        Mixson.registerEvent(
+        // After 1.21.1 the smithing template name format changed so this is needed
+        // The override string is the item name for 1.21.1+, normal string is for 1.21.1
+        //? if > 1.21.1 {
+        /*Mixson.registerEvent(
                 Mixson.DEFAULT_PRIORITY,
-                MixsonUtil.getLocatorFromString("simple_smithing_overhaul:lang/*"),
+                MixsonUtil.getLocatorFromString("simple_smithing_overhaul:lang/^"),
                 "simple_smithing_overhaul:modify_lang",
                 context -> {
                     if (context.getResourceId().getPath().contains(Minecraft.getInstance().getLanguageManager().getSelected())) {
-                        if (Main.CONFIG.improvedExperienceBottle.renameToExperienceBottle.get()) {
-                            context.getFile().getAsJsonObject().addProperty(
-                                    "entity.minecraft.experience_bottle",
-                                    context.getFile().getAsJsonObject().get("entity.minecraft.experience_bottle.override").getAsString()
-                            );
-                            context.getFile().getAsJsonObject().addProperty(
-                                    "item.minecraft.experience_bottle",
-                                    context.getFile().getAsJsonObject().get("item.minecraft.experience_bottle.override").getAsString()
-                            );
-                        }
-                        // After 1.21.1 the smithing template name format changed so this is needed
-                        // The override string is the item name for 1.21.1+, normal string is for 1.21.1
-                        //? if > 1.21.1 {
-                        /*context.getFile().getAsJsonObject().addProperty(
+                        context.getFile().getAsJsonObject().addProperty(
                                 "item.simple_smithing_overhaul.enchantment_upgrade",
                                 context.getFile().getAsJsonObject().get("item.simple_smithing_overhaul.enchantment_upgrade.override").getAsString()
                         );
@@ -165,10 +154,10 @@ public class ResourceModifications {
                                 "item.simple_smithing_overhaul.pinnacle_enchantment",
                                 context.getFile().getAsJsonObject().get("item.simple_smithing_overhaul.pinnacle_enchantment.override").getAsString()
                         );
-                        *///?}
                     }
                 },
                 true
         );
+        *///?}
     }
 }

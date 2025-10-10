@@ -125,11 +125,16 @@
   "item.simple_smithing_overhaul.broken_anvil": "Broken Anvil",
   "item.simple_smithing_overhaul.whetstone": "Whetstone",
   "item.simple_smithing_overhaul.enchanted_whetstone": "Enchanted Whetstone",
-  "item.minecraft.experience_bottle.override": "Experience Bottle",
+  "item.minecraft.experience_bottle": "Experience Bottle",
   "item.simple_smithing_overhaul.broken": "Broken %s",
   "item.simple_smithing_overhaul.chipped": "Chipped %s",
   "item.simple_smithing_overhaul.damaged": "Damaged %s",
-  "entity.minecraft.experience_bottle.override": "Thrown Experience Bottle",
+  "entity.minecraft.experience_bottle": "Thrown Experience Bottle",
+
+  "lore.simple_smithing_overhaul.enchantment_upgrade": "A template that can be used in a Smithing Table to upgrade a single enchantment on any item by one level. It's a rare find!",
+  "lore.simple_smithing_overhaul.pinnacle_enchantment": "A template that can be used in a Smithing Table to upgrade one random enchantment on a fully enchanted item by one level past the level limit. It's an epic find!",
+  "lore.simple_smithing_overhaul.whetstone": "A tool that can be used in the crafting grid to repair items on the go.",
+  "lore.simple_smithing_overhaul.broken_anvil": "A block that can be used to name, repair, and improve equipment. This one is broken, though! Repair it with iron blocks.",
 
   "tag.item.simple_smithing_overhaul.enchantment_upgradeable": "Enchantment Upgradeable",
 

@@ -1,2 +1,1 @@
-- Bump version to 1.21.10.
-- Fixed additional repairs using item tags not working.
+- Added compatibility for Item Descriptions.

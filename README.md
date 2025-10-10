@@ -15,6 +15,7 @@ Many aspects of the mod are configurable. The mod description below reflects the
 **Highly recommended mods**
 - [**EMI**](https://modrinth.com/mod/emi): Simple Smithing Overhaul has full EMI integration and is recommended for seeing recipes and changes from the mod in-game.
 - [**Tax Free Levels**](https://modrinth.com/mod/tax-free-levels): Fully compatible with Simple Smithing Overhaul and greatly complements its changes.
+- [**Item Descriptions**](https://modrinth.com/mod/item-descriptions): Simple Smithing Overhaul provides descriptions for the items it adds using this mod.
 
 Fabric version requires [Fabric API](https://modrinth.com/mod/fabric-api) and [Fzzy Config](https://modrinth.com/mod/fzzy-config). Use [Mod Menu](https://modrinth.com/mod/modmenu) to change settings in-game.
 
