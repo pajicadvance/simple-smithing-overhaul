@@ -50,7 +50,7 @@ public class ModConfig extends Config {
         public ValidatedInt pinnacleExperienceCostIncrease = new ValidatedInt(5, Integer.MAX_VALUE, 1);
         public ValidatedInt maxPinnacleEnchantmentsOnItem = new ValidatedInt(1, Integer.MAX_VALUE, 1);
         public ValidatedBoolean colorPinnacleItemName = new ValidatedBoolean(true);
-        public ValidatedString pinnacleItemNameColor = new ValidatedString("Light Purple", new AllowableStrings(ModUtil.nameColors::contains, () -> ModUtil.nameColors));
+        public ValidatedString pinnacleItemNameColor = new ValidatedString("Light Purple", new AllowableStrings(ModUtil.colorNames::contains, () -> ModUtil.colorNames));
         public ValidatedList<ResourceLocation> excludedFromMaxedOutCheck = new ValidatedIdentifier(ResourceLocation.withDefaultNamespace("mending")).toList(
                 ResourceLocation.withDefaultNamespace("mending"),
                 ResourceLocation.withDefaultNamespace("thorns"),
@@ -76,7 +76,7 @@ public class ModConfig extends Config {
         public UniqueItems uniqueItems = new UniqueItems();
         @SuppressWarnings("unchecked") @RequiresAction(action = Action.RESTART)
         public ValidatedMap<String, String> modRepairableItems = (new ValidatedMap.Builder())
-                .keyHandler(new ValidatedString("diamond_pickaxe", new AllowableStrings(ModUtil.itemSuggestions::contains, () -> ModUtil.itemSuggestions)))
+                .keyHandler(new ValidatedString("", new AllowableStrings(ModUtil.itemSuggestions::contains, () -> ModUtil.itemSuggestions)))
                 .valueHandler(new ValidatedString("diamond", new AllowableStrings(ModUtil.itemSuggestions::contains, () -> ModUtil.itemSuggestions)))
                 .defaults(Map.of(
                         "another_furniture:furniture_hammer", "#minecraft:planks",
@@ -89,7 +89,7 @@ public class ModConfig extends Config {
                 .build();
         @SuppressWarnings("unchecked")
         public ValidatedMap<String, Integer> modItemUnitCosts = (new ValidatedMap.Builder())
-                .keyHandler(new ValidatedString("diamond_pickaxe", new AllowableStrings(ModUtil.itemSuggestions::contains, () -> ModUtil.itemSuggestions)))
+                .keyHandler(new ValidatedString("", new AllowableStrings(ModUtil.itemSuggestions::contains, () -> ModUtil.itemSuggestions)))
                 .valueHandler(new ValidatedInt(1, 9, 1))
                 .defaults(Map.of(
                         "#farmersdelight:tools/knives", 1,
@@ -102,6 +102,13 @@ public class ModConfig extends Config {
                         "#chalk:glow_chalks", 2
                 ))
                 .build();
+        public ValidatedList<String> flintMaterialBlacklist = new ValidatedString(
+                "", new AllowableStrings(ModUtil.itemSuggestions::contains, () -> ModUtil.itemSuggestions)
+        ).toList(
+                "minecraft:diamond",
+                "minecraft:netherite_scrap",
+                "minecraft:netherite_ingot"
+        );
     }
 
     public static class AnvilImprovements extends ConfigSection {

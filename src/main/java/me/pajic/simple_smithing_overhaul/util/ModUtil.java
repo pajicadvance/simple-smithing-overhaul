@@ -168,7 +168,7 @@ public class ModUtil {
         return original;
     }
 
-    public static List<String> nameColors = List.of(
+    public static List<String> colorNames = List.of(
             "Black",
             "Dark Blue",
             "Dark Green",

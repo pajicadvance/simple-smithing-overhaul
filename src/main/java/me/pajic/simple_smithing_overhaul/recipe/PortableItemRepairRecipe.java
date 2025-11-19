@@ -8,7 +8,10 @@ import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
@@ -20,12 +23,14 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Optional;
 
 public class PortableItemRepairRecipe extends CustomRecipe {
     private ItemStack itemToRepair;
     private List<ItemStack> repairMaterials;
     private List<ItemStack> repairableItems;
     private int unitCost;
+    private int flintCount = 0;
     private RandomSource random;
 
     public PortableItemRepairRecipe(CraftingBookCategory category) {
@@ -55,17 +60,18 @@ public class PortableItemRepairRecipe extends CustomRecipe {
                                         entry.getKey().value().getMaxLevel()
                                 )
                         )) {
-                            return processRepair(input, itemToRepair);
+                            return processRepair(input);
                         }
                     }
                 }
             } else if (flint.size() == 1) {
+                flintCount = flint.getFirst().getCount();
                 repairableItems = input.items().stream().filter(itemStack ->
                         itemStack.isDamageableItem() && !itemStack.is(Items.FLINT)).toList();
                 if (!repairableItems.isEmpty()) {
                     itemToRepair = repairableItems.getFirst();
                     if (itemToRepair.isDamaged() && !itemToRepair.isEnchanted()) {
-                        return processRepair(input, itemToRepair);
+                        return processRepair(input);
                     }
                 }
             }
@@ -75,7 +81,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
 
     //? if > 1.21.1
     /*@SuppressWarnings("DataFlowIssue")*/
-    private boolean processRepair(CraftingInput input, ItemStack itemToRepair) {
+    private boolean processRepair(CraftingInput input) {
         unitCost = ModUtil.determineUnitCost(itemToRepair);
         int damageRepairedPerUnit = Math.round((float) itemToRepair.getMaxDamage() / unitCost);
         int unitsToMaxRepair = itemToRepair.getDamageValue() / damageRepairedPerUnit;
@@ -91,7 +97,18 @@ public class PortableItemRepairRecipe extends CustomRecipe {
                 return false;
             }).toList();
         *///?}
-        return !repairMaterials.isEmpty() && repairMaterials.size() <= unitsToMaxRepair + 1;
+        boolean flintMaterialValid = true;
+        if (flintCount > 0) {
+            for (String s : Main.CONFIG.streamlinedRepairs.flintMaterialBlacklist.get()) {
+                for (ItemStack i : repairMaterials) {
+                    Optional<Item> opt = BuiltInRegistries.ITEM.getOptional(ResourceLocation.tryParse(s));
+                    if (opt.isPresent() && i.is(opt.get())) {
+                        flintMaterialValid = false;
+                    }
+                }
+            }
+        }
+        return !repairMaterials.isEmpty() && repairMaterials.size() <= unitsToMaxRepair + 1 && (flintCount == 0 || (flintMaterialValid && flintCount >= repairMaterials.size()));
     }
 
     @Override
@@ -117,9 +134,14 @@ public class PortableItemRepairRecipe extends CustomRecipe {
                     itemStack.setDamageValue(itemStack.getDamageValue() + 1);
                 }
                 remainingItems.set(i, itemStack.copy());
+            } else if (itemStack.is(Items.FLINT)) {
+                ItemStack updated = new ItemStack(Items.FLINT);
+                updated.setCount(itemStack.getCount() - repairMaterials.size());
+                itemStack.setCount(0);
+                remainingItems.set(i, updated);
             } else if (otherGear.contains(itemStack)) {
                 remainingItems.set(i, itemStack.copy());
-            } else if (!itemStack.is(Items.FLINT) && !itemStack.is(repairMaterials.getFirst().getItem()) && !itemStack.is(repairableItems.getFirst().getItem())) {
+            } else if (!itemStack.is(repairMaterials.getFirst().getItem()) && !itemStack.is(repairableItems.getFirst().getItem())) {
                 remainingItems.set(i, new ItemStack(itemStack.getItem()));
             }
         }

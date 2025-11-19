@@ -59,8 +59,10 @@
   "simple_smithing_overhaul.config.streamlinedRepairs.uniqueItems.warpedFungusOnAStickUnits": "Warped Fungus on a Stick",
   "simple_smithing_overhaul.config.streamlinedRepairs.modRepairableItems": "Modded item repair recipes",
   "simple_smithing_overhaul.config.streamlinedRepairs.modItemUnitCosts": "Modded item unit costs",
+  "simple_smithing_overhaul.config.streamlinedRepairs.flintMaterialBlacklist": "Flint material blacklist",
   "simple_smithing_overhaul.config.streamlinedRepairs.modRepairableItems.desc": "Left value: Item or item tag to allow repair for\nRight value: Item or item tag used as the repair material",
   "simple_smithing_overhaul.config.streamlinedRepairs.modItemUnitCosts.desc": "Left value: Item or item tag to set the repair unit cost for\nRight value: The amount of repair material required to repair the item from zero to full durability",
+  "simple_smithing_overhaul.config.streamlinedRepairs.flintMaterialBlacklist.desc": "Flint won't be able to repair items which are repaired with materials from this list.",
 
   "simple_smithing_overhaul.config.anvilImprovements": "Anvil improvements",
   "simple_smithing_overhaul.config.anvilImprovements.modifyDegradationChance": "Modify degradation chance",
