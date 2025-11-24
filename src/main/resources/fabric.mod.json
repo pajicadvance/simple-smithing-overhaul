@@ -28,6 +28,9 @@
     ],
     "client": [
       "${group}.${id}.platform.fabric.FabricClientEntrypoint"
+    ],
+    "emi": [
+      "${group}.${id}.compat.EmiCompat"
     ]
   },
   "mixins": [

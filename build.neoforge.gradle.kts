@@ -83,6 +83,7 @@ neoForge {
 repositories {
 	maven("https://maven.parchmentmc.org") { name = "ParchmentMC" }
 	maven("https://maven.fzzyhmstrs.me/") { name = "Fzzy Config" }
+	maven("https://maven.terraformersmc.com/" ) { name = "TerraformersMC" }
 	maven("https://thedarkcolour.github.io/KotlinForForge/") { name = "KotlinForForge" }
 	maven("https://jitpack.io") { name = "Jitpack" }
 	exclusiveContent {
@@ -97,6 +98,13 @@ dependencies {
 	jarJar("com.moulberry:mixinconstraints:${prop("deps.mixinconstraints")}")
 	implementation("com.github.ramixin:mixson-neoforge:${prop("deps.mixson")}")
 	jarJar("com.github.ramixin:mixson-neoforge:${prop("deps.mixson")}")
+
+	if (stonecutter.eval(stonecutter.current.version, "1.21.1")) {
+		implementation("dev.emi:emi-neoforge:${prop("deps.emi")}")
+	}
+	compileOnly("dev.emi:emi-neoforge:${prop("deps.emi")}")
+	compileOnly("maven.modrinth:enchantment-disabler:${prop("deps.ed")}")
+	compileOnly("maven.modrinth:tax-free-levels:${prop("deps.tfl")}")
 }
 
 tasks.named("createMinecraftArtifacts") {

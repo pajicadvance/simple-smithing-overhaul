@@ -1,0 +1,8 @@
+{
+	"pack": {
+		"description": "Netherite scrap repair material for netherite",
+		"pack_format": 88,
+		"min_format": 88,
+		"max_format": 9999
+	}
+}

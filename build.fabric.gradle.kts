@@ -106,4 +106,11 @@ dependencies {
 	include("com.github.ramixin:mixson-fabric:${prop("deps.mixson")}") {
 		exclude(group = "net.fabricmc.fabric-api", module = "fabric-api")
 	}
+
+	if (stonecutter.eval(stonecutter.current.version, "1.21.1")) {
+		modImplementation("dev.emi:emi-fabric:${prop("deps.emi")}")
+	}
+	else modCompileOnly("dev.emi:emi-fabric:${prop("deps.emi")}")
+	modCompileOnly("maven.modrinth:tax-free-levels:${prop("deps.tfl")}")
+	modCompileOnly("maven.modrinth:enchantment-disabler:${prop("deps.ed")}")
 }

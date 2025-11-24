@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:smithing/root",
+  "criteria": {
+    "repair_item": {
+      "trigger": "simple_smithing_overhaul:repair_item"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.smithing.as_good_as_new.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:iron_ingot"
+    },
+    "title": {
+      "translate": "advancements.smithing.as_good_as_new.title"
+    }
+  },
+  "requirements": [
+    [
+      "repair_item"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

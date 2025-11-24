@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_anvil",
+  "textures": {
+    "top": "simple_smithing_overhaul:block/broken_anvil_top"
+  }
+}

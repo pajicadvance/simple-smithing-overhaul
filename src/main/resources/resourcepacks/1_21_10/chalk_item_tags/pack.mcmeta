@@ -1,0 +1,8 @@
+{
+	"pack": {
+		"description": "Chalk item tags",
+		"pack_format": 88,
+		"min_format": 88,
+		"max_format": 9999
+	}
+}

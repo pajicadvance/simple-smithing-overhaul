@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "simple_smithing_overhaul:item/whetstone"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "simple_smithing_overhaul:damage_state": 0.33
+      },
+      "model": "simple_smithing_overhaul:item/whetstone_chipped"
+    },
+    {
+      "predicate": {
+        "simple_smithing_overhaul:damage_state": 0.66
+      },
+      "model": "simple_smithing_overhaul:item/whetstone_damaged"
+    },
+    {
+      "predicate": {
+        "simple_smithing_overhaul:damage_state": 1
+      },
+      "model": "simple_smithing_overhaul:item/whetstone_broken"
+    }
+  ]
+}
