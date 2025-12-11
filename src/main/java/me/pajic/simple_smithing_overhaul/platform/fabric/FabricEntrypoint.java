@@ -25,7 +25,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -177,7 +177,7 @@ public class FabricEntrypoint implements ModInitializer {
 		);
 		Registry.register(
 				BuiltInRegistries.RECIPE_SERIALIZER,
-				ResourceLocation.withDefaultNamespace("crafting_special_portable_repairitem"),
+				Identifier.withDefaultNamespace("crafting_special_portable_repairitem"),
 				ModRecipeSerializers.PORTABLE_ITEM_REPAIR
 		);
 	}

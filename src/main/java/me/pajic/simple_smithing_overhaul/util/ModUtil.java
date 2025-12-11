@@ -14,7 +14,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
@@ -81,7 +81,7 @@ public class ModUtil {
 								ingredientFromItemTag(repairMaterial, registry)
 						);
 					} else {
-						registry.get(ResourceKey.create(Registries.ITEM, ResourceLocation.tryParse(repairMaterial))).ifPresent(value ->
+						registry.get(ResourceKey.create(Registries.ITEM, Identifier.tryParse(repairMaterial))).ifPresent(value ->
 								ModUtil.additionalRepairables.put(
 										ingredientFromItemTag(repairItem, registry),
 										Ingredient.of(value.value())
@@ -89,7 +89,7 @@ public class ModUtil {
 						);
 					}
 				} else {
-					Optional<Holder.Reference<Item>> item = registry.get(ResourceKey.create(Registries.ITEM, ResourceLocation.parse(repairItem)));
+					Optional<Holder.Reference<Item>> item = registry.get(ResourceKey.create(Registries.ITEM, Identifier.parse(repairItem)));
 					if (item.isPresent()) {
 						if (repairMaterial.startsWith("#")) {
 							ModUtil.additionalRepairables.put(
@@ -97,7 +97,7 @@ public class ModUtil {
 									ingredientFromItemTag(repairMaterial, registry)
 							);
 						} else {
-							registry.get(ResourceKey.create(Registries.ITEM, ResourceLocation.parse(repairMaterial))).ifPresent(value ->
+							registry.get(ResourceKey.create(Registries.ITEM, Identifier.parse(repairMaterial))).ifPresent(value ->
 									ModUtil.additionalRepairables.put(Ingredient.of(item.get().value()), Ingredient.of(value.value()))
 							);
 						}
@@ -167,11 +167,11 @@ public class ModUtil {
 
             for (Map.Entry<String, Integer> entry : SSO.CONFIG.streamlinedRepairs.modItemUnitCosts.entrySet()) {
                 if (entry.getKey().startsWith("#")) {
-                    if (stack.is(TagKey.create(Registries.ITEM, ResourceLocation.parse(entry.getKey().replace("#", ""))))) {
+                    if (stack.is(TagKey.create(Registries.ITEM, Identifier.parse(entry.getKey().replace("#", ""))))) {
                         return entry.getValue();
                     }
                 } else {
-                    Optional<Item> item = BuiltInRegistries.ITEM.getOptional(ResourceLocation.parse(entry.getKey()));
+                    Optional<Item> item = BuiltInRegistries.ITEM.getOptional(Identifier.parse(entry.getKey()));
                     if (item.isPresent() && stack.is(item.get())) {
                         return entry.getValue();
                     }
@@ -271,7 +271,7 @@ public class ModUtil {
 	}
 
 	private static Ingredient ingredientFromItemTag(String s, HolderLookup<Item> registry) {
-		return Ingredient.of(/*? if > 1.21.1 {*/registry.get(/*?}*/TagKey.create(Registries.ITEM, ResourceLocation.tryParse(s.substring(1)))/*? if > 1.21.1 {*/).orElseThrow()/*?}*/);
+		return Ingredient.of(/*? if > 1.21.1 {*/registry.get(/*?}*/TagKey.create(Registries.ITEM, Identifier.tryParse(s.substring(1)))/*? if > 1.21.1 {*/).orElseThrow()/*?}*/);
 	}
 
     public static List<String> colorNames = List.of(

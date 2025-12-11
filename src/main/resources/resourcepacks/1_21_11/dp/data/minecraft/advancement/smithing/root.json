@@ -1,0 +1,35 @@
+{
+  "criteria": {
+    "anvil": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:anvil"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:gui/advancements/backgrounds/smithing",
+    "description": {
+      "translate": "advancements.smithing.root.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:anvil"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.smithing.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "anvil"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

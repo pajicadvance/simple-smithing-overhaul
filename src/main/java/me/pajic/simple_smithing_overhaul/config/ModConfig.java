@@ -21,7 +21,7 @@ import me.pajic.simple_smithing_overhaul.SSO;
 import me.pajic.simple_smithing_overhaul.util.ChanceAndCount;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Map;
 
@@ -57,12 +57,12 @@ public class ModConfig extends Config {
         public ValidatedInt maxPinnacleEnchantmentsOnItem = new ValidatedInt(1, Integer.MAX_VALUE, 1);
         public ValidatedBoolean colorPinnacleItemName = new ValidatedBoolean(true);
         public ValidatedString pinnacleItemNameColor = new ValidatedString("Light Purple", new AllowableStrings(ModUtil.colorNames::contains, () -> ModUtil.colorNames));
-        public ValidatedList<ResourceLocation> excludedFromMaxedOutCheck = new ValidatedIdentifier(ResourceLocation.withDefaultNamespace("mending")).toList(
-                ResourceLocation.withDefaultNamespace("mending"),
-                ResourceLocation.withDefaultNamespace("thorns"),
-                ResourceLocation.withDefaultNamespace("fire_aspect"),
-                ResourceLocation.withDefaultNamespace("punch"),
-                ResourceLocation.withDefaultNamespace("knockback")
+        public ValidatedList<Identifier> excludedFromMaxedOutCheck = new ValidatedIdentifier(Identifier.withDefaultNamespace("mending")).toList(
+                Identifier.withDefaultNamespace("mending"),
+                Identifier.withDefaultNamespace("thorns"),
+                Identifier.withDefaultNamespace("fire_aspect"),
+                Identifier.withDefaultNamespace("punch"),
+                Identifier.withDefaultNamespace("knockback")
         );
     }
 
@@ -138,71 +138,71 @@ public class ModConfig extends Config {
         @RequiresAction(action = Action.RESTART)
         public ValidatedBoolean additionalChestLoot = new ValidatedBoolean(true);
         @SuppressWarnings("unchecked") @RequiresAction(action = Action.RESTART)
-        public ValidatedMap<ResourceLocation, ChanceAndCount> bookLootLocations = (new ValidatedMap.Builder())
+        public ValidatedMap<Identifier, ChanceAndCount> bookLootLocations = (new ValidatedMap.Builder())
                 .keyHandler(ValidatedIdentifier
 						.ofDynamicKey(
-								ResourceLocation.withDefaultNamespace("chests/simple_dungeon"),
+								Identifier.withDefaultNamespace("chests/simple_dungeon"),
                         		Registries.LOOT_TABLE,
                         		"all_loot_tables",
                         		(rl, lth) -> rl.getPath().contains("chests") || rl.getPath().contains("gameplay") || rl.getPath().contains("archaeology")
 						)
 				)
                 .valueHandler(new ValidatedAny<>(new ChanceAndCount()))
-                .defaults(Map.<ResourceLocation, ChanceAndCount>ofEntries(
-                        Map.entry(ResourceLocation.parse("minecraft:chests/abandoned_mineshaft"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/ancient_city"), new ChanceAndCount(50, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/bastion_other"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/bastion_treasure"), new ChanceAndCount(100, 3)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/buried_treasure"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/desert_pyramid"), new ChanceAndCount(75, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/jungle_temple"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/pillager_outpost"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/nether_bridge"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/simple_dungeon"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/stronghold_corridor"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/stronghold_crossing"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/stronghold_library"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/underwater_ruin_big"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/underwater_ruin_small"), new ChanceAndCount(50, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/woodland_mansion"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("betteroceanmonuments:chests/upper_side_chamber"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("betterjungletemples:chests/treasure"), new ChanceAndCount(100, 2)),
-                        Map.entry(ResourceLocation.parse("betterdungeons:spider_dungeon/chests/egg_room"), new ChanceAndCount(50, 1)),
-                        Map.entry(ResourceLocation.parse("betterdungeons:skeleton_dungeon/chests/common"), new ChanceAndCount(50, 1)),
-                        Map.entry(ResourceLocation.parse("betterdungeons:skeleton_dungeon/chests/middle"), new ChanceAndCount(50, 1)),
-                        Map.entry(ResourceLocation.parse("betterdungeons:zombie_dungeon/chests/common"), new ChanceAndCount(50, 1)),
-                        Map.entry(ResourceLocation.parse("betterdungeons:zombie_dungeon/chests/special"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("betterdungeons:zombie_dungeon/chests/tombstone"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("betterdungeons:small_nether_dungeon/chests/common"), new ChanceAndCount(50, 1)),
-                        Map.entry(ResourceLocation.parse("betterfortresses:chests/keep"), new ChanceAndCount(20, 1)),
-                        Map.entry(ResourceLocation.parse("betterfortresses:chests/beacon"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/badlands"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/dark_forest"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/deep"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/desert"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/icy"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/jungle"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/mushroom"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/nether"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/ocean"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/snow"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/swamp"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/basalt"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/birch"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/crimson"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/dark_forest"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/desert"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/end"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/icy"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/jungle"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/nether"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/ocean"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/savanna"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/soul"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/stone"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/swamp"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/taiga"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/warped"), new ChanceAndCount(100, 1))
+                .defaults(Map.<Identifier, ChanceAndCount>ofEntries(
+                        Map.entry(Identifier.parse("minecraft:chests/abandoned_mineshaft"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/ancient_city"), new ChanceAndCount(50, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/bastion_other"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/bastion_treasure"), new ChanceAndCount(100, 3)),
+                        Map.entry(Identifier.parse("minecraft:chests/buried_treasure"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/desert_pyramid"), new ChanceAndCount(75, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/jungle_temple"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/pillager_outpost"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/nether_bridge"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/simple_dungeon"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/stronghold_corridor"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/stronghold_crossing"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/stronghold_library"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/underwater_ruin_big"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/underwater_ruin_small"), new ChanceAndCount(50, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/woodland_mansion"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("betteroceanmonuments:chests/upper_side_chamber"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("betterjungletemples:chests/treasure"), new ChanceAndCount(100, 2)),
+                        Map.entry(Identifier.parse("betterdungeons:spider_dungeon/chests/egg_room"), new ChanceAndCount(50, 1)),
+                        Map.entry(Identifier.parse("betterdungeons:skeleton_dungeon/chests/common"), new ChanceAndCount(50, 1)),
+                        Map.entry(Identifier.parse("betterdungeons:skeleton_dungeon/chests/middle"), new ChanceAndCount(50, 1)),
+                        Map.entry(Identifier.parse("betterdungeons:zombie_dungeon/chests/common"), new ChanceAndCount(50, 1)),
+                        Map.entry(Identifier.parse("betterdungeons:zombie_dungeon/chests/special"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("betterdungeons:zombie_dungeon/chests/tombstone"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("betterdungeons:small_nether_dungeon/chests/common"), new ChanceAndCount(50, 1)),
+                        Map.entry(Identifier.parse("betterfortresses:chests/keep"), new ChanceAndCount(20, 1)),
+                        Map.entry(Identifier.parse("betterfortresses:chests/beacon"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/badlands"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/dark_forest"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/deep"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/desert"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/icy"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/jungle"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/mushroom"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/nether"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/ocean"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/snow"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/swamp"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/basalt"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/birch"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/crimson"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/dark_forest"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/desert"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/end"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/icy"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/jungle"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/nether"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/ocean"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/savanna"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/soul"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/stone"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/swamp"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/taiga"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/warped"), new ChanceAndCount(100, 1))
                 ))
                 .build();
     }
@@ -217,72 +217,72 @@ public class ModConfig extends Config {
         @RequiresAction(action = Action.RESTART)
         public ValidatedBoolean additionalChestLoot = new ValidatedBoolean(true);
         @SuppressWarnings("unchecked") @RequiresAction(action = Action.RESTART)
-        public ValidatedMap<ResourceLocation, ChanceAndCount> bottleLootLocations = (new ValidatedMap.Builder())
+        public ValidatedMap<Identifier, ChanceAndCount> bottleLootLocations = (new ValidatedMap.Builder())
                 .keyHandler(ValidatedIdentifier
 						.ofDynamicKey(
-								ResourceLocation.withDefaultNamespace("chests/simple_dungeon"),
+								Identifier.withDefaultNamespace("chests/simple_dungeon"),
                         		Registries.LOOT_TABLE,
                         		"all_loot_tables",
                         		(rl, lth) -> rl.getPath().contains("chests") || rl.getPath().contains("gameplay") || rl.getPath().contains("archaeology")
 						)
 				)
                 .valueHandler(new ValidatedAny<>(new ChanceAndCount()))
-                .defaults(Map.<ResourceLocation, ChanceAndCount>ofEntries(
-                        Map.entry(ResourceLocation.parse("minecraft:chests/abandoned_mineshaft"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/ancient_city"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/end_city_treasure"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/jungle_temple"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/pillager_outpost"), new ChanceAndCount(100, 2)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/simple_dungeon"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/stronghold_corridor"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/stronghold_crossing"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/stronghold_library"), new ChanceAndCount(100, 2)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/woodland_mansion"), new ChanceAndCount(100, 3)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/desert_pyramid"), new ChanceAndCount(75, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/nether_bridge"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/buried_treasure"), new ChanceAndCount(100, 2)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/underwater_ruin_big"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/underwater_ruin_small"), new ChanceAndCount(50, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/bastion_other"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("minecraft:chests/bastion_treasure"), new ChanceAndCount(100, 3)),
-                        Map.entry(ResourceLocation.parse("betteroceanmonuments:chests/upper_side_chamber"), new ChanceAndCount(100, 3)),
-                        Map.entry(ResourceLocation.parse("betterjungletemples:chests/treasure"), new ChanceAndCount(100, 3)),
-                        Map.entry(ResourceLocation.parse("betterdungeons:spider_dungeon/chests/egg_room"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("betterdungeons:skeleton_dungeon/chests/common"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("betterdungeons:skeleton_dungeon/chests/middle"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("betterdungeons:zombie_dungeon/chests/common"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("betterdungeons:zombie_dungeon/chests/special"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("betterdungeons:zombie_dungeon/chests/tombstone"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("betterdungeons:small_nether_dungeon/chests/common"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("betterfortresses:chests/keep"), new ChanceAndCount(50, 1)),
-                        Map.entry(ResourceLocation.parse("betterfortresses:chests/beacon"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/badlands"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/dark_forest"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/deep"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/desert"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/icy"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/jungle"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/mushroom"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/nether"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/ocean"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/snow"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/dungeons/swamp"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/basalt"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/birch"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/crimson"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/dark_forest"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/desert"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/end"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/icy"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/jungle"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/nether"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/ocean"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/savanna"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/soul"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/stone"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/swamp"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/taiga"), new ChanceAndCount(100, 1)),
-                        Map.entry(ResourceLocation.parse("repurposed_structures:chests/mineshafts/warped"), new ChanceAndCount(100, 1))
+                .defaults(Map.<Identifier, ChanceAndCount>ofEntries(
+                        Map.entry(Identifier.parse("minecraft:chests/abandoned_mineshaft"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/ancient_city"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/end_city_treasure"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/jungle_temple"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/pillager_outpost"), new ChanceAndCount(100, 2)),
+                        Map.entry(Identifier.parse("minecraft:chests/simple_dungeon"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/stronghold_corridor"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/stronghold_crossing"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/stronghold_library"), new ChanceAndCount(100, 2)),
+                        Map.entry(Identifier.parse("minecraft:chests/woodland_mansion"), new ChanceAndCount(100, 3)),
+                        Map.entry(Identifier.parse("minecraft:chests/desert_pyramid"), new ChanceAndCount(75, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/nether_bridge"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/buried_treasure"), new ChanceAndCount(100, 2)),
+                        Map.entry(Identifier.parse("minecraft:chests/underwater_ruin_big"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/underwater_ruin_small"), new ChanceAndCount(50, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/bastion_other"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("minecraft:chests/bastion_treasure"), new ChanceAndCount(100, 3)),
+                        Map.entry(Identifier.parse("betteroceanmonuments:chests/upper_side_chamber"), new ChanceAndCount(100, 3)),
+                        Map.entry(Identifier.parse("betterjungletemples:chests/treasure"), new ChanceAndCount(100, 3)),
+                        Map.entry(Identifier.parse("betterdungeons:spider_dungeon/chests/egg_room"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("betterdungeons:skeleton_dungeon/chests/common"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("betterdungeons:skeleton_dungeon/chests/middle"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("betterdungeons:zombie_dungeon/chests/common"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("betterdungeons:zombie_dungeon/chests/special"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("betterdungeons:zombie_dungeon/chests/tombstone"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("betterdungeons:small_nether_dungeon/chests/common"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("betterfortresses:chests/keep"), new ChanceAndCount(50, 1)),
+                        Map.entry(Identifier.parse("betterfortresses:chests/beacon"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/badlands"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/dark_forest"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/deep"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/desert"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/icy"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/jungle"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/mushroom"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/nether"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/ocean"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/snow"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/dungeons/swamp"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/basalt"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/birch"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/crimson"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/dark_forest"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/desert"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/end"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/icy"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/jungle"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/nether"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/ocean"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/savanna"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/soul"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/stone"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/swamp"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/taiga"), new ChanceAndCount(100, 1)),
+                        Map.entry(Identifier.parse("repurposed_structures:chests/mineshafts/warped"), new ChanceAndCount(100, 1))
                 ))
                 .build();
     }

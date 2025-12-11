@@ -8,7 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -100,7 +100,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
         if (flintCount > 0) {
             for (String s : SSO.CONFIG.streamlinedRepairs.flintMaterialBlacklist.get()) {
                 for (ItemStack i : repairMaterials) {
-                    Optional<Item> opt = BuiltInRegistries.ITEM.getOptional(ResourceLocation.tryParse(s));
+                    Optional<Item> opt = BuiltInRegistries.ITEM.getOptional(Identifier.tryParse(s));
                     if (opt.isPresent() && i.is(opt.get())) {
                         flintMaterialValid = false;
                     }

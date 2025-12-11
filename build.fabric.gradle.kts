@@ -49,22 +49,15 @@ loom {
 }
 
 stonecutter {
+	filters.exclude("**/*.accesswidener", "**/*.cfg")
 	val dir = eval(current.version, ">1.21.10")
 	replacements.string {
 		direction = dir
-		replace(".ResourceLocation", ".Identifier")
+		replace("ValidatedIdentifier", "ValidatedIdentifier")
 	}
 	replacements.string {
 		direction = dir
-		replace("ResourceLocation.", "Identifier.")
-	}
-	replacements.string {
-		direction = dir
-		replace("<ResourceLocation", "<Identifier")
-	}
-	replacements.string {
-		direction = dir
-		replace(" ResourceLocation ", " Identifier ")
+		replace("ResourceLocation", "Identifier")
 	}
 }
 
