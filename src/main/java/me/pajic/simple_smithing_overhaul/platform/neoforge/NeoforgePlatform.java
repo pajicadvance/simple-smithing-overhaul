@@ -1,8 +1,8 @@
 package me.pajic.simple_smithing_overhaul.platform.neoforge;
 
 //? neoforge {
-/*
-import me.pajic.simple_smithing_overhaul.platform.Platform;
+
+/*import me.pajic.simple_smithing_overhaul.platform.Platform;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 

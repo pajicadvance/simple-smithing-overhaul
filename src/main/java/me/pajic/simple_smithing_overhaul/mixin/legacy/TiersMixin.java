@@ -1,8 +1,8 @@
 package me.pajic.simple_smithing_overhaul.mixin.legacy;
 
 //? if 1.21.1 {
-/*
-import me.pajic.simple_smithing_overhaul.util.ModUtil;
+
+/*import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;

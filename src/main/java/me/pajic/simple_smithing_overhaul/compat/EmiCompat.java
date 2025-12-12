@@ -1,8 +1,8 @@
 package me.pajic.simple_smithing_overhaul.compat;
 
 //? if 1.21.1 {
-/*
-import dev.emi.emi.EmiPort;
+
+/*import dev.emi.emi.EmiPort;
 import dev.emi.emi.EmiUtil;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
@@ -42,7 +42,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.jetbrains.annotations.Nullable;
 //? if neoforge
-/^import dev.emi.emi.api.EmiEntrypoint;^/
+//import dev.emi.emi.api.EmiEntrypoint;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,7 +55,7 @@ import java.util.function.Consumer;
 // EMI compatibility plugin for Simple Smithing Overhaul
 
 //? if neoforge
-/^@EmiEntrypoint^/
+//@EmiEntrypoint
 public class EmiCompat implements EmiPlugin {
 
     private static final EmiRecipeCategory PORTABLE_REPAIR = new EmiRecipeCategory(

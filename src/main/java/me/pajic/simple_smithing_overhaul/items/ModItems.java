@@ -3,7 +3,7 @@ package me.pajic.simple_smithing_overhaul.items;
 import me.pajic.simple_smithing_overhaul.SSO;
 import me.pajic.simple_smithing_overhaul.blocks.ModBlocks;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;

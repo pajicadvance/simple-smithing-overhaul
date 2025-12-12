@@ -1,8 +1,8 @@
 package me.pajic.simple_smithing_overhaul.platform.neoforge;
 
 //? neoforge {
-/*
-import me.pajic.simple_smithing_overhaul.SSO;
+
+/*import me.pajic.simple_smithing_overhaul.SSO;
 import me.pajic.simple_smithing_overhaul.blocks.ModBlocks;
 import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.items.ModItems;

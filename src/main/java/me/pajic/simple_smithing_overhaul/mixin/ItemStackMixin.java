@@ -81,13 +81,13 @@ public abstract class ItemStackMixin implements DataComponentHolder {
 
     @WrapWithCondition(
             //? if <= 1.21.1 && fabric
-            /*method = "hurtAndBreak(ILnet/minecraft/server/level/ServerLevel;Lnet/minecraft/server/level/ServerPlayer;Ljava/util/function/Consumer;)V",*/
+            //method = "hurtAndBreak(ILnet/minecraft/server/level/ServerLevel;Lnet/minecraft/server/level/ServerPlayer;Ljava/util/function/Consumer;)V",
 			//? if <= 1.21.1 && neoforge
-			/*method = "hurtAndBreak(ILnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/LivingEntity;Ljava/util/function/Consumer;)V",*/
+			//method = "hurtAndBreak(ILnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/LivingEntity;Ljava/util/function/Consumer;)V",
             //? if > 1.21.1 && fabric
             method = "applyDamage",
 			//? if > 1.21.1 && neoforge
-			/*method = "applyDamage(ILnet/minecraft/world/entity/LivingEntity;Ljava/util/function/Consumer;)V",*/
+			//method = "applyDamage(ILnet/minecraft/world/entity/LivingEntity;Ljava/util/function/Consumer;)V",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/item/ItemStack;shrink(I)V"
@@ -104,13 +104,13 @@ public abstract class ItemStackMixin implements DataComponentHolder {
 
     @WrapMethod(
             //? if <= 1.21.1
-            /*method = "forEachModifier(Lnet/minecraft/world/entity/EquipmentSlotGroup;Ljava/util/function/BiConsumer;)V"*/
+            //method = "forEachModifier(Lnet/minecraft/world/entity/EquipmentSlotGroup;Ljava/util/function/BiConsumer;)V"
             //? if > 1.21.1
             method = "forEachModifier(Lnet/minecraft/world/entity/EquipmentSlotGroup;Lorg/apache/commons/lang3/function/TriConsumer;)V"
     )
     private void noAttributesIfBroken(
             //? if <= 1.21.1
-            /*EquipmentSlotGroup slotGroup, BiConsumer<Holder<Attribute>, AttributeModifier> action, Operation<Void> original*/
+            //EquipmentSlotGroup slotGroup, BiConsumer<Holder<Attribute>, AttributeModifier> action, Operation<Void> original
             //? if > 1.21.1
             EquipmentSlotGroup slotGroup, TriConsumer<Holder<Attribute>, AttributeModifier, ItemAttributeModifiers.Display> action, Operation<Void> original
     ) {

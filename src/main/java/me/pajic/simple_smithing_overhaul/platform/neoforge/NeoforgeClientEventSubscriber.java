@@ -1,8 +1,8 @@
 package me.pajic.simple_smithing_overhaul.platform.neoforge;
 
 //? neoforge {
-/*
-import me.pajic.simple_smithing_overhaul.SSO;
+
+/*import me.pajic.simple_smithing_overhaul.SSO;
 import me.pajic.simple_smithing_overhaul.mixson.ClientResourceModifications;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;

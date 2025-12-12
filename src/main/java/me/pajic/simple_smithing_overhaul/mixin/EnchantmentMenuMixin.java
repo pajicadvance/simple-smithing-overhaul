@@ -45,7 +45,7 @@ public class EnchantmentMenuMixin {
 			//? if fabric
             method = "method_17411",
 			//? if neoforge
-			/*method = "lambda$slotsChanged$0",*/
+			//method = "lambda$slotsChanged$0",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/level/block/EnchantingTableBlock;isValidBookShelf(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;)Z"

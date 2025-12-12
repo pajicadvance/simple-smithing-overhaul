@@ -21,9 +21,9 @@ public class AbstractContainerMenuMixin {
 			//? fabric
             method = "method_34249",
 			//? neoforge && 1.21.1
-			/*method = "lambda$doClick$3",*/
+			//method = "lambda$doClick$3",
 			//? neoforge && > 1.21.1
-			/*method = "lambda$doClick$4",*/
+			//method = "lambda$doClick$4",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/inventory/AbstractContainerMenu;setCarried(Lnet/minecraft/world/item/ItemStack;)V"

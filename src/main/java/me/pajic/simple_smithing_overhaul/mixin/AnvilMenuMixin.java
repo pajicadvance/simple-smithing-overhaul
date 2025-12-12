@@ -69,7 +69,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
 			//? if fabric
             method = "method_24922",
 			//? if neoforge
-			/*method = "lambda$onTake$2",*/
+			//method = "lambda$onTake$2",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/level/Level;levelEvent(ILnet/minecraft/core/BlockPos;I)V",
@@ -85,7 +85,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
 			//? if fabric || (neoforge && 1.21.1)
 			method = "createResult",
 			//? if neoforge && > 1.21.1
-			/*method = "createResultInternal",*/
+			//method = "createResultInternal",
             at = @At(
                     value = "INVOKE",
 					//? if fabric {
@@ -107,7 +107,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
 			//? if fabric || (neoforge && 1.21.1)
 			method = "createResult",
 			//? if neoforge && > 1.21.1
-			/*method = "createResultInternal",*/
+			//method = "createResultInternal",
             at = @At(
                     value = "INVOKE",
                     target = "Ljava/lang/Math;min(II)I"),
@@ -181,7 +181,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
 			//? if fabric || (neoforge && 1.21.1)
 			method = "createResult",
 			//? if neoforge && > 1.21.1
-			/*method = "createResultInternal",*/
+			//method = "createResultInternal",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/util/Mth;clamp(JJJ)J"
@@ -209,7 +209,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
 			//? if fabric || (neoforge && 1.21.1)
 			method = "createResult",
 			//? if neoforge && > 1.21.1
-			/*method = "createResultInternal",*/
+			//method = "createResultInternal",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/item/ItemStack;isEmpty()Z",
@@ -239,7 +239,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
 			//? if fabric || (neoforge && 1.21.1)
 			method = "createResult",
 			//? if neoforge && > 1.21.1
-			/*method = "createResultInternal",*/
+			//method = "createResultInternal",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/inventory/AnvilMenu;calculateIncreasedRepairCost(I)I"
@@ -253,7 +253,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
 				SSO.CONFIG.anvilImprovements.noWorkCostIncreaseOnRepair.get() &&
                 inputSlots.getItem(0).isDamageableItem() &&
                 //? if <= 1.21.1
-                /*(ModUtil.hasAdditionalRepair(inputSlots.getItem(0), inputSlots.getItem(1)) || inputSlots.getItem(0).getItem().isValidRepairItem(inputSlots.getItem(0), inputSlots.getItem(1)))*/
+                //(ModUtil.hasAdditionalRepair(inputSlots.getItem(0), inputSlots.getItem(1)) || inputSlots.getItem(0).getItem().isValidRepairItem(inputSlots.getItem(0), inputSlots.getItem(1)))
                 //? if > 1.21.1 {
                 inputSlots.getItem(0).has(DataComponents.REPAIRABLE) &&
                 inputSlots.getItem(0).get(DataComponents.REPAIRABLE).isValidRepairItem(inputSlots.getItem(1))
@@ -270,7 +270,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
 			//? if fabric || (neoforge && 1.21.1)
 			method = "createResult",
 			//? if neoforge && > 1.21.1
-			/*method = "createResultInternal",*/
+			//method = "createResultInternal",
             at = @At(
                     value = "CONSTANT",
                     args = "intValue=40"

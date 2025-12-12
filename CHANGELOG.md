@@ -1,2 +1,1 @@
-- The mod now properly supports NeoForge again and startup crash issues have been fixed.
-- Internal changes. This should not affect anything in the mod in any way. Please report any bugs or discrepancies at the issue tracker.
+- Updated to Minecraft 1.21.11.

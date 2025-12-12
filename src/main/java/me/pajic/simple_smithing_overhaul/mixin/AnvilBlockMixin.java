@@ -39,7 +39,7 @@ public abstract class AnvilBlockMixin extends FallingBlock {
     }
 
     //? if <= 1.21.1
-    /*@Shadow @Final public static DirectionProperty FACING;*/
+    //@Shadow @Final public static DirectionProperty FACING;
     //? if > 1.21.1
     @Shadow @Final public static EnumProperty<Direction> FACING;
 

@@ -1,8 +1,8 @@
 package me.pajic.simple_smithing_overhaul.mixin.legacy;
 
 //? if 1.21.1 {
-/*
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+
+/*import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.world.item.Item;

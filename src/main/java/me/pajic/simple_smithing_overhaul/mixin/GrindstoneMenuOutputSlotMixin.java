@@ -30,7 +30,7 @@ public abstract class GrindstoneMenuOutputSlotMixin {
 	//? if fabric
 	@Shadow @Final GrindstoneMenu field_16780;
 	//? if neoforge
-	/*@Shadow @Final GrindstoneMenu this$0;*/
+	//@Shadow @Final GrindstoneMenu this$0;
 
 	@ModifyExpressionValue(
             method = "getExperienceFromItem",

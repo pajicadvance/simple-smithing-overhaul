@@ -33,6 +33,26 @@ stonecutter {
 		direction = dir
 		replace("ResourceLocation", "Identifier")
 	}
+	replacements.string {
+		direction = dir
+		replace("net.minecraft.advancements.critereon", "net.minecraft.advancements.criterion")
+	}
+	replacements.string {
+		direction = dir
+		replace("net.minecraft.Util", "net.minecraft.util.Util")
+	}
+	replacements.string {
+		direction = dir
+		replace("net.minecraft.world.entity.npc.VillagerTrades", "net.minecraft.world.entity.npc.villager.VillagerTrades")
+	}
+	replacements.string {
+		direction = dir
+		replace("net.minecraft.world.entity.projectile.ThrowableItemProjectile", "net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile")
+	}
+	replacements.string {
+		direction = dir
+		replace("net.minecraft.world.entity.projectile.ThrownExperienceBottle", "net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownExperienceBottle")
+	}
 }
 
 fletchingTable {

@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.jetbrains.annotations.NotNull;
 //? if <= 1.21.1
-/*import net.minecraft.world.item.Items;*/
+//import net.minecraft.world.item.Items;
 
 public class WhetstoneItem extends Item {
 

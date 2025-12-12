@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //? if <= 1.21.1
-/*import com.llamalad7.mixinextras.injector.ModifyReturnValue;*/
+//import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 
 @Mixin(SmithingMenu.class)
 public abstract class SmithingMenuMixin extends ItemCombinerMenu {
@@ -50,7 +50,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
 			//? if fabric
             method = "method_64653",
 			//? if neoforge
-			/*method = "lambda$createResult$1",*/
+			//method = "lambda$createResult$1",
             at = @At(
                     value = "FIELD",
                     target = "Lnet/minecraft/world/inventory/SmithingMenu;resultSlots:Lnet/minecraft/world/inventory/ResultContainer;",

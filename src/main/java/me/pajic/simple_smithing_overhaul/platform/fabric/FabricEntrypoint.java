@@ -210,7 +210,7 @@ public class FabricEntrypoint implements ModInitializer {
 		UseItemCallback.EVENT.register((player, world, hand) -> {
 			ItemStack stack = player.getMainHandItem();
 			//? if <= 1.21.1
-			/*return ModUtil.isBroken(stack) ? InteractionResultHolder.fail(stack) : InteractionResultHolder.pass(stack);*/
+			//return ModUtil.isBroken(stack) ? InteractionResultHolder.fail(stack) : InteractionResultHolder.pass(stack);
 			//? if > 1.21.1
 			return ModUtil.isBroken(stack) ? InteractionResult.FAIL : InteractionResult.PASS;
 		});
