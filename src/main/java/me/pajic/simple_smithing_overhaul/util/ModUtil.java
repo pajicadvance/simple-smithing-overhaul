@@ -244,6 +244,14 @@ public class ModUtil {
         return stack.getOrDefault(ModDataComponents.BROKEN, false);
     }
 
+	public static boolean shouldPreventDestruction(ItemStack stack) {
+		for (String s : SSO.CONFIG.streamlinedRepairs.itemDestructionAllowList.get()) {
+			Optional<Item> opt = BuiltInRegistries.ITEM.getOptional(Identifier.tryParse(s));
+			if (opt.isPresent() && stack.is(opt.get())) return false;
+		}
+		return true;
+	}
+
     public static void payXpCost(Player player, int cost) {
         if (CompatFlags.TAX_FREE_LEVELS_LOADED) TFLCompat.payXpCost(player, cost);
         else player.giveExperienceLevels(-cost);

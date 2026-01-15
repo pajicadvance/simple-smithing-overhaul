@@ -1,1 +1,2 @@
-- Updated to Minecraft 1.21.11.
+- Fixed being able to use broken shields to block attacks.
+- Added an item destruction allow list. When "Prevent item destruction" is on, items from this list will still get destroyed when reaching 0 durability. Empty by default.

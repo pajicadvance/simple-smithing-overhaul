@@ -18,7 +18,7 @@ import me.pajic.simple_smithing_overhaul.platform.fabric.FabricPlatform;
 public class SSO {
 
 	public static final String MOD_ID = /*$ mod_id*/ "simple_smithing_overhaul";
-	public static final String MOD_VERSION = /*$ mod_version*/ "2.5.8";
+	public static final String MOD_VERSION = /*$ mod_version*/ "2.5.9";
 	public static final String MOD_FRIENDLY_NAME = /*$ mod_name*/ "Simple Smithing Overhaul";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static final Identifier CONFIG_RL = Identifier.fromNamespaceAndPath(MOD_ID, "config");

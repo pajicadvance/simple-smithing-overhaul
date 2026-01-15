@@ -25,6 +25,8 @@
   "simple_smithing_overhaul.destructionPreventMode.ALL": "For all items",
   "simple_smithing_overhaul.destructionPreventMode.ENCHANTED": "For enchanted items only",
   "simple_smithing_overhaul.destructionPreventMode.NONE": "No prevention",
+  "simple_smithing_overhaul.config.streamlinedRepairs.itemDestructionAllowList": "Item destruction allow list",
+  "simple_smithing_overhaul.config.streamlinedRepairs.itemDestructionAllowList.desc": "Items from this list will get destroyed when they break even when \"Prevent item destruction\" is enabled.",
   "simple_smithing_overhaul.config.streamlinedRepairs.netheriteRepairMaterial": "Netherite repair material",
   "simple_smithing_overhaul.netheriteRepairMaterials.NETHERITE_INGOT": "Netherite ingot",
   "simple_smithing_overhaul.netheriteRepairMaterials.NETHERITE_SCRAP": "Netherite scrap",

@@ -70,7 +70,7 @@ public abstract class ItemStackMixin implements DataComponentHolder {
     private <T> void manageBrokenState(DataComponentType<? super T> component, T value, CallbackInfoReturnable<T> cir) {
         if (component == DataComponents.DAMAGE && isDamageableItem()) {
             if ((int) value < getMaxDamage()) remove(ModDataComponents.BROKEN);
-            else switch (SSO.CONFIG.streamlinedRepairs.preventItemDestruction.get()) {
+            else if (ModUtil.shouldPreventDestruction(thisStack)) switch (SSO.CONFIG.streamlinedRepairs.preventItemDestruction.get()) {
                 case ALL -> set(ModDataComponents.BROKEN, true);
                 case ENCHANTED -> {
                     if (isEnchanted()) set(ModDataComponents.BROKEN, true);
