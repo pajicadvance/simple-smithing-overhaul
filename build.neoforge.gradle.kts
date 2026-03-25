@@ -59,6 +59,9 @@ dependencies {
 	implementation("me.fzzyhmstrs:fzzy_config:${prop("deps.fzzy_config")}+neoforge")
 	implementation("com.github.ramixin:mixson-neoforge:${prop("deps.mixson")}")
 	jarJar("com.github.ramixin:mixson-neoforge:${prop("deps.mixson")}")
+
+	compileOnly("maven.modrinth:enchantment-disabler:${prop("deps.ed")}-neoforge")
+	compileOnly("maven.modrinth:tax-free-levels:${prop("deps.tfl")}-neoforge")
 }
 
 tasks.named("createMinecraftArtifacts") {

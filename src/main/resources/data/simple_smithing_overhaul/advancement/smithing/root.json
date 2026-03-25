@@ -1,0 +1,35 @@
+{
+  "criteria": {
+    "flint": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:flint"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "simple_smithing_overhaul:gui/advancements/backgrounds/smithing",
+    "description": {
+      "translate": "advancements.smithing.root.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:anvil"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.smithing.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "flint"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

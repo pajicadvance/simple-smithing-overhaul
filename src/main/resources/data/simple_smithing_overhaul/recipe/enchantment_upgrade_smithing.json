@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:lapis_lazuli",
+  "base": "#simple_smithing_overhaul:enchantment_upgradeable",
+  "result": {
+    "id": "simple_smithing_overhaul:info_enchantment_upgrade"
+  },
+  "template": "simple_smithing_overhaul:enchantment_upgrade"
+}

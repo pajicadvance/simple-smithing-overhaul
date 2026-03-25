@@ -67,4 +67,7 @@ dependencies {
 	include("com.github.ramixin:mixson-fabric:${prop("deps.mixson")}") {
 		exclude(group = "net.fabricmc.fabric-api", module = "fabric-api")
 	}
+
+	compileOnly("maven.modrinth:enchantment-disabler:${prop("deps.ed")}-fabric")
+	compileOnly("maven.modrinth:tax-free-levels:${prop("deps.tfl")}-fabric")
 }

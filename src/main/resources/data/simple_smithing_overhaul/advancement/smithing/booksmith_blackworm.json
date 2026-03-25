@@ -1,0 +1,26 @@
+{
+  "parent": "simple_smithing_overhaul:smithing/root",
+  "criteria": {
+    "anvil_enchant_combine": {
+      "trigger": "simple_smithing_overhaul:anvil_enchant_combine"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.smithing.booksmith_blackworm.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:enchanted_book"
+    },
+    "title": {
+      "translate": "advancements.smithing.booksmith_blackworm.title"
+    }
+  },
+  "requirements": [
+    [
+      "anvil_enchant_combine"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

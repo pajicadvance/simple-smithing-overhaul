@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "simple_smithing_overhaul:item/whetstone_chipped"
+  }
+}

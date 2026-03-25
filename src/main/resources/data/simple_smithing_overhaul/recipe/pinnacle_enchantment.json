@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "simple_smithing_overhaul:pinnacle_enchantment",
+    "N": "minecraft:nether_star",
+    "D": "minecraft:diamond"
+  },
+  "pattern": [
+    "D#D",
+    "DND",
+    "DDD"
+  ],
+  "result": {
+    "id": "simple_smithing_overhaul:pinnacle_enchantment",
+    "count": 2
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "parent": "simple_smithing_overhaul:smithing/root",
+  "criteria": {
+    "repair_item_whetstone": {
+      "trigger": "simple_smithing_overhaul:repair_item_whetstone"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.smithing.pocket_smith.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:flint"
+    },
+    "title": {
+      "translate": "advancements.smithing.pocket_smith.title"
+    }
+  },
+  "requirements": [
+    [
+      "repair_item_whetstone"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
