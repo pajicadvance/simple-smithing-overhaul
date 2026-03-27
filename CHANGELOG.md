@@ -1,5 +1,1 @@
-- Updated to Minecraft 26.1.
-- Slightly reordered smithing advancement progression and moved smithing advancements under the mod's namespace.
-- Using portable repair to repair an item from 0 to max durability will now fully repair the item instead of one durability point less than the max durability.
-- Added recipe unlock conditions for all items added by the mod.
-- Recipe viewer mods will now display informational recipes for enchantment upgrading and pinnacle enchantment upgrading instead of placeholder recipes.
+- Re-enabled Tax Free Levels compatibility.

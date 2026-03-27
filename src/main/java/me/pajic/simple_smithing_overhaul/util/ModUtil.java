@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import me.pajic.simple_smithing_overhaul.SSO;
 import me.pajic.simple_smithing_overhaul.compat.EDCompat;
+import me.pajic.simple_smithing_overhaul.compat.TFLCompat;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -208,8 +209,8 @@ public class ModUtil {
 	}
 
     public static void payXpCost(Player player, int cost) {
-        /*if (CompatFlags.TAX_FREE_LEVELS_LOADED) TFLCompat.payXpCost(player, cost);
-        else */player.giveExperienceLevels(-cost);
+        if (CompatFlags.TAX_FREE_LEVELS_LOADED) TFLCompat.payXpCost(player, cost);
+        else player.giveExperienceLevels(-cost);
     }
 
     public static int calculateNewEnchantmentLevel(int maxLevel, RandomSource randomSource, int original) {

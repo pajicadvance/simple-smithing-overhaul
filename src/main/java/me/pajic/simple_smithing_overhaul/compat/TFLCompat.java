@@ -1,6 +1,5 @@
 package me.pajic.simple_smithing_overhaul.compat;
 
-/*
 import io.github.fourmisain.taxfreelevels.TaxFreeLevels;
 import net.minecraft.world.entity.player.Player;
 
@@ -9,4 +8,3 @@ public class TFLCompat {
         TaxFreeLevels.applyFlattenedXpCost(player, cost);
     }
 }
-*/
