@@ -8,9 +8,11 @@ import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
@@ -75,6 +77,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
                         return processRepair(input);
                     }
                 }
+				flintCount = 0;
             }
         }
         return false;
@@ -91,25 +94,32 @@ public class PortableItemRepairRecipe extends CustomRecipe {
 			}
 			return false;
 		}).toList();
-        boolean flintMaterialValid = true;
-        if (flintCount > 0) {
-            for (String s : SSO.CONFIG.streamlinedRepairs.flintMaterialBlacklist.get()) {
-                for (ItemStack i : repairMaterials) {
-                    Optional<Item> opt = BuiltInRegistries.ITEM.getOptional(Identifier.tryParse(s));
-                    if (opt.isPresent() && i.is(opt.get())) {
-                        flintMaterialValid = false;
-                    }
-                }
-            }
-        }
-        return !repairMaterials.isEmpty() && repairMaterials.size() <= unitsToMaxRepair + 1 && (flintCount == 0 || (flintMaterialValid && flintCount >= repairMaterials.size()));
+        boolean flintMaterialValid = false;
+        if (flintCount > 0) flintMaterialValid = repairMaterials.stream().allMatch(i -> {
+			for (String s : SSO.CONFIG.portableItemRepair.flintMaterialWhitelist.get()) {
+				try {
+					if (s.startsWith("#")) {
+						if (i.is(TagKey.create(Registries.ITEM, Identifier.tryParse(s.substring(1))))) return true;
+					} else {
+						Optional<Item> opt = BuiltInRegistries.ITEM.getOptional(Identifier.tryParse(s));
+						if (opt.isPresent() && i.is(opt.get())) return true;
+					}
+				} catch (Throwable t) {
+					SSO.LOGGER.warn("Unable to load flint material whitelist entry {}, skipping: {}", s, t.getMessage());
+				}
+			}
+			return false;
+		});
+		boolean bl = !repairMaterials.isEmpty() && repairMaterials.size() <= unitsToMaxRepair + 1 && (flintCount == 0 || (flintMaterialValid && flintCount >= repairMaterials.size()));
+		flintCount = 0;
+        return bl;
     }
 
     @Override
     public @NotNull ItemStack assemble(@NotNull CraftingInput input) {
         ItemStack outputItem = itemToRepair.copy();
         outputItem.setDamageValue(
-                outputItem.getDamageValue() - (Math.round((float) outputItem.getMaxDamage() / unitCost) * repairMaterials.size())
+                outputItem.getDamageValue() - (Mth.ceil((float) outputItem.getMaxDamage() / unitCost) * repairMaterials.size())
         );
         outputItem.set(ModDataComponents.REPAIR_COUNT, outputItem.getOrDefault(ModDataComponents.REPAIR_COUNT, 0) + 1);
         return outputItem;
@@ -124,7 +134,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
             if (itemStack.is(ModItems.WHETSTONE)) {
                 float degradationChance = SSO.CONFIG.anvilImprovements.modifyDegradationChance.get() ?
                         SSO.CONFIG.anvilImprovements.degradationChance.get() / 50 : 0.24F;
-                if (random.nextFloat() < degradationChance) {
+                for (int j = 0; j < repairMaterials.size(); j ++) if (random.nextFloat() < degradationChance) {
                     itemStack.setDamageValue(itemStack.getDamageValue() + 1);
                 }
                 remainingItems.set(i, itemStack.copy());
@@ -146,4 +156,8 @@ public class PortableItemRepairRecipe extends CustomRecipe {
     public @NotNull RecipeSerializer<? extends CustomRecipe> getSerializer() {
         return ModRecipeSerializers.PORTABLE_ITEM_REPAIR;
     }
+
+	public int getRepairMaterialsSize() {
+		return repairMaterials.size();
+	}
 }

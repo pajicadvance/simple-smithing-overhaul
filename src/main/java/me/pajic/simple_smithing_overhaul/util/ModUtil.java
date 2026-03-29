@@ -7,6 +7,7 @@ import me.pajic.simple_smithing_overhaul.SSO;
 import me.pajic.simple_smithing_overhaul.compat.EDCompat;
 import me.pajic.simple_smithing_overhaul.compat.TFLCompat;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
+import me.pajic.simple_smithing_overhaul.recipe.PortableItemRepairRecipe;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
@@ -18,27 +19,42 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemStackWithSlot;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.BundleContents;
+import net.minecraft.world.item.component.ItemContainerContents;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.item.enchantment.Repairable;
 import net.minecraft.world.item.equipment.Equippable;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class ModUtil {
 
@@ -77,7 +93,7 @@ public class ModUtil {
 						);
 					}
 				} else {
-					Optional<Holder.Reference<Item>> item = registry.get(ResourceKey.create(Registries.ITEM, Identifier.parse(repairItem)));
+					Optional<Holder.Reference<Item>> item = registry.get(ResourceKey.create(Registries.ITEM, Identifier.tryParse(repairItem)));
 					if (item.isPresent()) {
 						if (repairMaterial.startsWith("#")) {
 							ModUtil.additionalRepairables.put(
@@ -85,13 +101,12 @@ public class ModUtil {
 									ingredientFromItemTag(repairMaterial, registry)
 							);
 						} else {
-							registry.get(ResourceKey.create(Registries.ITEM, Identifier.parse(repairMaterial))).ifPresent(value ->
+							registry.get(ResourceKey.create(Registries.ITEM, Identifier.tryParse(repairMaterial))).ifPresent(value ->
 									ModUtil.additionalRepairables.put(Ingredient.of(item.get().value()), Ingredient.of(value.value()))
 							);
 						}
 					}
 				}
-				// Catch anything that explodes above because I cannot be bothered
 			} catch (Throwable t) {
 				SSO.LOGGER.warn("Unable to load additional repair {} with {}, skipping: {}", repairItem, repairMaterial, t.getMessage());
 			}
@@ -135,7 +150,6 @@ public class ModUtil {
             if (stack.is(Items.SHIELD)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.shieldUnits.get();
             if (stack.is(Items.ELYTRA)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.elytraUnits.get();
             if (stack.is(Items.MACE)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.maceUnits.get();
-            if (stack.is(ModItems.WHETSTONE)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.whetstoneUnits.get();
             if (stack.is(Items.BOW)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.bowUnits.get();
             if (stack.is(Items.CROSSBOW)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.crossbowUnits.get();
             if (stack.is(Items.FLINT_AND_STEEL)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.flintAndSteelUnits.get();
@@ -146,17 +160,23 @@ public class ModUtil {
             if (stack.is(Items.CARROT_ON_A_STICK)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.carrotOnAStickUnits.get();
             if (stack.is(Items.WARPED_FUNGUS_ON_A_STICK)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.warpedFungusOnAStickUnits.get();
 
+			if (stack.is(ModItems.WHETSTONE)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.whetstoneUnits.get();
+
             for (Map.Entry<String, Integer> entry : SSO.CONFIG.streamlinedRepairs.modItemUnitCosts.entrySet()) {
-                if (entry.getKey().startsWith("#")) {
-                    if (stack.is(TagKey.create(Registries.ITEM, Identifier.parse(entry.getKey().replace("#", ""))))) {
-                        return entry.getValue();
-                    }
-                } else {
-                    Optional<Item> item = BuiltInRegistries.ITEM.getOptional(Identifier.parse(entry.getKey()));
-                    if (item.isPresent() && stack.is(item.get())) {
-                        return entry.getValue();
-                    }
-                }
+				try {
+		            if (entry.getKey().startsWith("#")) {
+						if (stack.is(TagKey.create(Registries.ITEM, Identifier.tryParse(entry.getKey().substring(1))))) {
+							return entry.getValue();
+						}
+					} else {
+						Optional<Item> item = BuiltInRegistries.ITEM.getOptional(Identifier.tryParse(entry.getKey()));
+						if (item.isPresent() && stack.is(item.get())) {
+							return entry.getValue();
+						}
+					}
+	            } catch (Throwable t) {
+					SSO.LOGGER.warn("Unable to load unit cost entry {}, skipping: {}", entry.getKey(), t.getMessage());
+				}
             }
         }
         return 4;
@@ -169,6 +189,79 @@ public class ModUtil {
         int max = e.getMaxCost(level);
         return Math.round(min + (max - min) * ((float) level / e.getMaxLevel()));
     }
+
+	public static void tryApplyAnvilSlowness(Player player) {
+		GameType gameType = player.gameMode();
+		if (SSO.CONFIG.anvilImprovements.holdingAnvilAppliesSlowness.get() && gameType != null && gameType.isSurvival()) {
+			Inventory inv = player.getInventory();
+			for (ItemStack item : inv) if (applySlowness(player, item)) return;
+			for (EquipmentSlot slot : Inventory.EQUIPMENT_SLOT_MAPPING.values()) {
+				ItemStack item = inv.equipment.get(slot);
+				if (applySlowness(player, item)) return;
+			}
+			for (ItemStack item : player.getEnderChestInventory()) applySlowness(player, item);
+		}
+	}
+
+	private static boolean applySlowness(Player player, ItemStack item) {
+		if (item.is(Items.ANVIL)) {
+			player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 20, 4));
+			return true;
+		}
+		if (item.has(DataComponents.BUNDLE_CONTENTS)) {
+			if (item.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY).itemCopyStream().anyMatch(i -> i.is(Items.ANVIL))) {
+				player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 20, 4));
+				return true;
+			}
+		}
+		if (item.has(DataComponents.CONTAINER)) {
+			if (item.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).nonEmptyItemCopyStream().anyMatch(i -> i.is(Items.ANVIL))) {
+				player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 20, 4));
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@SuppressWarnings("DataFlowIssue")
+	public static boolean tryRepairItem(ItemStack target, Player player, Level level) {
+		if (
+				target.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY)
+				.entrySet().stream().anyMatch(entry ->
+						entry.getKey().value().effects().has(EnchantmentEffectComponents.REPAIR_WITH_XP)
+				)
+		) {
+			ItemStackWithSlot whetstone = ModUtil.findItemOnPlayer(player, itemStack -> itemStack.is(ModItems.WHETSTONE) && !ModUtil.isBroken(itemStack));
+			ItemStackWithSlot material = ModUtil.findItemOnPlayer(player, itemStack -> target.get(DataComponents.REPAIRABLE).isValidRepairItem(itemStack));
+			if (!whetstone.stack().isEmpty() && !material.stack().isEmpty()) {
+				PortableItemRepairRecipe recipe = new PortableItemRepairRecipe();
+				CraftingInput input = CraftingInput.of(2, 2, List.of(target, whetstone.stack(), material.stack(), ItemStack.EMPTY));
+				if (recipe.matches(input, player.level())) {
+					Inventory inv = player.getInventory();
+					ItemStack repaired = recipe.assemble(input);
+					NonNullList<ItemStack> remainingItems = recipe.getRemainingItems(input);
+					target.setDamageValue(repaired.getDamageValue());
+					inv.setItem(whetstone.slot(), remainingItems.get(1));
+					ItemStack materials = material.stack().copy();
+					materials.setCount(materials.getCount() - recipe.getRepairMaterialsSize());
+					inv.setItem(material.slot(), materials);
+					level.playSound(null, player, SoundEvents.ANVIL_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
+					player.spawnItemParticles(material.stack(), 5);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static ItemStackWithSlot findItemOnPlayer(Player player, Predicate<ItemStack> predicate) {
+		Inventory inv = player.getInventory();
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStackWithSlot item = new ItemStackWithSlot(i, inv.getItem(i));
+			if (predicate.test(item.stack())) return item;
+		}
+		return new ItemStackWithSlot(0, ItemStack.EMPTY);
+	}
 
     public static boolean isEnchantedBookOrWhetstoneUpgradeRecipe(NonNullList<Slot> slots) {
         return slots.get(0).getItem().is(ModItems.ENCHANTMENT_UPGRADE_SMITHING_TEMPLATE) &&
@@ -200,10 +293,19 @@ public class ModUtil {
         return stack.getOrDefault(ModDataComponents.BROKEN, false);
     }
 
+	@SuppressWarnings("DataFlowIssue")
 	public static boolean shouldPreventDestruction(ItemStack stack) {
-		for (String s : SSO.CONFIG.streamlinedRepairs.itemDestructionAllowList.get()) {
-			Optional<Item> opt = BuiltInRegistries.ITEM.getOptional(Identifier.tryParse(s));
-			if (opt.isPresent() && stack.is(opt.get())) return false;
+		for (String s : SSO.CONFIG.itemDestructionPrevention.allowList.get()) {
+			try {
+				if (s.startsWith("#")) {
+					if (stack.is(TagKey.create(Registries.ITEM, Identifier.tryParse(s.substring(1))))) return false;
+				} else {
+					Optional<Item> opt = BuiltInRegistries.ITEM.getOptional(Identifier.tryParse(s));
+					if (opt.isPresent() && stack.is(opt.get())) return false;
+				}
+			} catch (Throwable t) {
+				SSO.LOGGER.warn("Unable to load item destruction allow list entry {}, skipping: {}", s, t.getMessage());
+			}
 		}
 		return true;
 	}

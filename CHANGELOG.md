@@ -1,1 +1,11 @@
-- Re-enabled Tax Free Levels compatibility.
+- Added new feature "Mending rework".
+  - Reworks Mending to repair items using whetstones and repair materials from the inventory.
+  - Items with Mending can be repaired on command by right-clicking the item from the hand while holding Shift, or automatically when the item breaks.
+  - Repairing works the same as the portable repair recipes and requires the same items (whetstone with matching or better enchantments + valid repair material).
+- Anvils now apply Slowness to the player when they're in their inventory.
+  - This also checks the player's ender storage and any bundles and containers in the inventory.
+- Configuration changes:
+  - Replaced option "Flint material blacklist" with "Flint material whitelist".
+  - Reorganized config screen.
+  - The config file is now `config-v2.toml`. You can copy some of your previous settings from the old `config.toml` file.
+- Fixed a bug causing portable repair to sometimes not work when multiple materials of the same type are used.

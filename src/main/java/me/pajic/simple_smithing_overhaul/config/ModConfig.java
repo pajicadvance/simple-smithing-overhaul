@@ -20,43 +20,44 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import me.pajic.simple_smithing_overhaul.SSO;
 import me.pajic.simple_smithing_overhaul.util.ChanceAndCount;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 
 import java.util.Map;
 
-@Version(version = 1)
+@Version(version = 2)
 public class ModConfig extends Config {
 
     public ModConfig() {
-        super(SSO.id("config"));
+        super(SSO.id("config-v2"));
     }
 
+	public StreamlinedRepairs streamlinedRepairs = new StreamlinedRepairs();
+	public ItemDestructionPrevention itemDestructionPrevention = new ItemDestructionPrevention();
+	public PortableItemRepair portableItemRepair = new PortableItemRepair();
+	public MendingRework mendingRework = new MendingRework();
+	public AnvilImprovements anvilImprovements = new AnvilImprovements();
+	public GrindstoneImprovements grindstoneImprovements = new GrindstoneImprovements();
     public EnchantmentUpgrading enchantmentUpgrading = new EnchantmentUpgrading();
     public PinnacleEnchantment pinnacleEnchantment = new PinnacleEnchantment();
-    public Whetstone whetstone = new Whetstone();
-    public StreamlinedRepairs streamlinedRepairs = new StreamlinedRepairs();
-    public AnvilImprovements anvilImprovements = new AnvilImprovements();
-    public GrindstoneImprovements grindstoneImprovements = new GrindstoneImprovements();
+	public EnchantmentLimits enchantmentLimits = new EnchantmentLimits();
     public EnchantedBookLootTweaks enchantedBookLootTweaks = new EnchantedBookLootTweaks();
     public ImprovedExperienceBottle improvedExperienceBottle = new ImprovedExperienceBottle();
-    public EnchantmentLimits enchantmentLimits = new EnchantmentLimits();
 
     public static class EnchantmentUpgrading extends ConfigSection {
         @RequiresAction(action = Action.RESTART)
-        public ValidatedBoolean enableEnchantmentUpgrading = new ValidatedBoolean(true);
-        public ValidatedBoolean upgradingHasExperienceCost = new ValidatedBoolean(true);
+        public ValidatedBoolean enableEnchantmentUpgrading = new ValidatedBoolean();
+        public ValidatedBoolean upgradingHasExperienceCost = new ValidatedBoolean();
         public ValidatedInt upgradingBaseExperienceCost = new ValidatedInt(5, Integer.MAX_VALUE, 1);
-        public ValidatedBoolean ignoreTooExpensive = new ValidatedBoolean(true);
+        public ValidatedBoolean ignoreTooExpensive = new ValidatedBoolean();
     }
 
     public static class PinnacleEnchantment extends ConfigSection {
         @RequiresAction(action = Action.RESTART)
-        public ValidatedBoolean enablePinnacleEnchantment = new ValidatedBoolean(true);
+        public ValidatedBoolean enablePinnacleEnchantment = new ValidatedBoolean();
         public ValidatedInt pinnacleBaseExperienceCost = new ValidatedInt(30, Integer.MAX_VALUE, 1);
         public ValidatedInt pinnacleExperienceCostIncrease = new ValidatedInt(5, Integer.MAX_VALUE, 1);
         public ValidatedInt maxPinnacleEnchantmentsOnItem = new ValidatedInt(1, Integer.MAX_VALUE, 1);
-        public ValidatedBoolean colorPinnacleItemName = new ValidatedBoolean(true);
+        public ValidatedBoolean colorPinnacleItemName = new ValidatedBoolean();
         public ValidatedString pinnacleItemNameColor = new ValidatedString("Light Purple", new AllowableStrings(ModUtil.colorNames::contains, () -> ModUtil.colorNames));
         public ValidatedList<Identifier> excludedFromMaxedOutCheck = new ValidatedIdentifier(Identifier.withDefaultNamespace("mending")).toList(
                 Identifier.withDefaultNamespace("mending"),
@@ -67,20 +68,33 @@ public class ModConfig extends Config {
         );
     }
 
-    public static class Whetstone extends ConfigSection {
+    public static class PortableItemRepair extends ConfigSection {
         @RequiresAction(action = Action.RESTART)
-        public ValidatedBoolean enableWhetstone = new ValidatedBoolean(true);
+        public ValidatedBoolean enableWhetstone = new ValidatedBoolean();
+		public ValidatedList<String> flintMaterialWhitelist = new ValidatedString(
+				"", new AllowableStrings(ModUtil.itemSuggestions::contains, () -> ModUtil.itemSuggestions)
+		).toList(
+				"#minecraft:wooden_tool_materials",
+				"#minecraft:stone_tool_materials",
+				"#minecraft:copper_tool_materials",
+				"#minecraft:iron_tool_materials",
+				"#minecraft:repairs_leather_armor",
+				"#minecraft:repairs_copper_armor",
+				"#minecraft:repairs_chain_armor",
+				"#minecraft:repairs_iron_armor",
+				"minecraft:flint",
+				"minecraft:string",
+				"minecraft:feather",
+				"minecraft:carrot",
+				"minecraft:warped_fungus"
+		);
     }
 
     @SuppressWarnings("rawtypes")
     public static class StreamlinedRepairs extends ConfigSection {
-        public ValidatedEnum<DestructionPreventMode> preventItemDestruction = new ValidatedEnum<>(DestructionPreventMode.ALL);
-		public ValidatedList<String> itemDestructionAllowList = new ValidatedString(
-				"", new AllowableStrings(ModUtil.itemSuggestions::contains, () -> ModUtil.itemSuggestions)
-		).toList();
         @RequiresAction(action = Action.RESTART)
         public ValidatedEnum<NetheriteRepairMaterials> netheriteRepairMaterial = new ValidatedEnum<>(NetheriteRepairMaterials.DIAMOND);
-        public ValidatedBoolean modifyAnvilRepairUnitCosts = new ValidatedBoolean(true);
+        public ValidatedBoolean modifyAnvilRepairUnitCosts = new ValidatedBoolean();
         public Armor armor = new Armor();
         public Tools tools = new Tools();
         public UniqueItems uniqueItems = new UniqueItems();
@@ -112,45 +126,46 @@ public class ModConfig extends Config {
                         "#chalk:glow_chalks", 2
                 ))
                 .build();
-        public ValidatedList<String> flintMaterialBlacklist = new ValidatedString(
-                "", new AllowableStrings(ModUtil.itemSuggestions::contains, () -> ModUtil.itemSuggestions)
-        ).toList(
-                "minecraft:diamond",
-                "minecraft:netherite_scrap",
-                "minecraft:netherite_ingot"
-        );
     }
 
+	public static class ItemDestructionPrevention extends ConfigSection {
+		public ValidatedEnum<DestructionPreventMode> mode = new ValidatedEnum<>(DestructionPreventMode.ALL);
+		public ValidatedList<String> allowList = new ValidatedString(
+				"", new AllowableStrings(ModUtil.itemSuggestions::contains, () -> ModUtil.itemSuggestions)
+		).toList();
+	}
+
+	public static class MendingRework extends ConfigSection {
+		public ValidatedBoolean enabled = new ValidatedBoolean();
+		public ValidatedBoolean repairOnShiftUse = new ValidatedBoolean();
+		public ValidatedBoolean autoRepairOnBreak = new ValidatedBoolean();
+		public ValidatedBoolean enableRegularMendingBehavior = new ValidatedBoolean(false);
+	}
+
     public static class AnvilImprovements extends ConfigSection {
-        public ValidatedBoolean modifyDegradationChance = new ValidatedBoolean(true);
+        public ValidatedBoolean modifyDegradationChance = new ValidatedBoolean();
         public ValidatedFloat degradationChance = new ValidatedFloat(6.0F, 100.0F, 0);
-        public ValidatedBoolean freeUnenchantedRepairs = new ValidatedBoolean(true);
-        public ValidatedBoolean noWorkCostIncreaseOnRepair = new ValidatedBoolean(true);
+        public ValidatedBoolean freeUnenchantedRepairs = new ValidatedBoolean();
+        public ValidatedBoolean noWorkCostIncreaseOnRepair = new ValidatedBoolean();
         public ValidatedBoolean noPriorWorkCost = new ValidatedBoolean(false);
-        public ValidatedBoolean freeRenames = new ValidatedBoolean(true);
-        public ValidatedBoolean noTooExpensive = new ValidatedBoolean(true);
+        public ValidatedBoolean freeRenames = new ValidatedBoolean();
+        public ValidatedBoolean noTooExpensive = new ValidatedBoolean();
+		public ValidatedBoolean holdingAnvilAppliesSlowness = new ValidatedBoolean();
     }
 
     public static class GrindstoneImprovements extends ConfigSection {
-        public ValidatedBoolean repairCostReductionRecipe = new ValidatedBoolean(true);
-        public ValidatedBoolean increasedDisenchantXpGain = new ValidatedBoolean(true);
+        public ValidatedBoolean repairCostReductionRecipe = new ValidatedBoolean();
+        public ValidatedBoolean increasedDisenchantXpGain = new ValidatedBoolean();
     }
 
     @SuppressWarnings("rawtypes")
     public static class EnchantedBookLootTweaks extends ConfigSection {
-        public ValidatedBoolean weightedLevels = new ValidatedBoolean(true);
+        public ValidatedBoolean weightedLevels = new ValidatedBoolean();
         @RequiresAction(action = Action.RESTART)
-        public ValidatedBoolean additionalChestLoot = new ValidatedBoolean(true);
+        public ValidatedBoolean additionalChestLoot = new ValidatedBoolean();
         @SuppressWarnings("unchecked") @RequiresAction(action = Action.RESTART)
         public ValidatedMap<Identifier, ChanceAndCount> bookLootLocations = (new ValidatedMap.Builder())
-                .keyHandler(ValidatedIdentifier
-						.ofDynamicKey(
-								Identifier.withDefaultNamespace("chests/simple_dungeon"),
-                        		Registries.LOOT_TABLE,
-                        		"all_loot_tables",
-                        		(rl, _) -> rl.getPath().contains("chests") || rl.getPath().contains("gameplay") || rl.getPath().contains("archaeology")
-						)
-				)
+                .keyHandler(new ValidatedIdentifier(Identifier.withDefaultNamespace("chests/simple_dungeon")))
                 .valueHandler(new ValidatedAny<>(new ChanceAndCount()))
                 .defaults(Map.<Identifier, ChanceAndCount>ofEntries(
                         Map.entry(Identifier.parse("minecraft:chests/abandoned_mineshaft"), new ChanceAndCount(100, 1)),
@@ -213,23 +228,16 @@ public class ModConfig extends Config {
 
     @SuppressWarnings("rawtypes")
     public static class ImprovedExperienceBottle extends ConfigSection {
-        public ValidatedBoolean modifyXpReward = new ValidatedBoolean(true);
+        public ValidatedBoolean modifyXpReward = new ValidatedBoolean();
         public ValidatedInt minXp = new ValidatedInt(30, Integer.MAX_VALUE, 1);
         public ValidatedInt maxXp = new ValidatedInt(50, Integer.MAX_VALUE, 1);
         @RequiresAction(action = Action.RESTART) @NonSync @ClientModifiable
-        public ValidatedBoolean renameToExperienceBottle = new ValidatedBoolean(true);
+        public ValidatedBoolean renameToExperienceBottle = new ValidatedBoolean();
         @RequiresAction(action = Action.RESTART)
-        public ValidatedBoolean additionalChestLoot = new ValidatedBoolean(true);
+        public ValidatedBoolean additionalChestLoot = new ValidatedBoolean();
         @SuppressWarnings("unchecked") @RequiresAction(action = Action.RESTART)
         public ValidatedMap<Identifier, ChanceAndCount> bottleLootLocations = (new ValidatedMap.Builder())
-                .keyHandler(ValidatedIdentifier
-						.ofDynamicKey(
-								Identifier.withDefaultNamespace("chests/simple_dungeon"),
-                        		Registries.LOOT_TABLE,
-                        		"all_loot_tables",
-                        		(rl, _) -> rl.getPath().contains("chests") || rl.getPath().contains("gameplay") || rl.getPath().contains("archaeology")
-						)
-				)
+                .keyHandler(new ValidatedIdentifier(Identifier.withDefaultNamespace("chests/simple_dungeon")))
                 .valueHandler(new ValidatedAny<>(new ChanceAndCount()))
                 .defaults(Map.<Identifier, ChanceAndCount>ofEntries(
                         Map.entry(Identifier.parse("minecraft:chests/abandoned_mineshaft"), new ChanceAndCount(100, 1)),
@@ -292,13 +300,13 @@ public class ModConfig extends Config {
     }
 
     public static class EnchantmentLimits extends ConfigSection {
-        public ValidatedBoolean limitEnchantingTablePower = new ValidatedBoolean(true);
+        public ValidatedBoolean limitEnchantingTablePower = new ValidatedBoolean();
         public ValidatedInt enchantingTablePowerLimit = new ValidatedInt(10, 15, 1);
-        public ValidatedBoolean limitEnchantedLootPower = new ValidatedBoolean(true);
+        public ValidatedBoolean limitEnchantedLootPower = new ValidatedBoolean();
         public ValidatedInt enchantedLootPowerLimit = new ValidatedInt(20, 50, 1);
-        public ValidatedBoolean limitBookTradeLevel = new ValidatedBoolean(true);
+        public ValidatedBoolean limitBookTradeLevel = new ValidatedBoolean();
         public ValidatedInt bookTradeLevelLimit = new ValidatedInt(1, Integer.MAX_VALUE, 1);
-        public ValidatedBoolean limitBookTradeUses = new ValidatedBoolean(true);
+        public ValidatedBoolean limitBookTradeUses = new ValidatedBoolean();
         public ValidatedInt bookTradeUsesLimit = new ValidatedInt(3, Integer.MAX_VALUE, 1);
     }
 

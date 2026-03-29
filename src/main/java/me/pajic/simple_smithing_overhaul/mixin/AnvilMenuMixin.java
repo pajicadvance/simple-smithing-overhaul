@@ -82,7 +82,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
             )
     )
     private boolean allowAddingEnchantmentsToWhetstone(boolean original, @Local(name = "input") ItemStack input) {
-        if (SSO.CONFIG.whetstone.enableWhetstone.get()) {
+        if (SSO.CONFIG.portableItemRepair.enableWhetstone.get()) {
             return original || input.is(ModItems.WHETSTONE);
         }
         return original;

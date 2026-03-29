@@ -18,7 +18,7 @@ Fabric version requires [Fabric API](https://modrinth.com/mod/fabric-api) and [F
 
 NeoForge version requires [Fzzy Config](https://modrinth.com/mod/fzzy-config). Use the Mods screen to change settings in-game.
 
-# Core Changes
+# Features
 
 ## Streamlined Repairs
 
@@ -29,6 +29,38 @@ For example, a diamond pickaxe is crafted with 3 diamonds, which means that only
 Additionally, repair recipes were added for all vanilla items which did not have one, and netherite gear is repaired with diamonds instead of netherite ingots.
 
 These features are fully configurable for mod support. Modded items can be made repairable, and the amount of material required to fully repair them can be defined in the mod configuration. I've already added values for some mods I play with, so you can use them as examples.
+
+## Item Destruction Prevention
+
+Items now won't be destroyed when they break. Instead, they will remain at 0 durability but will be non-functional until repaired. To indicate that an item is broken, its name will change to red and a "Broken" prefix will be applied to the name.
+
+![broken_item](https://cdn.modrinth.com/data/cached_images/68cc4149afb7874c5f0420a059a1b510097f96a0.png)
+
+## Portable Item Repair
+
+Gear can now be repaired on the go using flint or a new item, the whetstone, directly in the crafting menu. It's as easy as combining the tool you want to repair, the repair material, and flint or a whetstone. Any item that's repairable in the anvil can be repaired on the go, too.
+
+Flint is good for one repair and is consumed on use, and cannot repair diamond and netherite items. Whetstones have a durability of 6, with each repair having a chance to damage it by 1. Whetstones themselves can only be repaired in the anvil with quartz.
+
+Flint and regular whetstones can repair unenchanted items only. Enchanted items can only be repaired with enchanted whetstones. The enchanted whetstone has to contain all enchantments that are on the enchanted item you want to repair at levels equal or higher than the ones on the item. Enchantments can be added to whetstones by enchanting them in the enchanting table like books or in the anvil by combining them with enchanted books.
+
+![whetstone](https://cdn.modrinth.com/data/cached_images/281069961f02641377ef6b08c5134a0c4d55007b.png)
+
+## Mending Rework
+
+Mending now repairs items using the new portable item repair methods, instead of using experience.
+
+You just need a compatible whetstone and repair materials anywhere in your inventory. You can then right-click the Mending item in your hand while crouching to repair it. If the Mending item breaks, it will automatically repair itself using materials from the inventory, if there are any.
+
+This allows you to repair items without manually using the crafting grid to repair them.
+
+**Yes, this removes the ability to repair items with experience**, as it's too detrimental to the goals of this mod. As everything else in this mod, this is configurable, so you can re-enable it, but it would be defeating the point of most of the features in the mod.
+
+## Heavy Anvils
+
+Having an anvil in your inventory will significantly slow you down. Your ender storage and any bundles and containers you have in your inventory are checked for anvils, too.
+
+This is added to incentivize using the new portable repair methods instead of just carrying an anvil around.
 
 ## Anvil Improvements
 
@@ -44,41 +76,6 @@ These features are fully configurable for mod support. Modded items can be made 
 
 - Combining an enchanted item with a piece of netherite scrap in the grindstone halves the repair cost of the item.
 - Disenchanting items in the grindstone now grants more XP.
-
-## Enchanting and Enchanted Loot Changes
-
-In order to emphasize the importance of smithing mechanics, some limits have been imposed on how strong items obtained from the enchanting table and loot can be, while increasing the chances of finding enchanted books and experience bottles in loot, and increasing the amount of experience awarded from experience bottles.
-
-The goal is to make the road to maxed out enchanted items more involved and rewarding instead of relying on villager trading or lucking out on the enchanting table or loot chests.
-
-- The maximum amount of bookshelves the enchanting table can accept is reduced to 10 down from 15.
-- Looted enchanted items can also only come with enchantments that the enchanting table allows at 10 bookshelves at most.
-- Higher level enchanted books are way less common in loot compared to lower level books.
-- Enchanted books sold by villagers will always be level 1.
-- Enchanted book villager trades can only be used 3 times before having to restock, down from 12.
-
-However:
-
-- Enchanted books and experience bottles are way more common in loot chests, and can be found in more places.
-- Experience bottles give way more experience (30-50, up from 3-11).
-
-# New Mechanics
-
-## Portable Item Repair
-
-Gear can now be repaired on the go using flint or a new item, the whetstone, directly in the crafting menu. It's as easy as combining the tool you want to repair, the repair material, and flint or a whetstone. Any item that's repairable in the anvil can be repaired on the go, too.
-
-Flint and regular whetstones can repair unenchanted items only. Enchanted items can only be repaired with enchanted whetstones. The enchanted whetstone has to contain all enchantments that are on the enchanted item you want to repair at levels equal or higher than the ones on the item. Enchantments can be added to whetstones by enchanting them in the enchanting table like books or in the anvil by combining them with enchanted books.
-
-Flint is good for one repair and is consumed on use, and cannot repair diamond and netherite items. Whetstones have a durability of 6, with each repair having a chance to damage it by 1. Whetstones themselves can only be repaired in the anvil with quartz.
-
-![whetstone](https://cdn.modrinth.com/data/cached_images/281069961f02641377ef6b08c5134a0c4d55007b.png)
-
-## Item Destruction Prevention
-
-Items now won't be destroyed when they break. Instead, they will remain at 0 durability but will be non-functional until repaired. To indicate that an item is broken, its name will change to red and a "Broken" prefix will be applied to the name.
-
-![broken_item](https://cdn.modrinth.com/data/cached_images/68cc4149afb7874c5f0420a059a1b510097f96a0.png)
 
 ## Enchantment Upgrade Smithing Template
 
@@ -102,3 +99,20 @@ Items can be pinnacle upgraded multiple times in order to reroll the upgraded en
 Pinnacle items can still be repaired with whetstones - the whetstone does not need to have the upgraded enchantment at the same level as the item, only at the regular max enchantment level.
 
 ![pinnacle_smithing](https://cdn.modrinth.com/data/cached_images/e61cee46b69c9a3a62505436fbb7ef56d9f27004.png) ![pinnacle_duplication](https://cdn.modrinth.com/data/cached_images/8a62c4ea281dd8829754a6ab8f3e2713b3148702.png)
+
+## Enchanting and Enchanted Loot Changes
+
+In order to emphasize the importance of smithing mechanics, some limits have been imposed on how strong items obtained from the enchanting table and loot can be, while increasing the chances of finding enchanted books and experience bottles in loot, and increasing the amount of experience awarded from experience bottles.
+
+The goal is to make the road to maxed out enchanted items more involved and rewarding instead of relying on villager trading or lucking out on the enchanting table or loot chests.
+
+- The maximum amount of bookshelves the enchanting table can accept is reduced to 10 down from 15.
+- Looted enchanted items can also only come with enchantments that the enchanting table allows at 10 bookshelves at most.
+- Higher level enchanted books are way less common in loot compared to lower level books.
+- Enchanted books sold by villagers will always be level 1.
+- Enchanted book villager trades can only be used 3 times before having to restock, down from 12.
+
+However:
+
+- Enchanted books and experience bottles are way more common in loot chests, and can be found in more places.
+- Experience bottles give way more experience (30-50, up from 3-11).

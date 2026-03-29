@@ -20,7 +20,7 @@ public class EnchantmentHelperMixin {
             )
     )
     private static boolean storeEnchantmentsIfWhetstone(boolean original, @Local(argsOnly = true) ItemStack stack) {
-        if (SSO.CONFIG.whetstone.enableWhetstone.get()) {
+        if (SSO.CONFIG.portableItemRepair.enableWhetstone.get()) {
             return original || stack.is(ModItems.WHETSTONE);
         }
         return original;
@@ -34,7 +34,7 @@ public class EnchantmentHelperMixin {
             )
     )
     private static boolean handleWhetstoneEnchanting(boolean original, @Local(argsOnly = true) ItemStack stack) {
-        if (SSO.CONFIG.whetstone.enableWhetstone.get()) {
+        if (SSO.CONFIG.portableItemRepair.enableWhetstone.get()) {
             return original || stack.is(ModItems.WHETSTONE);
         }
         return original;

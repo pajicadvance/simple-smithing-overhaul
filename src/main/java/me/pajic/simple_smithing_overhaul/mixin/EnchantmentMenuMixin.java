@@ -22,7 +22,7 @@ public class EnchantmentMenuMixin {
             )
     )
     private boolean getEnchantmentList_handleWhetstoneEnchanting(boolean original, @Local(argsOnly = true) ItemStack stack) {
-        if (SSO.CONFIG.whetstone.enableWhetstone.get()) {
+        if (SSO.CONFIG.portableItemRepair.enableWhetstone.get()) {
             return original || stack.is(ModItems.WHETSTONE);
         }
         return original;
@@ -36,7 +36,7 @@ public class EnchantmentMenuMixin {
             )
     )
     private boolean slotsChanged_handleWhetstoneEnchanting(boolean original, @Local(name = "itemStack") ItemStack itemStack) {
-        if (SSO.CONFIG.whetstone.enableWhetstone.get() && itemStack.is(ModItems.WHETSTONE)) {
+        if (SSO.CONFIG.portableItemRepair.enableWhetstone.get() && itemStack.is(ModItems.WHETSTONE)) {
             return original && itemStack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty();
         }
         return original;

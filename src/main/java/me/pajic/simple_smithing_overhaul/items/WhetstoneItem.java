@@ -19,7 +19,7 @@ public class WhetstoneItem extends Item {
 
     @Override
     public boolean isEnabled(@NotNull FeatureFlagSet enabledFeatures) {
-        return SSO.CONFIG.whetstone.enableWhetstone.get();
+        return SSO.CONFIG.portableItemRepair.enableWhetstone.get();
     }
 
     @Override
