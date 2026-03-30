@@ -6,7 +6,6 @@ package me.pajic.simple_smithing_overhaul.platform.neoforge;
 import me.pajic.simple_smithing_overhaul.blocks.ModBlocks;
 import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
-import me.pajic.simple_smithing_overhaul.mixson.DataPatches;
 import me.pajic.simple_smithing_overhaul.recipe.ModRecipeSerializers;
 import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
@@ -40,7 +39,6 @@ public class NeoforgeEntrypoint {
 
 	@SubscribeEvent
 	private static void initRegistry(RegisterEvent event) {
-		DataPatches.init();
 		ModBlocks.init();
 		ModItems.init();
 		ModDataComponents.init();

@@ -7,7 +7,6 @@ import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
 import me.pajic.simple_smithing_overhaul.blocks.ModBlocks;
 import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
-import me.pajic.simple_smithing_overhaul.mixson.DataPatches;
 import me.pajic.simple_smithing_overhaul.recipe.ModRecipeSerializers;
 import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
@@ -31,7 +30,6 @@ public class FabricEntrypoint implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		DataPatches.init();
 		SSO.onInitialize();
 		ModBlocks.init();
 		ModItems.init();
