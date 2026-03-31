@@ -30,8 +30,9 @@ import java.util.Optional;
 
 public class PortableItemRepairRecipe extends CustomRecipe {
 
-	public static final MapCodec<PortableItemRepairRecipe> MAP_CODEC = MapCodec.unit(PortableItemRepairRecipe::new);
-	public static final StreamCodec<RegistryFriendlyByteBuf, PortableItemRepairRecipe> STREAM_CODEC = StreamCodec.unit(new PortableItemRepairRecipe());
+	private static final PortableItemRepairRecipe INSTANCE = new PortableItemRepairRecipe();
+	public static final MapCodec<PortableItemRepairRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
+	public static final StreamCodec<RegistryFriendlyByteBuf, PortableItemRepairRecipe> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
     private ItemStack itemToRepair;
     private List<ItemStack> repairMaterials;

@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 public class AssetPatches {
 
 	public static void init() {
-		MixsonHelper.registerMultiJsonPersistent(
+		MixsonHelper.registerMultiJson(
 				"Ensure language override",
 				index -> index.id().toString().startsWith("minecraft:lang/"),
 				context -> {

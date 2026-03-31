@@ -4,20 +4,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import me.pajic.simple_smithing_overhaul.SSO;
-import net.ramixin.mixson.Mixson;
-import net.ramixin.mixson.enums.DebugOption;
 import net.ramixin.mixson.util.Index;
 
 public class DataPatches {
 
 	public static void init() {
-		if (SSO.xplat().isDebug()) {
-			Mixson.enableDebugOption(DebugOption.BASIC_LOGGING);
-			Mixson.enableDebugOption(DebugOption.EXTRA_LOGGING);
-			Mixson.enableDebugOption(DebugOption.EXPORT_PATCHED_FILE);
-		}
-
-		MixsonHelper.registerSingleJsonPersistent(
+		MixsonHelper.registerSingleJson(
 				"Set netherite repair material",
 				new Index("simple_smithing_overhaul:tag/item/netherite_repair_materials"),
 				context -> {
@@ -38,7 +30,7 @@ public class DataPatches {
 			pool.getAsJsonObject()
 					.getAsJsonArray("conditions").get(0).getAsJsonObject()
 					.addProperty("chance", 0.1);
-			MixsonHelper.registerSingleJsonPersistent(
+			MixsonHelper.registerSingleJson(
 					"Distribute enchantment upgrade templates to end city loot",
 					new Index("minecraft:loot_table/chests/end_city_treasure"),
 					context -> context.getFile().getAsJsonObject().getAsJsonArray("pools").add(pool)
@@ -53,7 +45,7 @@ public class DataPatches {
 			pool.getAsJsonObject()
 					.getAsJsonArray("conditions").get(0).getAsJsonObject()
 					.addProperty("chance", 0.1);
-			MixsonHelper.registerSingleJsonPersistent(
+			MixsonHelper.registerSingleJson(
 					"Distribute pinnacle enchantment upgrade templates to ancient city loot",
 					new Index("minecraft:loot_table/chests/ancient_city"),
 					context -> context.getFile().getAsJsonObject().getAsJsonArray("pools").add(pool)
@@ -74,7 +66,7 @@ public class DataPatches {
 							.getAsJsonArray("entries").get(0).getAsJsonObject()
 							.getAsJsonArray("functions").add(function);
 				}
-				MixsonHelper.registerSingleJsonPersistent(
+				MixsonHelper.registerSingleJson(
 						"Distribute additional enchanted book loot to " + location.toString().replace(":", "_"),
 						new Index(location.toString().replace(":", ":loot_table/")),
 						context -> context.getFile().getAsJsonObject().getAsJsonArray("pools").add(pool)
@@ -101,7 +93,7 @@ public class DataPatches {
 							.getAsJsonArray("entries").get(0).getAsJsonObject()
 							.add("functions", functions);
 				}
-				MixsonHelper.registerSingleJsonPersistent(
+				MixsonHelper.registerSingleJson(
 						"Distribute additional XP bottle loot to " + location.toString().replace(":", "_"),
 						new Index(location.toString().replace(":", ":loot_table/")),
 						context -> context.getFile().getAsJsonObject().getAsJsonArray("pools").add(pool)

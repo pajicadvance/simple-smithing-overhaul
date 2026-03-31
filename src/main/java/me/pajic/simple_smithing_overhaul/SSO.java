@@ -4,6 +4,7 @@ import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import me.pajic.simple_smithing_overhaul.config.ModConfig;
 import me.pajic.simple_smithing_overhaul.mixson.AssetPatches;
 import me.pajic.simple_smithing_overhaul.mixson.DataPatches;
+import me.pajic.simple_smithing_overhaul.mixson.MixsonHelper;
 import me.pajic.simple_smithing_overhaul.platform.Platform;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ public class SSO {
 	public static ModConfig CONFIG = ConfigApiJava.registerAndLoadConfig(ModConfig::new);
 
 	public static void onInitialize() {
+		MixsonHelper.setDebugFlags();
 		DataPatches.init();
 	}
 

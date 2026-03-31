@@ -1,1 +1,2 @@
-- Updated Mixson library mod used by this mod to v2.1.0 to FINALLY fix the issue where sometimes the game would fail to start with a `ConcurrentModificationException` error on NeoForge! The Fabric version didn't suffer from this problem but the Mixson version was bumped anyway.
+- Fixed custom recipes from the mod causing a crash when they get serialized.
+- Relaxed MC version requirement so that I don't have to upload a new file every time MC gets a hotfix. No functional changes to the mod.
