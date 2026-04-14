@@ -35,7 +35,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
 	public static final StreamCodec<RegistryFriendlyByteBuf, PortableItemRepairRecipe> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
     private ItemStack itemToRepair;
-    private List<ItemStack> repairMaterials;
+    private ItemStack repairMaterial;
     private List<ItemStack> repairableItems;
     private int unitCost;
     private int flintCount = 0;
@@ -46,7 +46,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
         random = level.getRandom();
         List<ItemStack> whetstones = input.items().stream().filter(itemStack -> itemStack.is(ModItems.WHETSTONE)).toList();
         List<ItemStack> flint = input.items().stream().filter(itemStack -> itemStack.is(Items.FLINT)).toList();
-        if (whetstones.isEmpty() ^ flint.isEmpty()) {
+        if (whetstones.isEmpty() ^ flint.isEmpty() && input.size() <= 3) {
             if (whetstones.size() == 1) {
                 ItemStack whetstone = whetstones.getFirst();
                 repairableItems = input.items().stream().filter(itemStack ->
@@ -89,29 +89,26 @@ public class PortableItemRepairRecipe extends CustomRecipe {
         unitCost = ModUtil.determineUnitCost(itemToRepair);
         int damageRepairedPerUnit = Mth.ceil((float) itemToRepair.getMaxDamage() / unitCost);
         int unitsToMaxRepair = itemToRepair.getDamageValue() / damageRepairedPerUnit;
-        repairMaterials = input.items().stream().filter(itemStack -> {
+        repairMaterial = input.items().stream().filter(itemStack -> {
 			if (itemToRepair.has(DataComponents.REPAIRABLE)) {
 				return itemToRepair.get(DataComponents.REPAIRABLE).isValidRepairItem(itemStack);
 			}
 			return false;
-		}).toList();
+		}).findFirst().orElse(ItemStack.EMPTY);
         boolean flintMaterialValid = false;
-        if (flintCount > 0) flintMaterialValid = repairMaterials.stream().allMatch(i -> {
-			for (String s : SSO.CONFIG.portableItemRepair.flintMaterialWhitelist.get()) {
-				try {
-					if (s.startsWith("#")) {
-						if (i.is(TagKey.create(Registries.ITEM, Identifier.tryParse(s.substring(1))))) return true;
-					} else {
-						Optional<Item> opt = BuiltInRegistries.ITEM.getOptional(Identifier.tryParse(s));
-						if (opt.isPresent() && i.is(opt.get())) return true;
-					}
-				} catch (Throwable t) {
-					SSO.LOGGER.warn("Unable to load flint material whitelist entry {}, skipping: {}", s, t.getMessage());
+        if (flintCount > 0) for (String s : SSO.CONFIG.portableItemRepair.flintMaterialWhitelist.get()) {
+			try {
+				if (s.startsWith("#")) {
+					if (repairMaterial.is(TagKey.create(Registries.ITEM, Identifier.tryParse(s.substring(1))))) flintMaterialValid = true;
+				} else {
+					Optional<Item> opt = BuiltInRegistries.ITEM.getOptional(Identifier.tryParse(s));
+					if (opt.isPresent() && repairMaterial.is(opt.get())) flintMaterialValid = true;
 				}
+			} catch (Throwable t) {
+				SSO.LOGGER.warn("Unable to load flint material whitelist entry {}, skipping: {}", s, t.getMessage());
 			}
-			return false;
-		});
-		boolean bl = !repairMaterials.isEmpty() && repairMaterials.size() <= unitsToMaxRepair + 1 && (flintCount == 0 || (flintMaterialValid && flintCount >= repairMaterials.size()));
+		}
+		boolean bl = !repairMaterial.isEmpty() && repairMaterial.count() <= unitsToMaxRepair + 1 && (flintCount == 0 || (flintMaterialValid && flintCount >= repairMaterial.count()));
 		flintCount = 0;
         return bl;
     }
@@ -120,7 +117,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
     public @NotNull ItemStack assemble(@NotNull CraftingInput input) {
         ItemStack outputItem = itemToRepair.copy();
         outputItem.setDamageValue(
-                outputItem.getDamageValue() - (Mth.ceil((float) outputItem.getMaxDamage() / unitCost) * repairMaterials.size())
+                outputItem.getDamageValue() - (Mth.ceil((float) outputItem.getMaxDamage() / unitCost) * repairMaterial.count())
         );
         outputItem.set(ModDataComponents.REPAIR_COUNT, outputItem.getOrDefault(ModDataComponents.REPAIR_COUNT, 0) + 1);
         return outputItem;
@@ -135,18 +132,23 @@ public class PortableItemRepairRecipe extends CustomRecipe {
             if (itemStack.is(ModItems.WHETSTONE)) {
                 float degradationChance = SSO.CONFIG.anvilImprovements.modifyDegradationChance.get() ?
                         SSO.CONFIG.anvilImprovements.degradationChance.get() / 50 : 0.24F;
-                for (int j = 0; j < repairMaterials.size(); j ++) if (random.nextFloat() < degradationChance) {
+                for (int j = 0; j < repairMaterial.count(); j ++) if (random.nextFloat() < degradationChance) {
                     itemStack.setDamageValue(itemStack.getDamageValue() + 1);
                 }
                 remainingItems.set(i, itemStack.copy());
             } else if (itemStack.is(Items.FLINT)) {
                 ItemStack updated = new ItemStack(Items.FLINT);
-                updated.setCount(itemStack.getCount() - repairMaterials.size());
+                updated.setCount(itemStack.getCount() - repairMaterial.count());
                 itemStack.setCount(0);
                 remainingItems.set(i, updated);
-            } else if (otherGear.contains(itemStack)) {
+            } else if (ItemStack.isSameItemSameComponents(itemStack, repairMaterial)) {
+				ItemStack updated = new ItemStack(repairMaterial.getItem());
+				updated.setCount(itemStack.getCount() - repairMaterial.count());
+				itemStack.setCount(0);
+				remainingItems.set(i, updated);
+			} else if (otherGear.contains(itemStack)) {
                 remainingItems.set(i, itemStack.copy());
-            } else if (!itemStack.is(repairMaterials.getFirst().getItem()) && !itemStack.is(repairableItems.getFirst().getItem())) {
+            } else if (!ItemStack.isSameItemSameComponents(itemStack, repairMaterial) && !itemStack.is(repairableItems.getFirst().getItem())) {
                 remainingItems.set(i, new ItemStack(itemStack.getItem()));
             }
         }
@@ -159,6 +161,6 @@ public class PortableItemRepairRecipe extends CustomRecipe {
     }
 
 	public int getRepairMaterialsSize() {
-		return repairMaterials.size();
+		return repairMaterial.count();
 	}
 }

@@ -1,2 +1,1 @@
-- Fixed custom recipes from the mod causing a crash when they get serialized.
-- Relaxed MC version requirement so that I don't have to upload a new file every time MC gets a hotfix. No functional changes to the mod.
+- Portable repair recipe now takes in one stack with multiple items instead of multiple stacks with one item each as the repair material.
