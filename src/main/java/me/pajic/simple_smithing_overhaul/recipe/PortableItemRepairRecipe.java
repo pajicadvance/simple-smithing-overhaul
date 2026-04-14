@@ -46,7 +46,8 @@ public class PortableItemRepairRecipe extends CustomRecipe {
         random = level.getRandom();
         List<ItemStack> whetstones = input.items().stream().filter(itemStack -> itemStack.is(ModItems.WHETSTONE)).toList();
         List<ItemStack> flint = input.items().stream().filter(itemStack -> itemStack.is(Items.FLINT)).toList();
-        if (whetstones.isEmpty() ^ flint.isEmpty() && input.size() <= 3) {
+		SSO.debugLog("{}", input.ingredientCount());
+        if ((whetstones.isEmpty() ^ flint.isEmpty()) && input.ingredientCount() <= 3) {
             if (whetstones.size() == 1) {
                 ItemStack whetstone = whetstones.getFirst();
                 repairableItems = input.items().stream().filter(itemStack ->

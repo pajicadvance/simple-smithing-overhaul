@@ -1,1 +1,1 @@
-- Portable repair recipe now takes in one stack with multiple items instead of multiple stacks with one item each as the repair material.
+- Fixed portable repair recipe not working in the 2x2 crafting grid after the last update.
