@@ -1,1 +1,1 @@
-- Fixed portable repair recipe not working in the 2x2 crafting grid after the last update.
+- Fixed anvil slowness effect only checking for the undamaged variant of the anvil.

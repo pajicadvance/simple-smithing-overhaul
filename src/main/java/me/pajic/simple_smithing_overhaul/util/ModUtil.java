@@ -204,18 +204,18 @@ public class ModUtil {
 	}
 
 	private static boolean applySlowness(Player player, ItemStack item) {
-		if (item.is(Items.ANVIL)) {
+		if (item.is(ItemTags.ANVIL)) {
 			player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 20, 4));
 			return true;
 		}
 		if (item.has(DataComponents.BUNDLE_CONTENTS)) {
-			if (item.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY).itemCopyStream().anyMatch(i -> i.is(Items.ANVIL))) {
+			if (item.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY).itemCopyStream().anyMatch(i -> i.is(ItemTags.ANVIL))) {
 				player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 20, 4));
 				return true;
 			}
 		}
 		if (item.has(DataComponents.CONTAINER)) {
-			if (item.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).nonEmptyItemCopyStream().anyMatch(i -> i.is(Items.ANVIL))) {
+			if (item.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).nonEmptyItemCopyStream().anyMatch(i -> i.is(ItemTags.ANVIL))) {
 				player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 20, 4));
 				return true;
 			}
