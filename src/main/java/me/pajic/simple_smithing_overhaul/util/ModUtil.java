@@ -235,7 +235,7 @@ public class ModUtil {
 			ItemStackWithSlot material = ModUtil.findItemOnPlayer(player, itemStack -> target.get(DataComponents.REPAIRABLE).isValidRepairItem(itemStack));
 			if (!whetstone.stack().isEmpty() && !material.stack().isEmpty()) {
 				PortableItemRepairRecipe recipe = new PortableItemRepairRecipe();
-				CraftingInput input = CraftingInput.of(2, 2, List.of(target, whetstone.stack(), material.stack(), ItemStack.EMPTY));
+				CraftingInput input = CraftingInput.of(2, 2, List.of(target, whetstone.stack(), new ItemStack(material.stack().getItem(), 1), ItemStack.EMPTY));
 				if (recipe.matches(input, player.level())) {
 					Inventory inv = player.getInventory();
 					ItemStack repaired = recipe.assemble(input);
@@ -243,7 +243,7 @@ public class ModUtil {
 					target.setDamageValue(repaired.getDamageValue());
 					inv.setItem(whetstone.slot(), remainingItems.get(1));
 					ItemStack materials = material.stack().copy();
-					materials.setCount(materials.getCount() - recipe.getRepairMaterialsSize());
+					materials.setCount(materials.getCount() - 1);
 					inv.setItem(material.slot(), materials);
 					level.playSound(null, player, SoundEvents.ANVIL_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
 					player.spawnItemParticles(material.stack(), 5);

@@ -1,1 +1,1 @@
-- Fixed anvil slowness effect only checking for the undamaged variant of the anvil.
+- Fixed reworked Mending being able to use only stacks with a single item for repair.
