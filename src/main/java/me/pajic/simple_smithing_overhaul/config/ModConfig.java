@@ -150,7 +150,6 @@ public class ModConfig extends Config {
         public ValidatedBoolean noPriorWorkCost = new ValidatedBoolean(false);
         public ValidatedBoolean freeRenames = new ValidatedBoolean();
         public ValidatedBoolean noTooExpensive = new ValidatedBoolean();
-		public ValidatedBoolean holdingAnvilAppliesSlowness = new ValidatedBoolean();
     }
 
     public static class GrindstoneImprovements extends ConfigSection {

@@ -42,7 +42,7 @@ Gear can now be repaired on the go using flint or a new item, the whetstone, dir
 
 Flint is good for one repair and is consumed on use, and cannot repair diamond and netherite items. Whetstones have a durability of 6, with each repair having a chance to damage it by 1. Whetstones themselves can only be repaired in the anvil with quartz.
 
-Flint and regular whetstones can repair unenchanted items only. Enchanted items can only be repaired with enchanted whetstones. The enchanted whetstone has to contain all enchantments that are on the enchanted item you want to repair at levels equal or higher than the ones on the item. Enchantments can be added to whetstones by enchanting them in the enchanting table like books or in the anvil by combining them with enchanted books.
+Flint and regular whetstones can repair unenchanted items only. Enchanted items can only be repaired with enchanted whetstones. The enchanted whetstone has to contain all enchantments that are on the enchanted item you want to repair. The enchantment level on the whetstone doesn't matter - Efficiency 1 on a whetstone will repair Efficiency 5 items, for example. Enchantments can be added to whetstones by enchanting them in the enchanting table like books or in the anvil by combining them with enchanted books.
 
 ![whetstone](https://cdn.modrinth.com/data/cached_images/281069961f02641377ef6b08c5134a0c4d55007b.png)
 
@@ -55,12 +55,6 @@ You just need a compatible whetstone and repair materials anywhere in your inven
 This allows you to repair items without manually using the crafting grid to repair them.
 
 **Yes, this removes the ability to repair items with experience**, as it's too detrimental to the goals of this mod. As everything else in this mod, this is configurable, so you can re-enable it, but it would be defeating the point of most of the features in the mod.
-
-## Heavy Anvils
-
-Having an anvil in your inventory will significantly slow you down. Your ender storage and any bundles and containers you have in your inventory are checked for anvils, too.
-
-This is added to incentivize using the new portable repair methods instead of just carrying an anvil around.
 
 ## Anvil Improvements
 

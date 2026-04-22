@@ -87,8 +87,6 @@
   "simple_smithing_overhaul.config-v2.anvilImprovements.noPriorWorkCost": "Disable prior work cost",
   "simple_smithing_overhaul.config-v2.anvilImprovements.freeRenames": "No XP cost for renaming",
   "simple_smithing_overhaul.config-v2.anvilImprovements.noTooExpensive": "Ignore \"Too Expensive\"",
-  "simple_smithing_overhaul.config-v2.anvilImprovements.holdingAnvilAppliesSlowness": "Anvils apply Slowness",
-  "simple_smithing_overhaul.config-v2.anvilImprovements.holdingAnvilAppliesSlowness.desc": "When enabled, anvils will apply a slowness effect to the player when they have it in their inventory. This also checks the player's ender storage and any bundles or containers in the inventory!",
 
   "simple_smithing_overhaul.config-v2.grindstoneImprovements": "Grindstone improvements",
   "simple_smithing_overhaul.config-v2.grindstoneImprovements.repairCostReductionRecipe": "Halve item repair cost with netherite scrap",
@@ -154,6 +152,8 @@
   "lore.simple_smithing_overhaul.pinnacle_enchantment": "A template that can be used in a Smithing Table to upgrade one random enchantment on a fully enchanted item by one level past the level limit. It's an epic find!",
   "lore.simple_smithing_overhaul.whetstone": "A tool that can be used in the crafting grid to repair items on the go.",
   "lore.simple_smithing_overhaul.broken_anvil": "A block that can be used to name, repair, and improve equipment. This one is broken, though! Repair it with iron blocks.",
+
+  "enchantment.minecraft.mending.description": "An enchantment that repairs this item using materials from the inventory upon breaking or shift + right-clicking.",
 
   "tag.item.simple_smithing_overhaul.enchantment_upgradeable": "Enchantment Upgradeable",
   "tag.item.simple_smithing_overhaul.repairs_netherite_equipment": "Repairs Netherite Equipment",

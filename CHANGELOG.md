@@ -1,1 +1,3 @@
-- Fixed reworked Mending being able to use only stacks with a single item for repair.
+- Repairing enchanted items using a whetstone now only requires the whetstone to have any level of the enchantment, instead of a level matching the item.
+- Anvils no longer apply Slowness.
+- Added custom enchantment description for Mending when "Mending rework" is enabled.

@@ -27,18 +27,13 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemStackWithSlot;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.BundleContents;
-import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -46,7 +41,6 @@ import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.item.enchantment.Repairable;
 import net.minecraft.world.item.equipment.Equippable;
-import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
@@ -189,39 +183,6 @@ public class ModUtil {
         int max = e.getMaxCost(level);
         return Math.round(min + (max - min) * ((float) level / e.getMaxLevel()));
     }
-
-	public static void tryApplyAnvilSlowness(Player player) {
-		GameType gameType = player.gameMode();
-		if (SSO.CONFIG.anvilImprovements.holdingAnvilAppliesSlowness.get() && gameType != null && gameType.isSurvival()) {
-			Inventory inv = player.getInventory();
-			for (ItemStack item : inv) if (applySlowness(player, item)) return;
-			for (EquipmentSlot slot : Inventory.EQUIPMENT_SLOT_MAPPING.values()) {
-				ItemStack item = inv.equipment.get(slot);
-				if (applySlowness(player, item)) return;
-			}
-			for (ItemStack item : player.getEnderChestInventory()) applySlowness(player, item);
-		}
-	}
-
-	private static boolean applySlowness(Player player, ItemStack item) {
-		if (item.is(ItemTags.ANVIL)) {
-			player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 20, 4));
-			return true;
-		}
-		if (item.has(DataComponents.BUNDLE_CONTENTS)) {
-			if (item.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY).itemCopyStream().anyMatch(i -> i.is(ItemTags.ANVIL))) {
-				player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 20, 4));
-				return true;
-			}
-		}
-		if (item.has(DataComponents.CONTAINER)) {
-			if (item.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).nonEmptyItemCopyStream().anyMatch(i -> i.is(ItemTags.ANVIL))) {
-				player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 20, 4));
-				return true;
-			}
-		}
-		return false;
-	}
 
 	@SuppressWarnings("DataFlowIssue")
 	public static boolean tryRepairItem(ItemStack target, Player player, Level level) {

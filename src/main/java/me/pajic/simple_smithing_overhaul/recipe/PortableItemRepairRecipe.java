@@ -46,7 +46,6 @@ public class PortableItemRepairRecipe extends CustomRecipe {
         random = level.getRandom();
         List<ItemStack> whetstones = input.items().stream().filter(itemStack -> itemStack.is(ModItems.WHETSTONE)).toList();
         List<ItemStack> flint = input.items().stream().filter(itemStack -> itemStack.is(Items.FLINT)).toList();
-		SSO.debugLog("{}", input.ingredientCount());
         if ((whetstones.isEmpty() ^ flint.isEmpty()) && input.ingredientCount() <= 3) {
             if (whetstones.size() == 1) {
                 ItemStack whetstone = whetstones.getFirst();
@@ -60,10 +59,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
                                 ItemEnchantments.EMPTY
                         );
                         if (itemToRepair.getEnchantments().entrySet().stream().allMatch(
-                                entry -> whetstoneEnchantments.getLevel(entry.getKey()) >= Math.min(
-                                        entry.getIntValue(),
-                                        entry.getKey().value().getMaxLevel()
-                                )
+                                entry -> whetstoneEnchantments.getLevel(entry.getKey()) > 0
                         )) {
                             return processRepair(input);
                         }
@@ -100,10 +96,16 @@ public class PortableItemRepairRecipe extends CustomRecipe {
         if (flintCount > 0) for (String s : SSO.CONFIG.portableItemRepair.flintMaterialWhitelist.get()) {
 			try {
 				if (s.startsWith("#")) {
-					if (repairMaterial.is(TagKey.create(Registries.ITEM, Identifier.tryParse(s.substring(1))))) flintMaterialValid = true;
+					if (repairMaterial.is(TagKey.create(Registries.ITEM, Identifier.tryParse(s.substring(1))))) {
+						flintMaterialValid = true;
+						break;
+					}
 				} else {
 					Optional<Item> opt = BuiltInRegistries.ITEM.getOptional(Identifier.tryParse(s));
-					if (opt.isPresent() && repairMaterial.is(opt.get())) flintMaterialValid = true;
+					if (opt.isPresent() && repairMaterial.is(opt.get())) {
+						flintMaterialValid = true;
+						break;
+					}
 				}
 			} catch (Throwable t) {
 				SSO.LOGGER.warn("Unable to load flint material whitelist entry {}, skipping: {}", s, t.getMessage());
@@ -160,8 +162,4 @@ public class PortableItemRepairRecipe extends CustomRecipe {
     public @NotNull RecipeSerializer<? extends CustomRecipe> getSerializer() {
         return ModRecipeSerializers.PORTABLE_ITEM_REPAIR;
     }
-
-	public int getRepairMaterialsSize() {
-		return repairMaterial.count();
-	}
 }
