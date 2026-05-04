@@ -130,23 +130,24 @@ public class PortableItemRepairRecipe extends CustomRecipe {
     public @NotNull NonNullList<ItemStack> getRemainingItems(@NotNull CraftingInput input) {
         List<ItemStack> otherGear = repairableItems.subList(1, repairableItems.size());
         NonNullList<ItemStack> remainingItems = NonNullList.withSize(input.size(), ItemStack.EMPTY);
+		int count = repairMaterial.count();
         for (int i = 0; i < remainingItems.size(); i++) {
             ItemStack itemStack = input.getItem(i);
             if (itemStack.is(ModItems.WHETSTONE)) {
                 float degradationChance = SSO.CONFIG.anvilImprovements.modifyDegradationChance.get() ?
                         SSO.CONFIG.anvilImprovements.degradationChance.get() / 50 : 0.24F;
-                for (int j = 0; j < repairMaterial.count(); j ++) if (random.nextFloat() < degradationChance) {
+                for (int j = 0; j < count; j ++) if (random.nextFloat() < degradationChance) {
                     itemStack.setDamageValue(itemStack.getDamageValue() + 1);
                 }
                 remainingItems.set(i, itemStack.copy());
             } else if (itemStack.is(Items.FLINT)) {
                 ItemStack updated = new ItemStack(Items.FLINT);
-                updated.setCount(itemStack.getCount() - repairMaterial.count());
+                updated.setCount(itemStack.getCount() - count);
                 itemStack.setCount(0);
                 remainingItems.set(i, updated);
             } else if (ItemStack.isSameItemSameComponents(itemStack, repairMaterial)) {
 				ItemStack updated = new ItemStack(repairMaterial.getItem());
-				updated.setCount(itemStack.getCount() - repairMaterial.count());
+				updated.setCount(itemStack.getCount() - count);
 				itemStack.setCount(0);
 				remainingItems.set(i, updated);
 			} else if (otherGear.contains(itemStack)) {

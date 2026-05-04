@@ -1,3 +1,1 @@
-- Repairing enchanted items using a whetstone now only requires the whetstone to have any level of the enchantment, instead of a level matching the item.
-- Anvils no longer apply Slowness.
-- Added custom enchantment description for Mending when "Mending rework" is enabled.
+- Fixed portable repair recipe not consuming flint when items in the recipe are put in a specific order.
