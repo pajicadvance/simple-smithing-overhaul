@@ -1,4 +1,0 @@
-accessWidener v2 official
-
-accessible field net/minecraft/world/entity/player/Inventory equipment Lnet/minecraft/world/entity/EntityEquipment;
-accessible field net/minecraft/world/inventory/SmithingMenu level Lnet/minecraft/world/level/Level;

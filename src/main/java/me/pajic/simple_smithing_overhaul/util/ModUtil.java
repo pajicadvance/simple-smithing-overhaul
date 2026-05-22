@@ -55,7 +55,7 @@ public class ModUtil {
     public static final Map<Ingredient, Ingredient> additionalRepairables = new HashMap<>();
     public static final List<String> itemSuggestions = new ArrayList<>();
 
-	@SuppressWarnings({"deprecation", "DataFlowIssue"})
+	@SuppressWarnings({"DataFlowIssue"})
 	public static void updateAdditionalRepairables(HolderLookup.Provider provider) {
 		ModUtil.additionalRepairables.clear();
 		HolderLookup<Item> registry = provider.lookupOrThrow(Registries.ITEM);
@@ -105,18 +105,22 @@ public class ModUtil {
 				SSO.LOGGER.warn("Unable to load additional repair {} with {}, skipping: {}", repairItem, repairMaterial, t.getMessage());
 			}
 		});
+	}
+
+	@SuppressWarnings("deprecation")
+	public static void patchItemComponents() {
 		// Patch item components to add the repairable component
-        ModUtil.additionalRepairables.forEach((itemIngredient, materialIngredient) ->
-                itemIngredient.items().forEach(itemHolder ->
-                        itemHolder.value().builtInRegistryHolder().bindComponents(PatchedDataComponentMap.fromPatch(
+		ModUtil.additionalRepairables.forEach((itemIngredient, materialIngredient) ->
+				itemIngredient.items().forEach(itemHolder ->
+						itemHolder.value().builtInRegistryHolder().bindComponents(PatchedDataComponentMap.fromPatch(
 								itemHolder.value().builtInRegistryHolder().components(),
 								DataComponentPatch.builder().set(
 										DataComponents.REPAIRABLE,
 										new Repairable(HolderSet.direct(materialIngredient.items().toList()))
 								).build()
 						))
-                )
-        );
+				)
+		);
 	}
 
     @SuppressWarnings("DataFlowIssue")

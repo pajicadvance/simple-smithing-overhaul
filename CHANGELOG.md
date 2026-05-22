@@ -1,1 +1,2 @@
-- Fixed portable repair recipe not consuming flint when items in the recipe are put in a specific order.
+- Fixed being unable to connect to servers with Simple Smithing Overhaul installed before loading into a singleplayer world first.
+- Mixson is no longer included in the mod and is downloaded separately.

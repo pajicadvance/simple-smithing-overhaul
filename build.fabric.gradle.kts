@@ -20,6 +20,10 @@ platform {
 			slug("fzzy-config")
 			versionRange = "*"
 		}
+		required("mixson") {
+			slug("mixson")
+			versionRange = "*"
+		}
 		optional("modmenu") {}
 	}
 }
@@ -59,10 +63,7 @@ dependencies {
 	implementation("net.fabricmc.fabric-api:fabric-api:${prop("deps.fabric-api")}")
 	localRuntime("com.terraformersmc:modmenu:${prop("deps.modmenu")}")
 	implementation("me.fzzyhmstrs:fzzy_config:${prop("deps.fzzy_config")}")
-	implementation("com.github.ramixin:mixson-fabric:${prop("deps.mixson")}") {
-		exclude(group = "net.fabricmc.fabric-api", module = "fabric-api")
-	}
-	include("com.github.ramixin:mixson-fabric:${prop("deps.mixson")}") {
+	implementation("maven.modrinth:mixson:${prop("deps.mixson")}") {
 		exclude(group = "net.fabricmc.fabric-api", module = "fabric-api")
 	}
 

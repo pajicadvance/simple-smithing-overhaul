@@ -9,7 +9,6 @@ import me.pajic.simple_smithing_overhaul.items.ModItems;
 import me.pajic.simple_smithing_overhaul.recipe.ModRecipeSerializers;
 import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.CreativeModeTab;
@@ -29,8 +28,6 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 @Mod(SSO.MOD_ID)
 @EventBusSubscriber(modid = SSO.MOD_ID)
 public class NeoforgeEntrypoint {
-
-	private static HolderLookup.Provider lookup = null;
 
 	@SubscribeEvent
 	private static void onCommonSetup(FMLCommonSetupEvent event) {
@@ -126,12 +123,12 @@ public class NeoforgeEntrypoint {
 
 	@SubscribeEvent
 	private static void onTagsUpdated(TagsUpdatedEvent event) {
-		lookup = event.getLookupProvider();
+		ModUtil.updateAdditionalRepairables(event.getRegistries());
 	}
 
 	@SubscribeEvent
-	private static void initUpdateRepairablesEvent(DefaultDataComponentsBoundEvent event) {
-		ModUtil.updateAdditionalRepairables(lookup);
+	private static void onDataComponentsFinalized(DefaultDataComponentsBoundEvent event) {
+		ModUtil.patchItemComponents();
 	}
 
 	@SubscribeEvent

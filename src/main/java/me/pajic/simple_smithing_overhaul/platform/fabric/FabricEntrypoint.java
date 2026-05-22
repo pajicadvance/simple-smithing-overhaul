@@ -171,7 +171,10 @@ public class FabricEntrypoint implements ModInitializer {
 	}
 
 	private void initEvents() {
-		CommonLifecycleEvents.TAGS_LOADED.register((registryAccess, client) -> ModUtil.updateAdditionalRepairables(registryAccess));
+		CommonLifecycleEvents.TAGS_LOADED.register((registryAccess, client) -> {
+			ModUtil.updateAdditionalRepairables(registryAccess);
+			ModUtil.patchItemComponents();
+		});
 		AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> ModUtil.canUse(player, hand));
 		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> ModUtil.canUse(player, hand));
 		AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> ModUtil.canUse(player, hand));
