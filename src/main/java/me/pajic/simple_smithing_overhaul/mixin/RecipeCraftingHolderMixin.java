@@ -27,9 +27,9 @@ public interface RecipeCraftingHolderMixin {
                     target = "Lnet/minecraft/world/entity/player/Player;triggerRecipeCrafted(Lnet/minecraft/world/item/crafting/RecipeHolder;Ljava/util/List;)V"
             )
     )
-    private void grantAdvancement(Player player, List<ItemStack> items, CallbackInfo ci, @Local(name = "recipeUsed") RecipeHolder<?> recipeUsed) {
+    private void grantAdvancement(Player player, List<ItemStack> itemStacks, CallbackInfo ci, @Local(name = "recipeUsed") RecipeHolder<?> recipeUsed) {
         if (recipeUsed.value() instanceof PortableItemRepairRecipe && player instanceof ServerPlayer p) {
-            ItemStack repairedItem = items.stream().filter(itemStack -> itemStack.isDamageableItem() && !itemStack.is(ModItems.WHETSTONE)).findFirst().orElse(null);
+            ItemStack repairedItem = itemStacks.stream().filter(itemStack -> itemStack.isDamageableItem() && !itemStack.is(ModItems.WHETSTONE)).findFirst().orElse(null);
             if (repairedItem != null) {
                 ModCriteria.REPAIR_ITEM_WHETSTONE.trigger(p);
                 if (repairedItem.getOrDefault(ModDataComponents.REPAIR_COUNT, 0) == 99) ModCriteria.ITEM_REPAIR_COUNT.trigger(p);

@@ -20,6 +20,10 @@ platform {
 			slug("mixson")
 			forgeVersionRange = "[0,)"
 		}
+		required("defaulted") {
+			slug("defaulted")
+			forgeVersionRange = "[0,)"
+		}
 	}
 }
 
@@ -62,6 +66,7 @@ dependencies {
 	jarJar(libs.moulberry.mixinconstraints)
 	implementation("me.fzzyhmstrs:fzzy_config:${prop("deps.fzzy_config")}+neoforge")
 	implementation("maven.modrinth:mixson:${prop("deps.mixson")}")
+	implementation("maven.modrinth:defaulted:${prop("deps.defaulted")}")
 
 	compileOnly("maven.modrinth:enchantment-disabler:${prop("deps.ed")}-neoforge")
 	compileOnly("maven.modrinth:tax-free-levels:${prop("deps.tfl")}-neoforge")

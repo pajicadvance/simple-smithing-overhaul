@@ -13,13 +13,13 @@ import org.spongepowered.asm.mixin.Mixin;
 public class GrindstoneMenuMixin {
 
     @WrapMethod(method = "computeResult")
-    private ItemStack tryHalveRepairCost(ItemStack inputItem, ItemStack additionalItem, Operation<ItemStack> original) {
-        if (SSO.CONFIG.grindstoneImprovements.repairCostReductionRecipe.get() && additionalItem.is(Items.NETHERITE_SCRAP)) {
-            if (inputItem.isEmpty() || !inputItem.has(DataComponents.REPAIR_COST) || additionalItem.getCount() > 1) return ItemStack.EMPTY;
-            ItemStack updatedStack = inputItem.copy();
-            updatedStack.set(DataComponents.REPAIR_COST, inputItem.getOrDefault(DataComponents.REPAIR_COST, 0) / 2);
+    private ItemStack tryHalveRepairCost(ItemStack input, ItemStack additional, Operation<ItemStack> original) {
+        if (SSO.CONFIG.grindstoneImprovements.repairCostReductionRecipe.get() && additional.is(Items.NETHERITE_SCRAP)) {
+            if (input.isEmpty() || !input.has(DataComponents.REPAIR_COST) || additional.getCount() > 1) return ItemStack.EMPTY;
+            ItemStack updatedStack = input.copy();
+            updatedStack.set(DataComponents.REPAIR_COST, input.getOrDefault(DataComponents.REPAIR_COST, 0) / 2);
             return updatedStack;
         }
-        return original.call(inputItem, additionalItem);
+        return original.call(input, additional);
     }
 }

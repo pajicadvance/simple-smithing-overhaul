@@ -9,16 +9,11 @@ import me.pajic.simple_smithing_overhaul.compat.TFLCompat;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import me.pajic.simple_smithing_overhaul.recipe.PortableItemRepairRecipe;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
@@ -35,11 +30,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
-import net.minecraft.world.item.enchantment.Repairable;
 import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.level.Level;
 
@@ -52,76 +45,8 @@ import java.util.function.Predicate;
 
 public class ModUtil {
 
-    public static final Map<Ingredient, Ingredient> additionalRepairables = new HashMap<>();
     public static final List<String> itemSuggestions = new ArrayList<>();
-
-	@SuppressWarnings({"DataFlowIssue"})
-	public static void updateAdditionalRepairables(HolderLookup.Provider provider) {
-		ModUtil.additionalRepairables.clear();
-		HolderLookup<Item> registry = provider.lookupOrThrow(Registries.ITEM);
-		// Vanilla repairs
-		ModUtil.additionalRepairables.put(Ingredient.of(Items.BOW), Ingredient.of(Items.STRING));
-		ModUtil.additionalRepairables.put(Ingredient.of(Items.CROSSBOW), Ingredient.of(Items.STRING));
-		ModUtil.additionalRepairables.put(Ingredient.of(Items.FISHING_ROD), Ingredient.of(Items.STRING));
-		ModUtil.additionalRepairables.put(Ingredient.of(Items.FLINT_AND_STEEL), Ingredient.of(Items.IRON_INGOT));
-		ModUtil.additionalRepairables.put(Ingredient.of(Items.SHEARS), Ingredient.of(Items.IRON_INGOT));
-		ModUtil.additionalRepairables.put(Ingredient.of(Items.BRUSH), Ingredient.of(Items.FEATHER));
-		ModUtil.additionalRepairables.put(Ingredient.of(Items.CARROT_ON_A_STICK), Ingredient.of(Items.CARROT));
-		ModUtil.additionalRepairables.put(Ingredient.of(Items.WARPED_FUNGUS_ON_A_STICK), Ingredient.of(Items.WARPED_FUNGUS));
-		if (!CompatFlags.BETTER_TRIDENTS_LOADED) ModUtil.additionalRepairables.put(Ingredient.of(Items.TRIDENT), Ingredient.of(Items.PRISMARINE_SHARD));
-		// Modded repairs
-		SSO.CONFIG.streamlinedRepairs.modRepairableItems.forEach((repairItem, repairMaterial) -> {
-			try {
-				if (repairItem.startsWith("#")) {
-					if (repairMaterial.startsWith("#")) {
-						ModUtil.additionalRepairables.put(
-								ingredientFromItemTag(repairItem, registry),
-								ingredientFromItemTag(repairMaterial, registry)
-						);
-					} else {
-						registry.get(ResourceKey.create(Registries.ITEM, Identifier.tryParse(repairMaterial))).ifPresent(value ->
-								ModUtil.additionalRepairables.put(
-										ingredientFromItemTag(repairItem, registry),
-										Ingredient.of(value.value())
-								)
-						);
-					}
-				} else {
-					Optional<Holder.Reference<Item>> item = registry.get(ResourceKey.create(Registries.ITEM, Identifier.tryParse(repairItem)));
-					if (item.isPresent()) {
-						if (repairMaterial.startsWith("#")) {
-							ModUtil.additionalRepairables.put(
-									Ingredient.of(item.get().value()),
-									ingredientFromItemTag(repairMaterial, registry)
-							);
-						} else {
-							registry.get(ResourceKey.create(Registries.ITEM, Identifier.tryParse(repairMaterial))).ifPresent(value ->
-									ModUtil.additionalRepairables.put(Ingredient.of(item.get().value()), Ingredient.of(value.value()))
-							);
-						}
-					}
-				}
-			} catch (Throwable t) {
-				SSO.LOGGER.warn("Unable to load additional repair {} with {}, skipping: {}", repairItem, repairMaterial, t.getMessage());
-			}
-		});
-	}
-
-	@SuppressWarnings("deprecation")
-	public static void patchItemComponents() {
-		// Patch item components to add the repairable component
-		ModUtil.additionalRepairables.forEach((itemIngredient, materialIngredient) ->
-				itemIngredient.items().forEach(itemHolder ->
-						itemHolder.value().builtInRegistryHolder().bindComponents(PatchedDataComponentMap.fromPatch(
-								itemHolder.value().builtInRegistryHolder().components(),
-								DataComponentPatch.builder().set(
-										DataComponents.REPAIRABLE,
-										new Repairable(HolderSet.direct(materialIngredient.items().toList()))
-								).build()
-						))
-				)
-		);
-	}
+	private static final Map<Integer, IntList> levelPoolCache = new HashMap<>();
 
     @SuppressWarnings("DataFlowIssue")
     public static int determineUnitCost(ItemStack stack) {
@@ -286,11 +211,12 @@ public class ModUtil {
             // for level 5 the pool would look like this
             // 1 x lv5, 9 x lv4, 25 x lv3, 49 x lv2, 81 x lv1
             if (maxLevel == 1) return 1;
-            IntList pool = new IntArrayList();
-            for (int i = maxLevel, j = 1; i > 0; i--, j += 2) {
-                for (int k = 0; k < j * j; k++) {
-                    pool.add(i);
-                }
+            IntList pool = levelPoolCache.getOrDefault(maxLevel, new IntArrayList());
+            if (pool.isEmpty()) {
+	            for (int i = maxLevel, j = 1; i > 0; i--, j += 2) {
+					for (int k = 0; k < j * j; k++) pool.add(i);
+				}
+				levelPoolCache.put(maxLevel, pool);
             }
             return pool.getInt(randomSource.nextInt(pool.size()));
         }
@@ -299,11 +225,6 @@ public class ModUtil {
 
 	public static InteractionResult canUse(Player player, InteractionHand hand) {
 		return ModUtil.isBroken(player.getItemInHand(hand)) ? InteractionResult.FAIL : InteractionResult.PASS;
-	}
-
-	@SuppressWarnings("DataFlowIssue")
-	private static Ingredient ingredientFromItemTag(String s, HolderLookup<Item> registry) {
-		return Ingredient.of(registry.get(TagKey.create(Registries.ITEM, Identifier.tryParse(s.substring(1)))).orElseThrow());
 	}
 
     public static List<String> colorNames = List.of(

@@ -98,17 +98,17 @@ public class ModConfig extends Config {
         public Armor armor = new Armor();
         public Tools tools = new Tools();
         public UniqueItems uniqueItems = new UniqueItems();
+		@RequiresAction(action = Action.RESTART)
+		public ValidatedBoolean vanillaRepairables = new ValidatedBoolean();
         @SuppressWarnings("unchecked") @RequiresAction(action = Action.RESTART)
         public ValidatedMap<String, String> modRepairableItems = (new ValidatedMap.Builder())
                 .keyHandler(new ValidatedString("", new AllowableStrings(ModUtil.itemSuggestions::contains, () -> ModUtil.itemSuggestions)))
                 .valueHandler(new ValidatedString("diamond", new AllowableStrings(ModUtil.itemSuggestions::contains, () -> ModUtil.itemSuggestions)))
                 .defaults(Map.of(
-                        "another_furniture:furniture_hammer", "#minecraft:planks",
                         "rearm:netherite_shield", "minecraft:diamond",
                         "rearm:netherite_bow", "minecraft:diamond",
                         "rearm:netherite_crossbow", "minecraft:diamond",
-                        "#chalk:chalks", "minecraft:calcite",
-                        "#chalk:glow_chalks", "minecraft:calcite"
+                        "#chalk:chalks", "minecraft:calcite"
                 ))
                 .build();
         @SuppressWarnings("unchecked")
@@ -117,13 +117,10 @@ public class ModConfig extends Config {
                 .valueHandler(new ValidatedInt(1, 9, 1))
                 .defaults(Map.of(
                         "#farmersdelight:tools/knives", 1,
-                        "another_furniture:furniture_hammer", 3,
                         "rearm:netherite_bow", 3,
                         "rearm:netherite_crossbow", 3,
                         "rearm:netherite_shield", 3,
-                        "vshorses:horseshoe", 3,
-                        "#chalk:chalks", 2,
-                        "#chalk:glow_chalks", 2
+                        "#chalk:chalks", 2
                 ))
                 .build();
     }

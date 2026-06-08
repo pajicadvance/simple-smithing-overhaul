@@ -55,7 +55,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu implements Smit
             method = "onTake",
             at = @At("HEAD")
     )
-    private void hookOnTake(Player player, ItemStack itemStack, CallbackInfo ci) {
+    private void hookOnTake(Player player, ItemStack carried, CallbackInfo ci) {
         if (
 				SSO.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading.get() &&
 				SSO.CONFIG.enchantmentUpgrading.upgradingHasExperienceCost.get() &&
@@ -71,7 +71,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu implements Smit
             if (!player.getAbilities().instabuild) ModUtil.payXpCost(player, ((CostAccess) this).sso$getCost());
             if (player instanceof ServerPlayer p) {
                 ModCriteria.APPLY_PINNACLE_ENCHANTMENT.trigger(p);
-                if (itemStack.getOrDefault(ModDataComponents.PINNACLE_COUNT, 0) == 10) ModCriteria.BAD_RNG.trigger(p);
+                if (carried.getOrDefault(ModDataComponents.PINNACLE_COUNT, 0) == 10) ModCriteria.BAD_RNG.trigger(p);
             }
         }
     }

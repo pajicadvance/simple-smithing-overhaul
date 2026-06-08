@@ -23,8 +23,8 @@ public class EnchantmentMixin {
     )
     private static ChatFormatting recolorIfPinnacle(
 			ChatFormatting original,
-			@Local(argsOnly = true) Holder<Enchantment> enchantment,
-			@Local(argsOnly = true) int level
+			@Local(argsOnly = true, name = "enchantment") Holder<Enchantment> enchantment,
+			@Local(argsOnly = true, name = "level") int level
     ) {
         if (SSO.CONFIG.pinnacleEnchantment.colorPinnacleItemName.get() && level > enchantment.value().getMaxLevel()) {
             return ChatFormatting.getByName(SSO.CONFIG.pinnacleEnchantment.pinnacleItemNameColor.get().replace(" ", "_").toUpperCase());

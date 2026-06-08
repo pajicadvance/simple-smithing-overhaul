@@ -40,8 +40,8 @@ public abstract class ItemStackMixin implements DataComponentHolder {
             method = "set(Lnet/minecraft/core/component/DataComponentType;Ljava/lang/Object;)Ljava/lang/Object;",
             at = @At("HEAD")
     )
-    private <T> void manageBrokenState(DataComponentType<? super T> component, T value, CallbackInfoReturnable<T> cir) {
-        if (component == DataComponents.DAMAGE && sso$thisStack.isDamageableItem()) {
+    private <T> void manageBrokenState(DataComponentType<? super T> type, T value, CallbackInfoReturnable<T> cir) {
+        if (type == DataComponents.DAMAGE && sso$thisStack.isDamageableItem()) {
             if ((int) value < sso$thisStack.getMaxDamage()) sso$thisStack.remove(ModDataComponents.BROKEN);
             else if (ModUtil.shouldPreventDestruction(sso$thisStack)) switch (SSO.CONFIG.itemDestructionPrevention.mode.get()) {
                 case ALL -> sso$thisStack.set(ModDataComponents.BROKEN, true);
@@ -62,20 +62,20 @@ public abstract class ItemStackMixin implements DataComponentHolder {
                     target = "Lnet/minecraft/world/item/ItemStack;shrink(I)V"
             )
     )
-    private boolean preventDestruction(ItemStack instance, int decrement) {
+    private boolean preventDestruction(ItemStack instance, int amount) {
         return !ModUtil.isBroken(instance);
     }
 
     @WrapMethod(method = "forEachModifier(Lnet/minecraft/world/entity/EquipmentSlot;Ljava/util/function/BiConsumer;)V")
-    private void noAttributesIfBroken(EquipmentSlot equipmentSLot, BiConsumer<Holder<Attribute>, AttributeModifier> action, Operation<Void> original) {
-        if (!ModUtil.isBroken(sso$thisStack)) original.call(equipmentSLot, action);
+    private void noAttributesIfBroken(EquipmentSlot slot, BiConsumer<Holder<Attribute>, AttributeModifier> consumer, Operation<Void> original) {
+        if (!ModUtil.isBroken(sso$thisStack)) original.call(slot, consumer);
     }
 
     @WrapMethod(method = "forEachModifier(Lnet/minecraft/world/entity/EquipmentSlotGroup;Lorg/apache/commons/lang3/function/TriConsumer;)V")
     private void noAttributesIfBroken(
-            EquipmentSlotGroup slotGroup, TriConsumer<Holder<Attribute>, AttributeModifier, ItemAttributeModifiers.Display> action, Operation<Void> original
+			EquipmentSlotGroup slot, TriConsumer<Holder<Attribute>, AttributeModifier, ItemAttributeModifiers.Display> consumer, Operation<Void> original
     ) {
-        if (!ModUtil.isBroken(sso$thisStack)) original.call(slotGroup, action);
+        if (!ModUtil.isBroken(sso$thisStack)) original.call(slot, consumer);
     }
 
     @ModifyReturnValue(

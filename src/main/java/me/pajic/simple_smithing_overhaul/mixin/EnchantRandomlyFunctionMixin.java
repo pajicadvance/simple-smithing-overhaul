@@ -22,8 +22,8 @@ public class EnchantRandomlyFunctionMixin {
     )
     private static int modifyEnchantmentLevel(
 			int original,
-			@Local(argsOnly = true) Holder<Enchantment> enchantment,
-			@Local(argsOnly = true) LootContext context
+			@Local(argsOnly = true, name = "enchantment") Holder<Enchantment> enchantment,
+			@Local(argsOnly = true, name = "context") LootContext context
     ) {
         return ModUtil.calculateNewEnchantmentLevel(enchantment.value().getMaxLevel(), context.getRandom(), original);
     }

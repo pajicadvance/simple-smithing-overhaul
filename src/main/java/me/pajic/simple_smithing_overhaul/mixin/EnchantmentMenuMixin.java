@@ -21,9 +21,9 @@ public class EnchantmentMenuMixin {
                     target = "Lnet/minecraft/world/item/ItemStack;is(Ljava/lang/Object;)Z"
             )
     )
-    private boolean getEnchantmentList_handleWhetstoneEnchanting(boolean original, @Local(argsOnly = true) ItemStack stack) {
+    private boolean getEnchantmentList_handleWhetstoneEnchanting(boolean original, @Local(argsOnly = true, name = "itemStack") ItemStack itemStack) {
         if (SSO.CONFIG.portableItemRepair.enableWhetstone.get()) {
-            return original || stack.is(ModItems.WHETSTONE);
+            return original || itemStack.is(ModItems.WHETSTONE);
         }
         return original;
     }

@@ -40,8 +40,8 @@ public abstract class AnvilBlockMixin extends FallingBlock {
             method = "damage",
             at = @At("RETURN")
     )
-    private static BlockState brokenState(BlockState original, @Local(argsOnly = true) BlockState state) {
-        return original == null ? ModBlocks.BROKEN_ANVIL.defaultBlockState().setValue(FACING, state.getValue(FACING)) : original;
+    private static BlockState brokenState(BlockState original, @Local(argsOnly = true, name = "blockState") BlockState blockState) {
+        return original == null ? ModBlocks.BROKEN_ANVIL.defaultBlockState().setValue(FACING, blockState.getValue(FACING)) : original;
     }
 
     @WrapMethod(method = "useWithoutItem")

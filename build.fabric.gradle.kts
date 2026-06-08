@@ -24,6 +24,10 @@ platform {
 			slug("mixson")
 			versionRange = "*"
 		}
+		required("defaulted") {
+			slug("defaulted")
+			versionRange = "*"
+		}
 		optional("modmenu") {}
 	}
 }
@@ -66,6 +70,7 @@ dependencies {
 	implementation("maven.modrinth:mixson:${prop("deps.mixson")}") {
 		exclude(group = "net.fabricmc.fabric-api", module = "fabric-api")
 	}
+	implementation("maven.modrinth:defaulted:${prop("deps.defaulted")}")
 
 	compileOnly("maven.modrinth:enchantment-disabler:${prop("deps.ed")}-fabric")
 	compileOnly("maven.modrinth:tax-free-levels:${prop("deps.tfl")}-fabric")

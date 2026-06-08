@@ -76,7 +76,7 @@ public abstract class GrindstoneMenuOutputSlotMixin {
             method = "onTake",
             at = @At("HEAD")
     )
-    private void grantAdvancement(Player player, ItemStack stack, CallbackInfo ci) {
+    private void grantAdvancement(Player player, ItemStack carried, CallbackInfo ci) {
         if (player instanceof ServerPlayer p) {
             if (this$0.slots.get(1).getItem().is(Items.NETHERITE_SCRAP)) ModCriteria.REDUCE_REPAIR_COST.trigger(p);
             else ModCriteria.DISENCHANT_ITEM.trigger(p);

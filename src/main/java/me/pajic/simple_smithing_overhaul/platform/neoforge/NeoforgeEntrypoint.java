@@ -19,8 +19,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.event.DefaultDataComponentsBoundEvent;
-import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
@@ -119,16 +117,6 @@ public class NeoforgeEntrypoint {
 					CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS
 			);
 		}
-	}
-
-	@SubscribeEvent
-	private static void onTagsUpdated(TagsUpdatedEvent event) {
-		ModUtil.updateAdditionalRepairables(event.getRegistries());
-	}
-
-	@SubscribeEvent
-	private static void onDataComponentsFinalized(DefaultDataComponentsBoundEvent event) {
-		ModUtil.patchItemComponents();
 	}
 
 	@SubscribeEvent

@@ -14,9 +14,12 @@ Many aspects of the mod are configurable. The mod description below reflects the
 - [**Tax Free Levels**](https://modrinth.com/mod/tax-free-levels): Fully compatible with Simple Smithing Overhaul and greatly complements its changes.
 - [**Item Descriptions**](https://modrinth.com/mod/item-descriptions): Simple Smithing Overhaul provides descriptions for the items it adds using this mod.
 
-Fabric version requires [Fabric API](https://modrinth.com/mod/fabric-api) and [Fzzy Config](https://modrinth.com/mod/fzzy-config). Use [Mod Menu](https://modrinth.com/mod/modmenu) to change settings in-game.
-
-NeoForge version requires [Fzzy Config](https://modrinth.com/mod/fzzy-config). Use the Mods screen to change settings in-game.
+Requirements:
+- [Fzzy Config](https://modrinth.com/mod/fzzy-config)
+- [Defaulted](https://modrinth.com/mod/defaulted)
+- [Mixson](https://modrinth.com/mod/mixson)
+- [Fabric API](https://modrinth.com/mod/fabric-api) (if on Fabric)
+- [Mod Menu](https://modrinth.com/mod/modmenu) (for accessing in-game config on Fabric)
 
 # Features
 

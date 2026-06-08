@@ -42,7 +42,7 @@ public abstract class ItemCombinerMenuMixin extends AbstractContainerMenu implem
     }
 
     @WrapMethod(method = "mayPickup")
-    private boolean modifyMayPickup(Player player, boolean hasStack, Operation<Boolean> original) {
+    private boolean modifyMayPickup(Player player, boolean hasItem, Operation<Boolean> original) {
         if (
                 SSO.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading.get() &&
                 SSO.CONFIG.enchantmentUpgrading.upgradingHasExperienceCost.get() &&
@@ -56,7 +56,7 @@ public abstract class ItemCombinerMenuMixin extends AbstractContainerMenu implem
         ) {
             return (player.hasInfiniteMaterials() || player.experienceLevel >= sso$cost) && sso$cost > 0;
         }
-        return original.call(player, hasStack);
+        return original.call(player, hasItem);
     }
 
     @Override

@@ -122,11 +122,11 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
             method = "onTake",
             at = @At("HEAD")
     )
-    private void noXPCostIfUnenchanted(Player player, ItemStack itemStack, CallbackInfo ci) {
+    private void noXPCostIfUnenchanted(Player player, ItemStack carried, CallbackInfo ci) {
         if (
 				SSO.CONFIG.anvilImprovements.freeUnenchantedRepairs.get() &&
-                !itemStack.isEnchanted() &&
-                itemStack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty()
+                !carried.isEnchanted() &&
+                carried.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty()
         ) {
             cost.set(0);
         }
@@ -137,15 +137,15 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
             method = "onTake",
             at = @At("HEAD")
     )
-    private void grantAdvancements(Player player, ItemStack stack, CallbackInfo ci) {
+    private void grantAdvancements(Player player, ItemStack carried, CallbackInfo ci) {
         if (resultSlots.getItem(0).getDamageValue() < inputSlots.getItem(0).getDamageValue()) {
             if (player instanceof ServerPlayer p) ModCriteria.REPAIR_ITEM.trigger(p);
-            int repairCount = stack.getOrDefault(ModDataComponents.REPAIR_COUNT, 0);
+            int repairCount = carried.getOrDefault(ModDataComponents.REPAIR_COUNT, 0);
             if (player instanceof ServerPlayer p) {
                 if (repairCount + 1 == 100) ModCriteria.ITEM_REPAIR_COUNT.trigger(p);
                 if (repairCount + 1 == 1000) ModCriteria.ITEM_REPAIR_COUNT_BIG.trigger(p);
             }
-            stack.set(ModDataComponents.REPAIR_COUNT, repairCount + 1);
+            carried.set(ModDataComponents.REPAIR_COUNT, repairCount + 1);
         }
         if (inputSlots.getItem(1).is(Items.ENCHANTED_BOOK) && !inputSlots.getItem(0).is(Items.ENCHANTED_BOOK)) {
             if (player instanceof ServerPlayer p) ModCriteria.ANVIL_ENCHANT_COMBINE.trigger(p);
@@ -231,9 +231,9 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
                     target = "Lnet/minecraft/world/inventory/AnvilMenu;calculateIncreasedRepairCost(I)I"
             )
     )
-    private int preventPriorWorkCostIncrease(int oldRepairCost, Operation<Integer> original) {
+    private int preventPriorWorkCostIncrease(int baseCost, Operation<Integer> original) {
         if (SSO.CONFIG.anvilImprovements.noPriorWorkCost.get()) {
-            return oldRepairCost;
+            return baseCost;
         }
         if (
 				SSO.CONFIG.anvilImprovements.noWorkCostIncreaseOnRepair.get() &&
@@ -241,10 +241,10 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
                 inputSlots.getItem(0).has(DataComponents.REPAIRABLE) &&
                 inputSlots.getItem(0).get(DataComponents.REPAIRABLE).isValidRepairItem(inputSlots.getItem(1))
         ) {
-            return oldRepairCost;
+            return baseCost;
         }
         else {
-            return original.call(oldRepairCost);
+            return original.call(baseCost);
         }
     }
 

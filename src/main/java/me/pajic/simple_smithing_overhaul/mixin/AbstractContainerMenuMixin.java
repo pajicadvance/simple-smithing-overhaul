@@ -17,6 +17,7 @@ public class AbstractContainerMenuMixin {
 
     @Shadow @Final public NonNullList<Slot> slots;
 
+    @SuppressWarnings({"LocalMayUseName"})
     @ModifyArg(
 			method = "lambda$doClick$0",
             at = @At(

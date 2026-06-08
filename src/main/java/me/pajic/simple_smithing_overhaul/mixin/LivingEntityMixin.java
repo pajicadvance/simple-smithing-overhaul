@@ -26,7 +26,7 @@ public abstract class LivingEntityMixin {
                     target = "Lnet/minecraft/world/level/Level;playLocalSound(DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FFZ)V"
             )
     )
-    private boolean noBreakSoundIfBrokenAlready(Level instance, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, boolean distanceDelay, @Local(argsOnly = true) ItemStack itemStack) {
+    private boolean noBreakSoundIfBrokenAlready(Level instance, double x, double y, double z, SoundEvent sound, SoundSource source, float volume, float pitch, boolean distanceDelay, @Local(argsOnly = true, name = "itemStack") ItemStack itemStack) {
         return !ModUtil.isBroken(itemStack);
     }
 

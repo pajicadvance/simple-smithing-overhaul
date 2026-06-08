@@ -19,7 +19,7 @@ public class InventoryChangeTriggerMixin {
 			method = "trigger(Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/item/ItemStack;)V",
 			at = @At("HEAD")
 	)
-	private void grantAdvancement(ServerPlayer serverPlayer, Inventory inventory, ItemStack itemStack, CallbackInfo ci) {
+	private void grantAdvancement(ServerPlayer player, Inventory inventory, ItemStack changedItem, CallbackInfo ci) {
 		int pinnacleCount = 0;
 		for (ItemStack item : inventory) {
 			if (item.has(ModDataComponents.PINNACLE_COUNT)) pinnacleCount++;
@@ -28,6 +28,6 @@ public class InventoryChangeTriggerMixin {
 			ItemStack item = inventory.equipment.get(slot);
 			if (item.has(ModDataComponents.PINNACLE_COUNT)) pinnacleCount++;
 		}
-		if (pinnacleCount >= 8) ModCriteria.MAXED_OUT.trigger(serverPlayer);
+		if (pinnacleCount >= 8) ModCriteria.MAXED_OUT.trigger(player);
 	}
 }

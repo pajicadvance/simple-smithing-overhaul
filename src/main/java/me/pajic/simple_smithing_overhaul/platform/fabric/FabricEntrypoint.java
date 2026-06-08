@@ -12,7 +12,6 @@ import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
@@ -20,9 +19,7 @@ import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 @Entrypoint("main")
@@ -171,18 +168,11 @@ public class FabricEntrypoint implements ModInitializer {
 	}
 
 	private void initEvents() {
-		CommonLifecycleEvents.TAGS_LOADED.register((registryAccess, client) -> {
-			ModUtil.updateAdditionalRepairables(registryAccess);
-			ModUtil.patchItemComponents();
-		});
-		AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> ModUtil.canUse(player, hand));
-		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> ModUtil.canUse(player, hand));
-		AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> ModUtil.canUse(player, hand));
-		UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> ModUtil.canUse(player, hand));
-		UseItemCallback.EVENT.register((player, world, hand) -> {
-			ItemStack stack = player.getMainHandItem();
-			return ModUtil.isBroken(stack) ? InteractionResult.FAIL : InteractionResult.PASS;
-		});
+		AttackEntityCallback.EVENT.register((player, _, hand, _, _) -> ModUtil.canUse(player, hand));
+		UseEntityCallback.EVENT.register((player, _, hand, _, _) -> ModUtil.canUse(player, hand));
+		AttackBlockCallback.EVENT.register((player, _, hand, _, _) -> ModUtil.canUse(player, hand));
+		UseBlockCallback.EVENT.register((player, _, hand, _) -> ModUtil.canUse(player, hand));
+		UseItemCallback.EVENT.register((player, _, hand) -> ModUtil.canUse(player, hand));
 	}
 }
 //?}

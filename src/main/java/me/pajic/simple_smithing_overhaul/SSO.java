@@ -2,6 +2,7 @@ package me.pajic.simple_smithing_overhaul;
 
 import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import me.pajic.simple_smithing_overhaul.config.ModConfig;
+import me.pajic.simple_smithing_overhaul.defaulted.RepairablePatchEvent;
 import me.pajic.simple_smithing_overhaul.mixson.AssetPatches;
 import me.pajic.simple_smithing_overhaul.mixson.DataPatches;
 import me.pajic.simple_smithing_overhaul.mixson.MixsonHelper;
@@ -27,6 +28,7 @@ public class SSO {
 	public static void onInitialize() {
 		MixsonHelper.setDebugFlags();
 		DataPatches.init();
+		RepairablePatchEvent.register();
 	}
 
 	public static void onInitializeClient() {
