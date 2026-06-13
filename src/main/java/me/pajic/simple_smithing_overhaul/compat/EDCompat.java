@@ -1,6 +1,5 @@
 package me.pajic.simple_smithing_overhaul.compat;
 
-
 import me.pajic.enchantmentdisabler.util.ModUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.enchantment.Enchantment;

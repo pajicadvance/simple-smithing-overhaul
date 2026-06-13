@@ -13,7 +13,10 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
@@ -22,7 +25,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemStackWithSlot;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -43,6 +45,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+//? 26.1.2 {
+/*import net.minecraft.ChatFormatting;
+*///?} else {
+import net.minecraft.network.chat.TextColor;
+ //?}
+
 public class ModUtil {
 
     public static final List<String> itemSuggestions = new ArrayList<>();
@@ -58,9 +66,9 @@ public class ModUtil {
 
             if (stack.has(DataComponents.EQUIPPABLE)) {
                 Equippable equippable = stack.get(DataComponents.EQUIPPABLE);
-                if (equippable.canBeEquippedBy(BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(EntityType.WOLF)))
+                if (equippable.canBeEquippedBy(BuiltInRegistries.ENTITY_TYPE.getOrThrow(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.withDefaultNamespace("wolf")))))
 					return SSO.CONFIG.streamlinedRepairs.armor.wolfArmorUnits.get();
-                if (equippable.canBeEquippedBy(BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(EntityType.HORSE)))
+                if (equippable.canBeEquippedBy(BuiltInRegistries.ENTITY_TYPE.getOrThrow(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.withDefaultNamespace("horse")))))
 					return SSO.CONFIG.streamlinedRepairs.armor.horseArmorUnits.get();
             }
 
@@ -245,4 +253,14 @@ public class ModUtil {
             "Yellow",
             "White"
     );
+
+	public static MutableComponent colorText(Component text) {
+		String color = SSO.CONFIG.pinnacleEnchantment.pinnacleItemNameColor.get().replace(" ", "_").toUpperCase();
+		//? 26.1.2 {
+		/*ChatFormatting formatting = ChatFormatting.getByName(color);
+		return formatting != null ? text.copy().withStyle(formatting) : MutableComponent.create(text.getContents());
+		*///?} else {
+		return text.copy().withColor(TextColor.parseColor(color).result().orElse(TextColor.LIGHT_PURPLE));
+		//?}
+	}
 }

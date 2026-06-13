@@ -40,4 +40,14 @@ stonecutter parameters {
 	swaps["mod_group"] = "\"" + property("mod.group") + "\";"
 	swaps["minecraft"] = "\"" + node.metadata.version + "\";"
 	constants["release"] = property("mod.id") != "modtemplate"
+
+	replacements {
+		filters.exclude("**/*.accesswidener", "**/*.cfg")
+		string(current.parsed > "26.1.2") {
+			replace("import net.minecraft.advancements.criterion.ContextAwarePredicate;", "import net.minecraft.advancements.predicates.ContextAwarePredicate;")
+			replace("import net.minecraft.advancements.criterion.SimpleCriterionTrigger;", "import net.minecraft.advancements.triggers.SimpleCriterionTrigger;")
+			replace("import net.minecraft.advancements.criterion.EntityPredicate;", "import net.minecraft.advancements.predicates.entity.EntityPredicate;")
+			replace("import net.minecraft.advancements.criterion.InventoryChangeTrigger;", "import net.minecraft.advancements.triggers.InventoryChangeTrigger;")
+		}
+	}
 }

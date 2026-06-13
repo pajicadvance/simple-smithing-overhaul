@@ -131,12 +131,12 @@ public class UpgradeRecipeHandler {
         }
     }
 
-    @SuppressWarnings({"DataFlowIssue", "resource"})
+    @SuppressWarnings({"resource"})
 	public static ItemStack applyPinnacleUpgrade(ItemStack original, Slot slot, AbstractContainerMenu container, NonNullList<Slot> slots) {
         if (container instanceof SmithingMenu sm && ModUtil.isPinnacleEnchantmentRecipe(slots) && slot.equals(slots.get(3))) {
             RandomSource random = ((SmithingMenuExtension) sm).sso$getLevel().getRandom();
             Component itemName = slots.get(1).getItem().getOrDefault(DataComponents.CUSTOM_NAME, original.getItem().getName(original));
-            original.set(DataComponents.CUSTOM_NAME, itemName.copy().withStyle(ChatFormatting.getByName(SSO.CONFIG.pinnacleEnchantment.pinnacleItemNameColor.get().replace(" ", "_").toUpperCase())));
+            original.set(DataComponents.CUSTOM_NAME, ModUtil.colorText(itemName));
             List<EnchantmentInstance> existingPinnacleEnchantments = original.getEnchantments().entrySet()
                     .stream().map(entry -> new EnchantmentInstance(entry.getKey(), entry.getIntValue()))
                     .filter(ei -> ei.level() > ei.enchantment().value().getMaxLevel())
