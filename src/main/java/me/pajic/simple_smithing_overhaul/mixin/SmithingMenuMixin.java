@@ -57,7 +57,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu implements Smit
     )
     private void hookOnTake(Player player, ItemStack carried, CallbackInfo ci) {
         if (
-				SSO.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading.get() &&
+				ModUtil.enchantmentUpgradingEnabled() &&
 				SSO.CONFIG.enchantmentUpgrading.upgradingHasExperienceCost.get() &&
                 (ModUtil.isEnchantedBookOrWhetstoneUpgradeRecipe(slots) || ModUtil.isEnchantedItemUpgradeRecipe(slots))
         ) {

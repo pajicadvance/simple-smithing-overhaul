@@ -4,6 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import me.pajic.simple_smithing_overhaul.SSO;
+import me.pajic.simple_smithing_overhaul.util.CompatFlags;
+import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.ramixin.mixson.util.Index;
 
 public class DataPatches {
@@ -22,7 +24,7 @@ public class DataPatches {
 				}
 		);
 
-		if (SSO.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading.get()) {
+		if (ModUtil.enchantmentUpgradingEnabled()) {
 			JsonElement pool = Constants.singleItemChancePool.deepCopy();
 			pool.getAsJsonObject()
 					.getAsJsonArray("entries").get(0).getAsJsonObject()
@@ -52,7 +54,7 @@ public class DataPatches {
 			);
 		}
 
-		if (SSO.CONFIG.enchantedBookLootTweaks.additionalChestLoot.get()) {
+		if (!CompatFlags.PENCHANT_LOADED && SSO.CONFIG.enchantedBookLootTweaks.additionalChestLoot.get()) {
 			SSO.CONFIG.enchantedBookLootTweaks.bookLootLocations.forEach((location, values) -> {
 				JsonElement pool = Constants.enchantedBookPool.deepCopy();
 				pool.getAsJsonObject()

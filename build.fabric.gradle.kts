@@ -72,6 +72,8 @@ dependencies {
 	}
 	implementation("maven.modrinth:defaulted:${prop("deps.defaulted")}")
 
+	compileOnly("maven.modrinth:penchant:${prop("deps.penchant")}")
+	runtimeOnly("maven.modrinth:penchant:${prop("deps.penchant")}")
 	compileOnly("maven.modrinth:enchantment-disabler:${prop("deps.ed")}-fabric")
 	compileOnly("maven.modrinth:tax-free-levels:${prop("deps.tfl")}-fabric")
 }

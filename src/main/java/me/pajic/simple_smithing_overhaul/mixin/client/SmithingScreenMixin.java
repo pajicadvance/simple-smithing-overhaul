@@ -32,7 +32,7 @@ public abstract class SmithingScreenMixin extends ItemCombinerScreen<SmithingMen
 	protected void extractLabels(@NotNull GuiGraphicsExtractor graphics, int xm, int ym) {
 		super.extractLabels(graphics, xm, ym);
 		if (
-				SSO.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading.get() &&
+				ModUtil.enchantmentUpgradingEnabled() &&
 				SSO.CONFIG.enchantmentUpgrading.upgradingHasExperienceCost.get() &&
 				(ModUtil.isEnchantedItemUpgradeRecipe(menu.slots) || ModUtil.isEnchantedBookOrWhetstoneUpgradeRecipe(menu.slots)) &&
 				menu.slots.get(2).getItem().is(Items.LAPIS_LAZULI) &&
@@ -76,7 +76,7 @@ public abstract class SmithingScreenMixin extends ItemCombinerScreen<SmithingMen
     )
     private int nudgeArmorStandUp(int original) {
         if (
-                (SSO.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading.get() &&
+                (ModUtil.enchantmentUpgradingEnabled() &&
 				SSO.CONFIG.enchantmentUpgrading.upgradingHasExperienceCost.get()) ||
 				SSO.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment.get()
         ) {

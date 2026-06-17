@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import me.pajic.simple_smithing_overhaul.SSO;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
+import me.pajic.simple_smithing_overhaul.util.CompatFlags;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.inventory.EnchantmentMenu;
 import net.minecraft.world.item.ItemStack;
@@ -50,7 +51,11 @@ public class EnchantmentMenuMixin {
             )
     )
     private boolean limitTablePower(boolean original, @Local(name = "bookcases") /*? if fabric {*/int/*?} else {*//*float*//*?}*/ bookcases) {
-        if (SSO.CONFIG.enchantmentLimits.limitEnchantingTablePower.get() && bookcases >= SSO.CONFIG.enchantmentLimits.enchantingTablePowerLimit.get()) {
+        if (
+				!CompatFlags.PENCHANT_LOADED &&
+				SSO.CONFIG.enchantmentLimits.limitEnchantingTablePower.get() &&
+				bookcases >= SSO.CONFIG.enchantmentLimits.enchantingTablePowerLimit.get()
+		) {
             return false;
         }
         return original;

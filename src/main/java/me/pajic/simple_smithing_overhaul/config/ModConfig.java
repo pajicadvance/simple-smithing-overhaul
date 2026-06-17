@@ -42,6 +42,7 @@ public class ModConfig extends Config {
 	public EnchantmentLimits enchantmentLimits = new EnchantmentLimits();
     public EnchantedBookLootTweaks enchantedBookLootTweaks = new EnchantedBookLootTweaks();
     public ImprovedExperienceBottle improvedExperienceBottle = new ImprovedExperienceBottle();
+	public ModIntegration modIntegration = new ModIntegration();
 
     public static class EnchantmentUpgrading extends ConfigSection {
         @RequiresAction(action = Action.RESTART)
@@ -305,6 +306,10 @@ public class ModConfig extends Config {
         public ValidatedBoolean limitBookTradeUses = new ValidatedBoolean();
         public ValidatedInt bookTradeUsesLimit = new ValidatedInt(3, Integer.MAX_VALUE, 1);
     }
+
+	public static class ModIntegration extends ConfigSection {
+		public ValidatedBoolean penchant = new ValidatedBoolean();
+	}
 
     public static class Armor extends ConfigSection {
         public ValidatedInt headArmorUnits = new ValidatedInt(5, 9, 1);

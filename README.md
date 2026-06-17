@@ -10,16 +10,17 @@ The mod implements a **vanilla styled smithing advancement tree**, with 11 advan
 
 Many aspects of the mod are configurable. The mod description below reflects the default settings, so take a look at the configuration screen if you don't like something.
 
-**Highly recommended mods**
-- [**Tax Free Levels**](https://modrinth.com/mod/tax-free-levels): Fully compatible with Simple Smithing Overhaul and greatly complements its changes.
-- [**Item Descriptions**](https://modrinth.com/mod/item-descriptions): Simple Smithing Overhaul provides descriptions for the items it adds using this mod.
-
-Requirements:
+**Requirements**:
 - [Fzzy Config](https://modrinth.com/mod/fzzy-config)
 - [Defaulted](https://modrinth.com/mod/defaulted)
 - [Mixson](https://modrinth.com/mod/mixson)
 - [Fabric API](https://modrinth.com/mod/fabric-api) (if on Fabric)
 - [Mod Menu](https://modrinth.com/mod/modmenu) (for accessing in-game config on Fabric)
+  
+**Highly recommended mods**
+- [**Tax Free Levels**](https://modrinth.com/mod/tax-free-levels): Fully compatible with Simple Smithing Overhaul and greatly complements its changes.
+- [**Item Descriptions**](https://modrinth.com/mod/item-descriptions): Simple Smithing Overhaul provides descriptions for the items it adds using this mod.
+- [**Penchant**](https://modrinth.com/mod/penchant): Unique enchanting rework, Simple Smithing Overhaul has integration for it, details at the bottom of the mod description.
 
 # Features
 
@@ -113,3 +114,17 @@ However:
 
 - Enchanted books and experience bottles are way more common in loot chests, and can be found in more places.
 - Experience bottles give way more experience (30-50, up from 3-11).
+
+# Mod Integration
+
+Integrations are automatically enabled for each supported mod when installed alongside Simple Smithing Overhaul and can be disabled in the config if desired.
+
+### [Penchant](https://modrinth.com/mod/penchant)
+- Disables the following features in Simple Smithing Overhaul:
+  - Enchantment upgrading
+  - Enchanted book loot tweaks
+  - Enchantment limits
+- Changes the following in Penchant:
+  - Allows adding enchantments to whetstones in the enchanting table
+  - Disables the Durability Rework feature by default
+  - Enables the Reduced Curses feature by default

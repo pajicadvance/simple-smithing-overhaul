@@ -44,7 +44,7 @@ public class UpgradeRecipeHandler {
             Level level,
             ItemCombinerMenu menu
     ) {
-        if (SSO.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading.get()) {
+        if (ModUtil.enchantmentUpgradingEnabled()) {
             ItemEnchantments itemEnchantments = null;
             if (ModUtil.isEnchantedBookOrWhetstoneUpgradeRecipe(slots)) {
                 itemEnchantments = stack.get().get(DataComponents.STORED_ENCHANTMENTS);

@@ -1,6 +1,7 @@
 package me.pajic.simple_smithing_overhaul.mixin;
 
 import me.pajic.simple_smithing_overhaul.SSO;
+import me.pajic.simple_smithing_overhaul.util.CompatFlags;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,7 +19,11 @@ public class EnchantWithLevelsFunctionMixin {
             index = 2
     )
     private int limitMaxEnchantmentLevel(int level) {
-        if (SSO.CONFIG.enchantmentLimits.limitEnchantedLootPower.get() && level > SSO.CONFIG.enchantmentLimits.enchantedLootPowerLimit.get()) {
+        if (
+				!CompatFlags.PENCHANT_LOADED &&
+				SSO.CONFIG.enchantmentLimits.limitEnchantedLootPower.get() &&
+				level > SSO.CONFIG.enchantmentLimits.enchantedLootPowerLimit.get()
+		) {
             return SSO.CONFIG.enchantmentLimits.enchantedLootPowerLimit.get();
         }
         return level;

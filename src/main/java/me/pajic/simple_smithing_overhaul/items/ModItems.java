@@ -2,6 +2,7 @@ package me.pajic.simple_smithing_overhaul.items;
 
 import me.pajic.simple_smithing_overhaul.SSO;
 import me.pajic.simple_smithing_overhaul.blocks.ModBlocks;
+import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -54,7 +55,7 @@ public class ModItems {
                     Registries.ITEM,
                     SSO.id("enchantment_upgrade")
             )),
-            SSO.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading.get()
+			ModUtil.enchantmentUpgradingEnabled()
     );
 
     public static final Item PINNACLE_ENCHANTMENT_SMITHING_TEMPLATE = new SmithingTemplateFoilItem(

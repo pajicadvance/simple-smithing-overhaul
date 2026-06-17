@@ -3,6 +3,7 @@ package me.pajic.simple_smithing_overhaul.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import me.pajic.simple_smithing_overhaul.SSO;
+import me.pajic.simple_smithing_overhaul.util.CompatFlags;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
@@ -33,7 +34,7 @@ public class VillagerTradeMixin {
 			)
 	)
 	private int modifyMaxUses(int original) {
-		if (gives.is(Items.ENCHANTED_BOOK) && SSO.CONFIG.enchantmentLimits.limitBookTradeUses.get() && original > SSO.CONFIG.enchantmentLimits.bookTradeUsesLimit.get()) {
+		if (!CompatFlags.PENCHANT_LOADED && gives.is(Items.ENCHANTED_BOOK) && SSO.CONFIG.enchantmentLimits.limitBookTradeUses.get() && original > SSO.CONFIG.enchantmentLimits.bookTradeUsesLimit.get()) {
 			return SSO.CONFIG.enchantmentLimits.bookTradeUsesLimit.get();
 		}
 		return original;
@@ -57,7 +58,7 @@ public class VillagerTradeMixin {
 				ItemEnchantments.Mutable enchantments = new ItemEnchantments.Mutable(ie);
 				enchantments.keySet().forEach(e -> {
 					int value = ModUtil.calculateNewEnchantmentLevel(e.value().getMaxLevel(), lootContext.getRandom(), enchantments.getLevel(e));
-					if (SSO.CONFIG.enchantmentLimits.limitBookTradeLevel.get() && value > SSO.CONFIG.enchantmentLimits.bookTradeLevelLimit.get()) {
+					if (!CompatFlags.PENCHANT_LOADED && SSO.CONFIG.enchantmentLimits.limitBookTradeLevel.get() && value > SSO.CONFIG.enchantmentLimits.bookTradeLevelLimit.get()) {
 						value = SSO.CONFIG.enchantmentLimits.bookTradeLevelLimit.get();
 					}
 					enchantments.set(e, value);

@@ -44,7 +44,7 @@ public abstract class ItemCombinerMenuMixin extends AbstractContainerMenu implem
     @WrapMethod(method = "mayPickup")
     private boolean modifyMayPickup(Player player, boolean hasItem, Operation<Boolean> original) {
         if (
-                SSO.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading.get() &&
+				ModUtil.enchantmentUpgradingEnabled() &&
                 SSO.CONFIG.enchantmentUpgrading.upgradingHasExperienceCost.get() &&
                 (ModUtil.isEnchantedBookOrWhetstoneUpgradeRecipe(slots) || ModUtil.isEnchantedItemUpgradeRecipe(slots))
         ) {
