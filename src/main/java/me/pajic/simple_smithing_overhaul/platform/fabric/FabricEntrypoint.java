@@ -5,9 +5,11 @@ package me.pajic.simple_smithing_overhaul.platform.fabric;
 import me.pajic.simple_smithing_overhaul.SSO;
 import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
 import me.pajic.simple_smithing_overhaul.blocks.ModBlocks;
+import me.pajic.simple_smithing_overhaul.compat.PenchantCompat;
 import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import me.pajic.simple_smithing_overhaul.recipe.ModRecipeSerializers;
+import me.pajic.simple_smithing_overhaul.util.CompatFlags;
 import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.fabricmc.api.ModInitializer;
@@ -173,6 +175,8 @@ public class FabricEntrypoint implements ModInitializer {
 		AttackBlockCallback.EVENT.register((player, _, hand, _, _) -> ModUtil.canUse(player, hand));
 		UseBlockCallback.EVENT.register((player, _, hand, _) -> ModUtil.canUse(player, hand));
 		UseItemCallback.EVENT.register((player, _, hand) -> ModUtil.canUse(player, hand));
+		//? fabric
+		if (CompatFlags.PENCHANT_LOADED) PenchantCompat.init();
 	}
 }
 //?}

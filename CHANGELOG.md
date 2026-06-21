@@ -1,10 +1,1 @@
-- Updated to Fabric 26.2.
-- Added mod integration for [Penchant](https://modrinth.com/mod/penchant). When installed alongside Simple Smithing Overhaul, the following changes will be applied:
-  - Disables the following features in Simple Smithing Overhaul:
-    - Enchantment upgrading
-    - Enchanted book loot tweaks
-    - Enchantment limits
-  - Changes the following in Penchant:
-    - Allows adding enchantments to whetstones in the enchanting table
-    - Disables the Durability Rework feature by default
-    - Enables the Reduced Curses feature by default
+- Fixed compatibility with latest version of Penchant.
