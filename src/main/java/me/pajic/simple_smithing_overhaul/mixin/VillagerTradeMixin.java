@@ -34,7 +34,7 @@ public class VillagerTradeMixin {
 			)
 	)
 	private int modifyMaxUses(int original) {
-		if (!CompatFlags.PENCHANT_LOADED && gives.is(Items.ENCHANTED_BOOK) && SSO.CONFIG.enchantmentLimits.limitBookTradeUses.get() && original > SSO.CONFIG.enchantmentLimits.bookTradeUsesLimit.get()) {
+		if (gives.is(Items.ENCHANTED_BOOK) && SSO.CONFIG.enchantmentLimits.limitBookTradeUses.get() && original > SSO.CONFIG.enchantmentLimits.bookTradeUsesLimit.get()) {
 			return SSO.CONFIG.enchantmentLimits.bookTradeUsesLimit.get();
 		}
 		return original;
@@ -58,7 +58,7 @@ public class VillagerTradeMixin {
 				ItemEnchantments.Mutable enchantments = new ItemEnchantments.Mutable(ie);
 				enchantments.keySet().forEach(e -> {
 					int value = ModUtil.calculateNewEnchantmentLevel(e.value().getMaxLevel(), lootContext.getRandom(), enchantments.getLevel(e));
-					if (!CompatFlags.PENCHANT_LOADED && SSO.CONFIG.enchantmentLimits.limitBookTradeLevel.get() && value > SSO.CONFIG.enchantmentLimits.bookTradeLevelLimit.get()) {
+					if (SSO.CONFIG.enchantmentLimits.limitBookTradeLevel.get() && value > SSO.CONFIG.enchantmentLimits.bookTradeLevelLimit.get()) {
 						value = SSO.CONFIG.enchantmentLimits.bookTradeLevelLimit.get();
 					}
 					enchantments.set(e, value);

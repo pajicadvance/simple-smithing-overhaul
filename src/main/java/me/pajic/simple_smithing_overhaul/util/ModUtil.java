@@ -214,7 +214,7 @@ public class ModUtil {
     }
 
     public static int calculateNewEnchantmentLevel(int maxLevel, RandomSource randomSource, int original) {
-        if (!CompatFlags.PENCHANT_LOADED && SSO.CONFIG.enchantedBookLootTweaks.weightedLevels.get()) {
+        if (SSO.CONFIG.enchantedBookLootTweaks.weightedLevels.get()) {
             // fills up a pool with enchantment levels and picks a level randomly
             // for level 5 the pool would look like this
             // 1 x lv5, 9 x lv4, 25 x lv3, 49 x lv2, 81 x lv1

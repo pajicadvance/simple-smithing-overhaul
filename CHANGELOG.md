@@ -1,1 +1,1 @@
-- Fixed compatibility with latest version of Penchant.
+- Re-enabled some of the enchantment limit options by default when Penchant integration is enabled.

@@ -120,7 +120,7 @@
 
   "simple_smithing_overhaul.config-v2.modIntegration": "Mod integration",
   "simple_smithing_overhaul.config-v2.modIntegration.penchant": "Penchant",
-  "simple_smithing_overhaul.config-v2.modIntegration.penchant.desc": "Disables the following features in Simple Smithing Overhaul:\n- Enchantment upgrading\n- Enchanted book loot tweaks\n- Enchantment limits\nChanges the following in Penchant:\n- Allows adding enchantments to whetstones in the enchanting table\n- Disables the Durability Rework feature by default\n- Enables the Reduced Curses feature by default",
+  "simple_smithing_overhaul.config-v2.modIntegration.penchant.desc": "Disables the following features in Simple Smithing Overhaul:\n- Enchantment upgrading\n- Enchanted book loot tweaks\nChanges the following in Penchant:\n- Allows adding enchantments to whetstones in the enchanting table\n- Disables the Durability Rework feature by default\n- Enables the Reduced Curses feature by default",
 
   "simple_smithing_overhaul.config-v2.chance": "Spawn chance (%)",
   "simple_smithing_overhaul.config-v2.count": "Item count",

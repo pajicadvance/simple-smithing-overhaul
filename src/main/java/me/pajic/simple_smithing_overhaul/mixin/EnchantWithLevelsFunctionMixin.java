@@ -20,7 +20,6 @@ public class EnchantWithLevelsFunctionMixin {
     )
     private int limitMaxEnchantmentLevel(int level) {
         if (
-				!CompatFlags.PENCHANT_LOADED &&
 				SSO.CONFIG.enchantmentLimits.limitEnchantedLootPower.get() &&
 				level > SSO.CONFIG.enchantmentLimits.enchantedLootPowerLimit.get()
 		) {
