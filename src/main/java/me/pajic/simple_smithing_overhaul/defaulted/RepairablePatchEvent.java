@@ -5,10 +5,10 @@ import me.pajic.simple_smithing_overhaul.util.CompatFlags;
 import net.atlas.defaulted.Defaulted;
 import net.atlas.defaulted.component.ItemPatches;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -35,7 +35,8 @@ public class RepairablePatchEvent {
 	);
 
 	public static void register() {
-		Defaulted.builtinPatchCreator(patchApplier -> {
+		Defaulted.builtinPatchCreator((registry, patchApplier) -> {
+			HolderLookup<Item> lookup = registry.lookupOrThrow(Registries.ITEM);
 			Map<String, PatchData> patches = new HashMap<>();
 			Map<String, String> repairables = new HashMap<>();
 			if (SSO.CONFIG.streamlinedRepairs.vanillaRepairables.get()) {
@@ -47,18 +48,21 @@ public class RepairablePatchEvent {
 			repairables.putAll(SSO.CONFIG.streamlinedRepairs.modRepairableItems.get());
 			repairables.forEach((repairItem, repairMaterial) -> {
 				PatchData data = patches.getOrDefault(repairMaterial, new PatchData(new ArrayList<>(), new ArrayList<>()));
-				if (repairItem.startsWith("#")) data.tags.add(TagKey.create(Registries.ITEM, Identifier.parse(repairItem.substring(1))));
-				else BuiltInRegistries.ITEM.get(Identifier.parse(repairItem)).ifPresent(data.items::add);
+				if (repairItem.startsWith("#")) lookup.get(TagKey.create(Registries.ITEM, Identifier.parse(repairItem.substring(1)))).ifPresent(data.tags::add);
+				else lookup.get(ResourceKey.create(Registries.ITEM, Identifier.parse(repairItem))).ifPresent(data.items::add);
 				if (!patches.containsKey(repairMaterial)) patches.put(repairMaterial, data);
 			});
 			patches.forEach((repairMaterial, data) -> {
 				String repairMaterialForId = repairMaterial.substring(repairMaterial.indexOf(':') + 1);
+				List<HolderSet<Item>> elements = new ArrayList<>();
+				elements.add(HolderSet.direct(data.items));
+				elements.addAll(data.tags);
 				try {
 					patchApplier.put(SSO.id(repairMaterialForId), new ItemPatches(
-							HolderSet.direct(data.items), data.tags, List.of(),
+							elements, List.of(),
 							DataComponentPatch.builder().set(
 									DataComponents.REPAIRABLE,
-									new Repairable(HolderSet.direct(BuiltInRegistries.ITEM.getOrThrow(
+									new Repairable(HolderSet.direct(lookup.getOrThrow(
 											ResourceKey.create(Registries.ITEM, Identifier.parse(repairMaterial))
 									)))
 							).build(), 1000
@@ -77,8 +81,8 @@ public class RepairablePatchEvent {
 		SSO.debugLog("Items:");
 		data.items.forEach(itemHolder -> SSO.debugLog("- {}", itemHolder.getRegisteredName()));
 		SSO.debugLog("Tags:");
-		data.tags.forEach(tagKey -> SSO.debugLog("- {}", tagKey.location().toString()));
+		data.tags.forEach(tag -> SSO.debugLog("- {}", tag.key().location().toString()));
 	}
 
-	private record PatchData(List<Holder<Item>> items, List<TagKey<Item>> tags) {}
+	private record PatchData(List<Holder<Item>> items, List<HolderSet.Named<Item>> tags) {}
 }

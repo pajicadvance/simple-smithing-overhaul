@@ -1,1 +1,1 @@
-- Re-enabled some of the enchantment limit options by default when Penchant integration is enabled.
+- Updated to the latest version of Defaulted. The mod now requires Defaulted 1.3.1 or higher.

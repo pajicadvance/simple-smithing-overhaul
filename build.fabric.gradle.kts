@@ -26,7 +26,7 @@ platform {
 		}
 		required("defaulted") {
 			slug("defaulted")
-			versionRange = "*"
+			versionRange = ">=1.3.1"
 		}
 		optional("modmenu") {}
 	}

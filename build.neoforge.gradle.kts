@@ -22,7 +22,7 @@ platform {
 		}
 		required("defaulted") {
 			slug("defaulted")
-			forgeVersionRange = "[0,)"
+			forgeVersionRange = "[1.3.1,)"
 		}
 	}
 }
