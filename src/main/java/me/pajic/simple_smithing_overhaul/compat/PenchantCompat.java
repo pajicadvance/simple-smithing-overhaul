@@ -8,7 +8,10 @@ import net.fabricmc.fabric.api.util.TriState;
 
 public class PenchantCompat {
 	public static void init() {
-		CanEnchantCallback.ITEM.register((stack, _) -> TriState.of(stack.is(ModItems.WHETSTONE)));
+		CanEnchantCallback.ITEM.register((stack, _) -> {
+			if (stack.is(ModItems.WHETSTONE)) return TriState.TRUE;
+			return TriState.DEFAULT;
+		});
 	}
 }
 //?}

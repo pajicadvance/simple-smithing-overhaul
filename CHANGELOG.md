@@ -1,1 +1,1 @@
-- Updated to the latest version of Defaulted. The mod now requires Defaulted 1.3.1 or higher.
+- Fixed a bug that broke enchanting when Penchant is installed (oops)
