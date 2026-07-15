@@ -1,1 +1,1 @@
-- Fixed a bug that broke enchanting when Penchant is installed (oops)
+- Fixed a bug that made netherite items unrepairable.

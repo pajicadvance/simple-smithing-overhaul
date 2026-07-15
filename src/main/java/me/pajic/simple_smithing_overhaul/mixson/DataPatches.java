@@ -13,7 +13,7 @@ public class DataPatches {
 	public static void init() {
 		MixsonHelper.registerSingleJson(
 				"Set netherite repair material",
-				new Index("simple_smithing_overhaul:tag/item/netherite_repair_materials"),
+				new Index("simple_smithing_overhaul:tags/item/repairs_netherite_equipment"),
 				context -> {
 					String material = switch (SSO.CONFIG.streamlinedRepairs.netheriteRepairMaterial.get()) {
 						case NETHERITE_INGOT -> "minecraft:netherite_ingot";
