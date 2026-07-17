@@ -53,23 +53,29 @@ public class RepairablePatchEvent {
 				if (!patches.containsKey(repairMaterial)) patches.put(repairMaterial, data);
 			});
 			patches.forEach((repairMaterial, data) -> {
-				String repairMaterialForId = repairMaterial.substring(repairMaterial.indexOf(':') + 1);
-				List<HolderSet<Item>> elements = new ArrayList<>();
-				elements.add(HolderSet.direct(data.items));
-				elements.addAll(data.tags);
-				try {
-					patchApplier.put(SSO.id(repairMaterialForId), new ItemPatches(
-							elements, List.of(),
-							DataComponentPatch.builder().set(
-									DataComponents.REPAIRABLE,
-									new Repairable(HolderSet.direct(lookup.getOrThrow(
-											ResourceKey.create(Registries.ITEM, Identifier.parse(repairMaterial))
-									)))
-							).build(), 1000
-					));
-					log(repairMaterial, data);
-				} catch (Throwable t) {
-					SSO.LOGGER.warn("Unable to apply repairable patch {}, skipping: {}", repairMaterialForId, t.getMessage());
+				if (!data.items.isEmpty() || !data.tags.isEmpty()) {
+					String repairMaterialForId = repairMaterial.substring(repairMaterial.indexOf(':') + 1);
+					List<HolderSet<Item>> elements = new ArrayList<>();
+					elements.add(HolderSet.direct(data.items));
+					elements.addAll(data.tags);
+					try {
+						patchApplier.put(SSO.id(repairMaterialForId), new ItemPatches(
+								elements, List.of(),
+								DataComponentPatch.builder().set(
+										DataComponents.REPAIRABLE,
+										new Repairable(HolderSet.direct(lookup.getOrThrow(ResourceKey.create(
+												Registries.ITEM,
+												Identifier.parse(repairMaterial.startsWith("#") ?
+														repairMaterial.substring(1) :
+														repairMaterial
+												)
+										))))
+								).build(), 1000
+						));
+						log(repairMaterial, data);
+					} catch (Throwable t) {
+						SSO.LOGGER.warn("Unable to apply repairable patch {}, skipping: {}", repairMaterialForId, t.getMessage());
+					}
 				}
 			});
 		});

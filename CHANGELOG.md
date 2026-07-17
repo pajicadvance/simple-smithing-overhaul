@@ -1,1 +1,1 @@
-- Fixed a bug that made netherite items unrepairable.
+- Fixed a bug that made most items repairable using diamonds.
