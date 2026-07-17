@@ -63,13 +63,10 @@ public class RepairablePatchEvent {
 								elements, List.of(),
 								DataComponentPatch.builder().set(
 										DataComponents.REPAIRABLE,
-										new Repairable(HolderSet.direct(lookup.getOrThrow(ResourceKey.create(
-												Registries.ITEM,
-												Identifier.parse(repairMaterial.startsWith("#") ?
-														repairMaterial.substring(1) :
-														repairMaterial
-												)
-										))))
+										new Repairable(repairMaterial.startsWith("#") ?
+												lookup.getOrThrow(TagKey.create(Registries.ITEM, Identifier.parse(repairMaterial.substring(1)))) :
+												HolderSet.direct(lookup.getOrThrow(ResourceKey.create(Registries.ITEM, Identifier.parse(repairMaterial))))
+										)
 								).build(), 1000
 						));
 						log(repairMaterial, data);

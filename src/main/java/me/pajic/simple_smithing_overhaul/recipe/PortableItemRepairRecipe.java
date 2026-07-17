@@ -83,7 +83,6 @@ public class PortableItemRepairRecipe extends CustomRecipe {
 
     @SuppressWarnings("DataFlowIssue")
     private boolean processRepair(CraftingInput input) {
-		SSO.debugLog("process");
         unitCost = ModUtil.determineUnitCost(itemToRepair);
         int damageRepairedPerUnit = Mth.ceil((float) itemToRepair.getMaxDamage() / unitCost);
         int unitsToMaxRepair = itemToRepair.getDamageValue() / damageRepairedPerUnit;
@@ -93,9 +92,6 @@ public class PortableItemRepairRecipe extends CustomRecipe {
 			}
 			return false;
 		}).findFirst().orElse(ItemStack.EMPTY);
-		SSO.debugLog("repair material {}", repairMaterial.getItemName().getString());
-		SSO.debugLog("item components:");
-		itemToRepair.immutableComponents().forEach(typedDataComponent -> SSO.debugLog(typedDataComponent.toString()));
         boolean flintMaterialValid = false;
         if (flintCount > 0) for (String s : SSO.CONFIG.portableItemRepair.flintMaterialWhitelist.get()) {
 			try {
