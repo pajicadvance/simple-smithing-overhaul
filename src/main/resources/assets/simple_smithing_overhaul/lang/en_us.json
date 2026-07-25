@@ -17,6 +17,10 @@
   "simple_smithing_overhaul.config-v2.pinnacleEnchantment.pinnacleBaseExperienceCost": "Upgrade base XP level cost",
   "simple_smithing_overhaul.config-v2.pinnacleEnchantment.pinnacleExperienceCostIncrease": "Upgrade XP level cost increase",
   "simple_smithing_overhaul.config-v2.pinnacleEnchantment.maxPinnacleEnchantmentsOnItem": "Maximum pinnacle enchantments on one item",
+  "simple_smithing_overhaul.config-v2.pinnacleEnchantment.duplicationMaterial": "Template duplication material",
+  "simple_smithing_overhaul.duplicationMaterials.SCULK_CATALYST": "Sculk catalyst",
+  "simple_smithing_overhaul.duplicationMaterials.SCULK": "Sculk",
+  "simple_smithing_overhaul.duplicationMaterials.NETHER_STAR": "Nether star",
   "simple_smithing_overhaul.config-v2.pinnacleEnchantment.colorPinnacleItemName": "Color pinnacle item name",
   "simple_smithing_overhaul.config-v2.pinnacleEnchantment.pinnacleItemNameColor": "Pinnacle item name color",
   "simple_smithing_overhaul.config-v2.pinnacleEnchantment.excludedFromMaxedOutCheck": "Enchantments excluded from \"maxed out\" check",
@@ -161,6 +165,7 @@
 
   "tag.item.simple_smithing_overhaul.enchantment_upgradeable": "Enchantment Upgradeable",
   "tag.item.simple_smithing_overhaul.repairs_netherite_equipment": "Repairs Netherite Equipment",
+  "tag.item.simple_smithing_overhaul.duplicates_pinnacle_template": "Duplicates Pinnacle Template",
 
   "emi.category.simple_smithing_overhaul.portable_repair": "Portable Repair",
 

@@ -24,6 +24,19 @@ public class DataPatches {
 				}
 		);
 
+		MixsonHelper.registerSingleJson(
+				"Set pinnacle template duplication material",
+				new Index("simple_smithing_overhaul:tags/item/duplicates_pinnacle_template"),
+				context -> {
+					String material = switch (SSO.CONFIG.pinnacleEnchantment.duplicationMaterial.get()) {
+						case SCULK_CATALYST -> "minecraft:sculk_catalyst";
+						case SCULK -> "minecraft:sculk";
+						case NETHER_STAR -> "minecraft:nether_star";
+					};
+					context.getFile().getAsJsonObject().getAsJsonArray("values").add(material);
+				}
+		);
+
 		if (ModUtil.enchantmentUpgradingEnabled()) {
 			JsonElement pool = Constants.singleItemChancePool.deepCopy();
 			pool.getAsJsonObject()

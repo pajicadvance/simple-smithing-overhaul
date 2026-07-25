@@ -1,1 +1,2 @@
-- Fixed a bug that made most items repairable using diamonds.
+- Changed the default material required to duplicate pinnacle enchantment smithing templates to Sculk Catalyst.
+- The material required to duplicate pinnacle enchantment smithing templates can now be configured to be Sculk Catalyst, Sculk, or Nether Star.

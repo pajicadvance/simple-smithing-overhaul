@@ -3,12 +3,12 @@
   "category": "misc",
   "key": {
     "#": "simple_smithing_overhaul:pinnacle_enchantment",
-    "N": "minecraft:nether_star",
+    "X": "#simple_smithing_overhaul:duplicates_pinnacle_template",
     "D": "minecraft:diamond"
   },
   "pattern": [
     "D#D",
-    "DND",
+    "DXD",
     "DDD"
   ],
   "result": {

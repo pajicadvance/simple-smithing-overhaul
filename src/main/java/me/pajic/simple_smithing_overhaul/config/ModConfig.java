@@ -58,6 +58,7 @@ public class ModConfig extends Config {
         public ValidatedInt pinnacleBaseExperienceCost = new ValidatedInt(30, Integer.MAX_VALUE, 1);
         public ValidatedInt pinnacleExperienceCostIncrease = new ValidatedInt(5, Integer.MAX_VALUE, 1);
         public ValidatedInt maxPinnacleEnchantmentsOnItem = new ValidatedInt(1, Integer.MAX_VALUE, 1);
+		public ValidatedEnum<PinnacleDuplicationMaterials> duplicationMaterial = new ValidatedEnum<>(PinnacleDuplicationMaterials.SCULK_CATALYST);
         public ValidatedBoolean colorPinnacleItemName = new ValidatedBoolean();
         public ValidatedString pinnacleItemNameColor = new ValidatedString("Light Purple", new AllowableStrings(ModUtil.colorNames::contains, () -> ModUtil.colorNames));
         public ValidatedList<Identifier> excludedFromMaxedOutCheck = new ValidatedIdentifier(Identifier.withDefaultNamespace("mending")).toList(
