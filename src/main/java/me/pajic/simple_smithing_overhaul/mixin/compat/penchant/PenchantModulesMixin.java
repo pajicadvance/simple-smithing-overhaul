@@ -19,7 +19,6 @@ public class PenchantModulesMixin {
     private static void controlPackActivationType(Identifier id, PackActivationType activationType, Operation<Void> original) {
 		if (SSO.CONFIG.modIntegration.penchant.get()) {
 			if (id.equals(PenchantModules.DURABILITY_REWORK)) original.call(id, PackActivationType.NORMAL);
-			else if (id.equals(PenchantModules.REDUCED_CURSES)) original.call(id, PackActivationType.DEFAULT_ENABLED);
 			else original.call(id, activationType);
 		}
         else original.call(id, activationType);

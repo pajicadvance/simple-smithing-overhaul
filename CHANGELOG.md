@@ -1,2 +1,1 @@
-- Changed the default material required to duplicate pinnacle enchantment smithing templates to Sculk Catalyst.
-- The material required to duplicate pinnacle enchantment smithing templates can now be configured to be Sculk Catalyst, Sculk, or Nether Star.
+- Updated Penchant compatibility for version 0.5.0.
