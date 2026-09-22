@@ -1,0 +1,64 @@
+package me.pajic.simple_smithing_overhaul.mixin;
+
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.sugar.Local;
+import me.pajic.simple_smithing_overhaul.SSO;
+import me.pajic.simple_smithing_overhaul.items.ModItems;
+import me.pajic.simple_smithing_overhaul.util.CompatFlags;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.inventory.EnchantmentMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+
+@Mixin(EnchantmentMenu.class)
+public class EnchantmentMenuMixin {
+
+    @ModifyExpressionValue(
+            method = "getEnchantmentList",
+            at = @At(
+                    value = "INVOKE",
+                    //~ if >=26.1 'Lnet/minecraft/world/item/Item;' -> 'Ljava/lang/Object;'
+                    target = "Lnet/minecraft/world/item/ItemStack;is(Ljava/lang/Object;)Z"
+            )
+    )
+    private boolean getEnchantmentList_handleWhetstoneEnchanting(boolean original, @Local(argsOnly = true) ItemStack itemStack) {
+        if (SSO.CONFIG.portableItemRepair.enableWhetstone.get()) {
+            return original || itemStack.is(ModItems.WHETSTONE);
+        }
+        return original;
+    }
+
+    @ModifyExpressionValue(
+            method = "slotsChanged",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/item/ItemStack;isEnchantable()Z"
+            )
+    )
+    private boolean slotsChanged_handleWhetstoneEnchanting(boolean original, @Local ItemStack itemStack) {
+        if (SSO.CONFIG.portableItemRepair.enableWhetstone.get() && itemStack.is(ModItems.WHETSTONE)) {
+            return original && itemStack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty();
+        }
+        return original;
+    }
+
+    @ModifyExpressionValue(
+            method = {"lambda$slotsChanged$0", "method_17411"},
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/level/block/EnchantingTableBlock;isValidBookShelf(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;)Z"
+            )
+    )
+    private boolean limitTablePower(boolean original, @Local /*? if fabric {*/int/*?} else {*//*float*//*?}*/ bookcases) {
+        if (
+				!CompatFlags.PENCHANT_LOADED &&
+				SSO.CONFIG.enchantmentLimits.limitEnchantingTablePower.get() &&
+				bookcases >= SSO.CONFIG.enchantmentLimits.enchantingTablePowerLimit.get()
+		) {
+            return false;
+        }
+        return original;
+    }
+}

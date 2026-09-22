@@ -1,0 +1,342 @@
+package me.pajic.simple_smithing_overhaul.util;
+
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import me.pajic.simple_smithing_overhaul.SSO;
+import me.pajic.simple_smithing_overhaul.compat.EDCompat;
+import me.pajic.simple_smithing_overhaul.compat.TFLCompat;
+import me.pajic.simple_smithing_overhaul.items.ModItems;
+import me.pajic.simple_smithing_overhaul.recipe.PortableItemRepairRecipe;
+import net.atlas.defaulted.extension.ItemExtensions;
+import net.minecraft.core.Holder;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemStackWithSlot;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.level.Level;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Predicate;
+
+//? <26.2 {
+/*import net.minecraft.ChatFormatting;
+*///?} else {
+import net.minecraft.network.chat.TextColor;
+//?}
+
+//? <26.1 {
+/*import net.atlas.defaulted.component.backport.PhantomDataComponents;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.world.item.AnimalArmorItem;
+*///?} else {
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.equipment.Equippable;
+//?}
+
+public class ModUtil {
+
+	private static final Map<Integer, IntList> levelPoolCache = new HashMap<>();
+
+    @SuppressWarnings("DataFlowIssue")
+    public static int determineUnitCost(ItemStack stack) {
+        if (SSO.CONFIG.streamlinedRepairs.modifyAnvilRepairUnitCosts.get() && !stack.is(Items.AIR)) {
+            if (stack.is(ItemTags.HEAD_ARMOR)) return SSO.CONFIG.streamlinedRepairs.armor.headArmorUnits.get();
+            if (stack.is(ItemTags.CHEST_ARMOR)) return SSO.CONFIG.streamlinedRepairs.armor.chestArmorUnits.get();
+            if (stack.is(ItemTags.LEG_ARMOR)) return SSO.CONFIG.streamlinedRepairs.armor.legArmorUnits.get();
+            if (stack.is(ItemTags.FOOT_ARMOR)) return SSO.CONFIG.streamlinedRepairs.armor.footArmorUnits.get();
+
+            //? <26.1 {
+            /*if (stack.getItem() instanceof AnimalArmorItem aai) {
+                if (aai.getBodyType().equals(AnimalArmorItem.BodyType.EQUESTRIAN)) return SSO.CONFIG.streamlinedRepairs.armor.horseArmorUnits.get();
+                if (aai.getBodyType().equals(AnimalArmorItem.BodyType.CANINE)) return SSO.CONFIG.streamlinedRepairs.armor.wolfArmorUnits.get();
+            }
+            *///?} else {
+            if (stack.has(DataComponents.EQUIPPABLE)) {
+                Equippable equippable = stack.get(DataComponents.EQUIPPABLE);
+                if (equippable.canBeEquippedBy(BuiltInRegistries.ENTITY_TYPE.getOrThrow(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.withDefaultNamespace("wolf")))))
+					return SSO.CONFIG.streamlinedRepairs.armor.wolfArmorUnits.get();
+                if (equippable.canBeEquippedBy(BuiltInRegistries.ENTITY_TYPE.getOrThrow(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.withDefaultNamespace("horse")))))
+					return SSO.CONFIG.streamlinedRepairs.armor.horseArmorUnits.get();
+            }
+            //?}
+
+            if (stack.is(ItemTags.PICKAXES)) return SSO.CONFIG.streamlinedRepairs.tools.pickaxeUnits.get();
+            if (stack.is(ItemTags.AXES)) return SSO.CONFIG.streamlinedRepairs.tools.axeUnits.get();
+            if (stack.is(ItemTags.SWORDS)) return SSO.CONFIG.streamlinedRepairs.tools.swordUnits.get();
+            if (stack.is(ItemTags.HOES)) return SSO.CONFIG.streamlinedRepairs.tools.hoeUnits.get();
+            if (stack.is(ItemTags.SHOVELS)) return SSO.CONFIG.streamlinedRepairs.tools.shovelUnits.get();
+
+            if (stack.is(Items.SHIELD)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.shieldUnits.get();
+            if (stack.is(Items.ELYTRA)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.elytraUnits.get();
+            if (stack.is(Items.MACE)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.maceUnits.get();
+            if (stack.is(Items.BOW)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.bowUnits.get();
+            if (stack.is(Items.CROSSBOW)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.crossbowUnits.get();
+            if (stack.is(Items.FLINT_AND_STEEL)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.flintAndSteelUnits.get();
+            if (stack.is(Items.SHEARS)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.shearsUnits.get();
+            if (stack.is(Items.TRIDENT)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.tridentUnits.get();
+            if (stack.is(Items.BRUSH)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.brushUnits.get();
+            if (stack.is(Items.FISHING_ROD)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.fishingRodUnits.get();
+            if (stack.is(Items.CARROT_ON_A_STICK)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.carrotOnAStickUnits.get();
+            if (stack.is(Items.WARPED_FUNGUS_ON_A_STICK)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.warpedFungusOnAStickUnits.get();
+
+			if (stack.is(ModItems.WHETSTONE)) return SSO.CONFIG.streamlinedRepairs.uniqueItems.whetstoneUnits.get();
+
+            for (Map.Entry<String, Integer> entry : SSO.CONFIG.streamlinedRepairs.modItemUnitCosts.entrySet()) {
+				try {
+		            if (entry.getKey().startsWith("#")) {
+						if (stack.is(TagKey.create(Registries.ITEM, Identifier.tryParse(entry.getKey().substring(1))))) {
+							return entry.getValue();
+						}
+					} else {
+						Optional<Item> item = BuiltInRegistries.ITEM.getOptional(Identifier.tryParse(entry.getKey()));
+						if (item.isPresent() && stack.is(item.get())) {
+							return entry.getValue();
+						}
+					}
+	            } catch (Throwable t) {
+					SSO.LOGGER.warn("Unable to load unit cost entry {}, skipping: {}", entry.getKey(), t.getMessage());
+				}
+            }
+        }
+        return 4;
+    }
+
+    public static int calculateGrindstoneReward(Object2IntMap.Entry<Holder<Enchantment>> entry) {
+        Enchantment e = entry.getKey().value();
+        int level = entry.getIntValue();
+        int min = e.getMinCost(level);
+        int max = e.getMaxCost(level);
+        return Math.round(min + (max - min) * ((float) level / e.getMaxLevel()));
+    }
+
+	@SuppressWarnings("DataFlowIssue")
+	public static boolean tryRepairItem(ItemStack target, Player player, Level level) {
+		if (
+				target.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY)
+				.entrySet().stream().anyMatch(entry ->
+						entry.getKey().value().effects().has(EnchantmentEffectComponents.REPAIR_WITH_XP)
+				)
+		) {
+			ItemStackWithSlot whetstone = ModUtil.findItemOnPlayer(player, itemStack -> itemStack.is(ModItems.WHETSTONE) && !ModUtil.isBroken(itemStack));
+			ItemStackWithSlot material = ModUtil.findItemOnPlayer(player, itemStack -> ModUtil.isValidRepairItem(target, itemStack));
+			if (!whetstone.stack().isEmpty() && !material.stack().isEmpty()) {
+				PortableItemRepairRecipe recipe = new PortableItemRepairRecipe();
+				CraftingInput input = CraftingInput.of(2, 2, List.of(target, whetstone.stack(), new ItemStack(material.stack().getItem(), 1), ItemStack.EMPTY));
+				if (recipe.matches(input, player.level())) {
+					Inventory inv = player.getInventory();
+					ItemStack repaired = recipe.assemble(input/*? <26.1 {*//*, null*//*?}*/);
+					NonNullList<ItemStack> remainingItems = recipe.getRemainingItems(input);
+					target.setDamageValue(repaired.getDamageValue());
+					inv.setItem(whetstone.slot(), remainingItems.get(1));
+					ItemStack materials = material.stack().copy();
+					materials.setCount(materials.getCount() - 1);
+					inv.setItem(material.slot(), materials);
+					level.playSound(null, player, SoundEvents.ANVIL_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
+					player.spawnItemParticles(material.stack(), 5);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static ItemStackWithSlot findItemOnPlayer(Player player, Predicate<ItemStack> predicate) {
+		Inventory inv = player.getInventory();
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStackWithSlot item = new ItemStackWithSlot(i, inv.getItem(i));
+			if (predicate.test(item.stack())) return item;
+		}
+		return new ItemStackWithSlot(0, ItemStack.EMPTY);
+	}
+
+    public static boolean isEnchantedBookOrWhetstoneUpgradeRecipe(NonNullList<Slot> slots) {
+        return slots.get(0).getItem().is(ModItems.ENCHANTMENT_UPGRADE_SMITHING_TEMPLATE) &&
+                (slots.get(1).getItem().is(Items.ENCHANTED_BOOK) || slots.get(1).getItem().is(ModItems.WHETSTONE)) &&
+                slots.get(1).getItem().has(DataComponents.STORED_ENCHANTMENTS);
+    }
+
+    public static boolean isEnchantedItemUpgradeRecipe(NonNullList<Slot> slots) {
+        return slots.get(0).getItem().is(ModItems.ENCHANTMENT_UPGRADE_SMITHING_TEMPLATE) &&
+                slots.get(1).getItem().has(DataComponents.MAX_DAMAGE) &&
+                slots.get(1).getItem().getMaxStackSize() == 1 &&
+                slots.get(1).getItem().has(DataComponents.ENCHANTMENTS);
+    }
+
+    public static boolean isPinnacleEnchantmentRecipe(NonNullList<Slot> slots) {
+        return slots.get(0).getItem().is(ModItems.PINNACLE_ENCHANTMENT_SMITHING_TEMPLATE) &&
+                slots.get(1).getItem().has(DataComponents.MAX_DAMAGE) &&
+                slots.get(1).getItem().getMaxStackSize() == 1 &&
+                slots.get(1).getItem().has(DataComponents.ENCHANTMENTS) &&
+                slots.get(2).getItem().is(Items.ECHO_SHARD);
+    }
+
+    public static boolean enchantmentEligible(Holder<Enchantment> enchantment) {
+        return SSO.CONFIG.pinnacleEnchantment.excludedFromMaxedOutCheck.stream()
+                .noneMatch(enchantment::is) && (!CompatFlags.ED_LOADED || EDCompat.enchantmentEnabled(enchantment));
+    }
+
+    public static boolean isBroken(ItemStack stack) {
+        return stack.getOrDefault(ModDataComponents.BROKEN, false);
+    }
+
+	@SuppressWarnings("DataFlowIssue")
+	public static boolean shouldPreventDestruction(ItemStack stack) {
+		for (String s : SSO.CONFIG.itemDestructionPrevention.allowList.get()) {
+			try {
+				if (s.startsWith("#")) {
+					if (stack.is(TagKey.create(Registries.ITEM, Identifier.tryParse(s.substring(1))))) return false;
+				} else {
+					Optional<Item> opt = BuiltInRegistries.ITEM.getOptional(Identifier.tryParse(s));
+					if (opt.isPresent() && stack.is(opt.get())) return false;
+				}
+			} catch (Throwable t) {
+				SSO.LOGGER.warn("Unable to load item destruction allow list entry {}, skipping: {}", s, t.getMessage());
+			}
+		}
+		return true;
+	}
+
+    public static void payXpCost(Player player, int cost) {
+        if (CompatFlags.TAX_FREE_LEVELS_LOADED) TFLCompat.payXpCost(player, cost);
+        else player.giveExperienceLevels(-cost);
+    }
+
+    public static int calculateNewEnchantmentLevel(int maxLevel, RandomSource randomSource, int original) {
+        if (SSO.CONFIG.enchantedBookLootTweaks.weightedLevels.get()) {
+            if (maxLevel == 1) return 1;
+            IntList pool = levelPoolCache.getOrDefault(maxLevel, new IntArrayList());
+            if (pool.isEmpty()) {
+	            for (int i = maxLevel, j = 1; i > 0; i--, j += 2) {
+					for (int k = 0; k < j * j; k++) pool.add(i);
+				}
+				levelPoolCache.put(maxLevel, pool);
+            }
+            return pool.getInt(randomSource.nextInt(pool.size()));
+        }
+        return original;
+    }
+
+	public static InteractionResult canUse(Player player, InteractionHand hand) {
+		return ModUtil.isBroken(player.getItemInHand(hand)) ? InteractionResult.FAIL : InteractionResult.PASS;
+	}
+
+    public static List<String> colorNames = List.of(
+            "Black",
+            "Dark Blue",
+            "Dark Green",
+            "Dark Aqua",
+            "Dark Red",
+            "Dark Purple",
+            "Gold",
+            "Gray",
+            "Dark Gray",
+            "Blue",
+            "Green",
+            "Aqua",
+            "Red",
+            "Light Purple",
+            "Yellow",
+            "White"
+    );
+
+	public static MutableComponent colorText(Component text) {
+		String color = SSO.CONFIG.pinnacleEnchantment.pinnacleItemNameColor.get().replace(" ", "_").toUpperCase();
+		//? <26.2 {
+		/*ChatFormatting formatting = ChatFormatting.getByName(color);
+		return formatting != null ? text.copy().withStyle(formatting) : MutableComponent.create(text.getContents());
+		*///?} else {
+		return text.copy().withColor(TextColor.parseColor(color).result().orElse(TextColor.LIGHT_PURPLE));
+		//?}
+	}
+
+	public static boolean enchantmentUpgradingEnabled() {
+		return !CompatFlags.PENCHANT_LOADED && SSO.CONFIG.enchantmentUpgrading.enableEnchantmentUpgrading.get();
+	}
+
+    public static int count(ItemStack stack) {
+        //~ if <26.1 'count' -> 'getCount'
+        return stack.count();
+    }
+
+    public static Holder<Enchantment> enchantment(EnchantmentInstance ei) {
+        //~ if <26.1 'enchantment()' -> 'enchantment'
+        return ei.enchantment();
+    }
+
+    public static int level(EnchantmentInstance ei) {
+        //~ if <26.1 'level()' -> 'level'
+        return ei.level();
+    }
+
+    public static Item getNetheriteRepairMaterial() {
+        return switch (SSO.CONFIG.streamlinedRepairs.netheriteRepairMaterial.get()) {
+            case DIAMOND -> Items.DIAMOND;
+            case NETHERITE_SCRAP -> Items.NETHERITE_SCRAP;
+            default -> Items.NETHERITE_INGOT;
+        };
+    }
+
+    public static void initItemProperties() {
+        //? <26.1 {
+		/*ItemProperties.register(
+				ModItems.WHETSTONE,
+				SSO.id("damage_state"),
+				(stack, level, entity, i) -> (float) stack.getDamageValue() / stack.getMaxDamage()
+		);
+		*///?}
+    }
+
+    private static final Set<String> EMPTY_ARMOR_SLOT_NAMES = Set.of("helmet", "chestplate", "leggings", "boots");
+
+    public static String emptySlotTexturePath(String name) {
+        //? <26.1 {
+        /*return "item/empty_" + (EMPTY_ARMOR_SLOT_NAMES.contains(name) ? "armor_" : "") + "slot_" + name;
+        *///?} else {
+        return "container/slot/" + name;
+        //?}
+    }
+
+    public static boolean hasRepairable(ItemStack stack) {
+        //? <26.1 {
+        /*return ((ItemExtensions) stack.getItem()).defaulted$has(DataComponents.REPAIRABLE);
+        *///?} else {
+        return stack.has(DataComponents.REPAIRABLE);
+        //?}
+    }
+
+    @SuppressWarnings("DataFlowIssue")
+    public static boolean isValidRepairItem(ItemStack target, ItemStack repair) {
+        //? <26.1 {
+        /*return ((ItemExtensions) target.getItem()).defaulted$get(DataComponents.REPAIRABLE).isValidRepairItem(repair);
+        *///?} else {
+        return target.get(DataComponents.REPAIRABLE).isValidRepairItem(repair);
+        //?}
+    }
+}

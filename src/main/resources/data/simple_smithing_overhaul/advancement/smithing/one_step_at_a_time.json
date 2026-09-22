@@ -1,0 +1,26 @@
+{
+  "parent": "simple_smithing_overhaul:smithing/booksmith_blackworm",
+  "criteria": {
+    "apply_enchantment_upgrade": {
+      "trigger": "simple_smithing_overhaul:apply_enchantment_upgrade"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.smithing.one_step_at_a_time.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "simple_smithing_overhaul:enchantment_upgrade"
+    },
+    "title": {
+      "translate": "advancements.smithing.one_step_at_a_time.title"
+    }
+  },
+  "requirements": [
+    [
+      "apply_enchantment_upgrade"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,35 +1,122 @@
-# Multicutter
+# Simple Smithing Overhaul
 
-Based on [Stonecutter Fabric & NeoForge template](https://github.com/stonecutter-versioning/stonecutter-template-multiloader)
+Smithing in Minecraft is incredibly stingy. The excessively high cost of managing gear deters players from ever interacting with the mechanic and steers them towards relying exclusively on Mending for item repair. This mod opens up new ways to upgrade and maintain your gear by **improving the usability of vanilla smithing mechanics, introducing new smithing templates, and rebalancing enchantment sources**. The goal is to ease up the harsh costs and restrictions of smithing mechanics and make those mechanics more important for obtaining enchanted gear instead of solely relying on the enchanting table, looted items and villager trades, in turn making them more rewarding.
 
-- Multiloader and multiversion management with helper classes
-- Supports both obfuscated and unobfuscated game versions
-- Dependency handling using Stonecutter versioned properties
-- Versioned class tweakers and access transformers
-- Automatic Mixin and entrypoint registration
-- Automated Modrinth and CurseForge publishing
+All the features, changes and rebalances in the mod result in **generally faster enchanted item acquisition** and **higher enchanting flexibility**, all while making the entire process **feel more rewarding** at the same time.
 
-### Pre-configured content
+The mod implements a **vanilla styled smithing advancement tree**, with 11 advancements to accomplish and 2 hidden advancements to discover.
 
-- Versions:
-    - 1.21.1 Fabric and NeoForge
-    - 26.1.2 Fabric and NeoForge
-    - 26.2 Fabric and NeoForge
-- Dependencies:
-    - Fabric API (required)
-    - Fzzy Config (required)
-    - Mixson (required)
-    - MixinConstraints (JiJ-d)
-    - Sodium (runtime)
+![advancements](https://cdn.modrinth.com/data/cached_images/a69ad0ef63a3463dacfc9a487c99bfab99b1033e.png)
 
-No instructions on how to use this yet. If you do want to try it out, the only big difference compared to other templates is that dependencies are declared inside `stonecutter.properties.toml` and not manually inside the build scripts. You only need to add repositories to the build scripts. You can see how pre-configured dependencies are added as examples.
+Many aspects of the mod are configurable. The mod description below reflects the default settings, so take a look at the configuration screen if you don't like something.
 
-The template may have bugs and oversights as I haven't moved any of my mods to it yet.
+**Highly recommended mods**
+- [**Tax Free Levels**](https://modrinth.com/mod/tax-free-levels): Fully compatible with Simple Smithing Overhaul and greatly complements its changes.
+- [**Item Descriptions**](https://modrinth.com/mod/item-descriptions): Simple Smithing Overhaul provides descriptions for the items it adds using this mod.
+- [**Penchant**](https://modrinth.com/mod/penchant): Unique enchanting rework, Simple Smithing Overhaul has integration for it, details at the bottom of the mod description.
 
-Tooling used:
-- [Fabric Loom](https://github.com/FabricMC/fabric-loom): Used for the Fabric build script
-- [ModDevGradle](https://github.com/neoforged/ModDevGradle): Used for the NeoForge build script
-- [Stonecutter](https://stonecutter.kikugie.dev/): Multiloader and multiversion handling
-- [Loom Backwards Compatibility](https://codeberg.org/KikuGie/loom-back-compat): Allows the Fabric build script to handle both obfuscated and unobfuscated versions of the game
-- [Fletching Table](https://stonecutter.kikugie.dev/wiki/fletching-table/#fletching-table-overview): Handles automatic mixin and entrypoint registration
-- [Mod Publish Plugin](https://github.com/modmuss50/mod-publish-plugin): Handles automated publishing to Modrinth and CurseForge
+# Features
+
+## Streamlined Repairs
+
+The amount of material required to repair an item from zero to full durability is now the same as the amount of material required to craft the item, instead of always being 4.
+
+For example, a diamond pickaxe is crafted with 3 diamonds, which means that only 3 diamonds are required to fully repair it instead of 4. This applies to every repairable item in the game.
+
+Additionally, repair recipes were added for all vanilla items which did not have one, and netherite gear is repaired with diamonds instead of netherite ingots.
+
+These features are fully configurable for mod support. Modded items can be made repairable, and the amount of material required to fully repair them can be defined in the mod configuration. I've already added values for some mods I play with, so you can use them as examples.
+
+## Item Destruction Prevention
+
+Items now won't be destroyed when they break. Instead, they will remain at 0 durability but will be non-functional until repaired. To indicate that an item is broken, its name will change to red and a "Broken" prefix will be applied to the name.
+
+![broken_item](https://cdn.modrinth.com/data/cached_images/68cc4149afb7874c5f0420a059a1b510097f96a0.png)
+
+## Portable Item Repair
+
+Gear can now be repaired on the go using flint or a new item, the whetstone, directly in the crafting menu. It's as easy as combining the tool you want to repair, the repair material, and flint or a whetstone. Any item that's repairable in the anvil can be repaired on the go, too.
+
+Flint is good for one repair and is consumed on use, and cannot repair diamond and netherite items. Whetstones have a durability of 6, with each repair having a chance to damage it by 1. Whetstones themselves can only be repaired in the anvil with quartz.
+
+Flint and regular whetstones can repair unenchanted items only. Enchanted items can only be repaired with enchanted whetstones. The enchanted whetstone has to contain all enchantments that are on the enchanted item you want to repair. The enchantment level on the whetstone doesn't matter - Efficiency 1 on a whetstone will repair Efficiency 5 items, for example. Enchantments can be added to whetstones by enchanting them in the enchanting table like books or in the anvil by combining them with enchanted books.
+
+![whetstone](https://cdn.modrinth.com/data/cached_images/281069961f02641377ef6b08c5134a0c4d55007b.png)
+
+## Mending Rework
+
+Mending now repairs items using the new portable item repair methods, instead of using experience.
+
+You just need a compatible whetstone and repair materials anywhere in your inventory. You can then right-click the Mending item in your hand while crouching to repair it. If the Mending item breaks, it will automatically repair itself using materials from the inventory, if there are any.
+
+This allows you to repair items without manually using the crafting grid to repair them.
+
+**Yes, this removes the ability to repair items with experience**, as it's too detrimental to the goals of this mod. As everything else in this mod, this is configurable, so you can re-enable it, but it would be defeating the point of most of the features in the mod.
+
+## Anvil Improvements
+
+- Repairing unenchanted items no longer costs any XP levels.
+- Repairing items no longer increases prior work penalty. Combining enchanted items and upgrading enchantments using the new smithing template still increases prior work penalty.
+- Renaming items no longer costs any XP levels.
+- Anvils are now twice as less likely to get damaged during use.
+- Removed "Too Expensive!" prompt, now allowing you to perform actions that cost more than 40 XP levels.
+- Anvils no longer get destroyed when they break, and instead turn into a Broken Anvil which cannot be used.
+- Right-clicking an anvil with an iron block repairs it by one stage.
+
+## Grindstone Improvements
+
+- Combining an enchanted item with a piece of netherite scrap in the grindstone halves the repair cost of the item.
+- Disenchanting items in the grindstone now grants more XP.
+
+## Enchantment Upgrade Smithing Template
+
+Found in End City chests as rare loot, this smithing template can upgrade any enchantment on your enchanted item by one level, for an XP cost. Any enchanted item, including items which have stored enchantments like enchanted books, can be upgraded. Upgrading items increases their prior work penalty.
+
+If the item has multiple enchantments, the enchantment to upgrade can be selected by adding more lapis (2 lapis to upgrade the second enchantment, 3 lapis to upgrade the third enchantment, and so on).
+
+![enchantment_upgrade](https://cdn.modrinth.com/data/cached_images/dceb3c6b9fbee52dca364e02f44d737d94cb49ec.gif) ![enchantment_upgrade_duplication](https://cdn.modrinth.com/data/cached_images/64ee229915a0dc76f8072ab6f297ebe3cd75f0df.png)
+
+## Pinnacle Enchantment Smithing Template
+
+Found in Ancient City chests as rare loot, this smithing template will turn your "maxed out" enchanted item into a **pinnacle item**, upgrading a random enchantment on it by one level **above the max level limit**, for a hefty XP cost. This means you can get enchantments such as Fortune IV, Looting IV, and so on.
+
+Items are considered "maxed out" when they are enchanted with all possible enchantments they support at max level, excluding curses and enchantments excluded in the config. This accounts for exclusive sets, so for example, the following pickaxes are both considered "maxed out" and can be turned into pinnacle items:
+
+- Fortune III, Efficiency V, Unbreaking III, Mending
+- Silk Touch, Efficiency V, Unbreaking III, Mending
+
+Items can be pinnacle upgraded multiple times in order to reroll the upgraded enchantment, however, the XP cost increases with each reroll. Enchantments that have a max level of 1 such as Mending aren't considered in the upgrade. Cursed items cannot be upgraded.
+
+Pinnacle items can still be repaired with whetstones - the whetstone does not need to have the upgraded enchantment at the same level as the item, only at the regular max enchantment level.
+
+![pinnacle_smithing](https://cdn.modrinth.com/data/cached_images/e61cee46b69c9a3a62505436fbb7ef56d9f27004.png) ![pinnacle_duplication](https://cdn.modrinth.com/data/cached_images/8a62c4ea281dd8829754a6ab8f3e2713b3148702.png)
+
+## Enchanting and Enchanted Loot Changes
+
+In order to emphasize the importance of smithing mechanics, some limits have been imposed on how strong items obtained from the enchanting table and loot can be, while increasing the chances of finding enchanted books and experience bottles in loot, and increasing the amount of experience awarded from experience bottles.
+
+The goal is to make the road to maxed out enchanted items more involved and rewarding instead of relying on villager trading or lucking out on the enchanting table or loot chests.
+
+- The maximum amount of bookshelves the enchanting table can accept is reduced to 10 down from 15.
+- Looted enchanted items can also only come with enchantments that the enchanting table allows at 10 bookshelves at most.
+- Higher level enchanted books are way less common in loot compared to lower level books.
+- Enchanted books sold by villagers will always be level 1.
+- Enchanted book villager trades can only be used 3 times before having to restock, down from 12.
+
+However:
+
+- Enchanted books and experience bottles are way more common in loot chests, and can be found in more places.
+- Experience bottles give way more experience (30-50, up from 3-11).
+
+# Mod Integration
+
+Integrations are automatically enabled for each supported mod when installed alongside Simple Smithing Overhaul and can be disabled in the config if desired.
+
+### [Penchant](https://modrinth.com/mod/penchant)
+- Disables the following features in Simple Smithing Overhaul:
+    - Enchantment upgrading
+    - Enchanted book loot tweaks
+    - Enchantment limits
+- Changes the following in Penchant:
+    - Allows adding enchantments to whetstones in the enchanting table
+    - Disables the Durability Rework feature by default

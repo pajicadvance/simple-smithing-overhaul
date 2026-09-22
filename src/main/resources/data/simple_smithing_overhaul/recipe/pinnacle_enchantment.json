@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "simple_smithing_overhaul:pinnacle_enchantment",
+    "X": "#simple_smithing_overhaul:duplicates_pinnacle_template",
+    "D": "minecraft:diamond"
+  },
+  "pattern": [
+    "D#D",
+    "DXD",
+    "DDD"
+  ],
+  "result": {
+    "id": "simple_smithing_overhaul:pinnacle_enchantment",
+    "count": 2
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "simple_smithing_overhaul:broken_anvil"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "simple_smithing_overhaul:blocks/broken_anvil"
+}

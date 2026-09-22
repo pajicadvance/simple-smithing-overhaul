@@ -8,7 +8,7 @@ plugins {
     id("me.modmuss50.mod-publish-plugin") apply false
 }
 
-stonecutter active "26.2-fabric"
+stonecutter active "26.3-fabric"
 
 stonecutter parameters {
     val (version, loader) = current.project.split('-', limit = 2)
@@ -35,11 +35,19 @@ stonecutter parameters {
 
     replacements {
         filters.exclude("**/*.ct")
+        filters.exclude("**/*.cfg")
         string(current.parsed >= "1.21.11") {
             replace("ValidatedIdentifier", "ValidatedIdentifier")
             replace("ResourceLocation", "Identifier")
-            replace("location()", "identifier()")
             replace("net.ramixin.mixson_backport", "net.ramixin.mixson")
+            replace("net.minecraft.Util", "net.minecraft.util.Util")
+            replace("GuiGraphics", "GuiGraphicsExtractor")
+            replace("PhantomDataComponents.REPAIRABLE.get()", "DataComponents.REPAIRABLE")
+            replace("import me.pajic.simple_smithing_overhaul.backport.ItemStackWithSlot;", "import net.minecraft.world.ItemStackWithSlot;")
+            replace("net.minecraft.world.entity.npc.VillagerTrades", "net.minecraft.world.entity.npc.villager.VillagerTrades")
+            replace("net.minecraft.world.entity.projectile.ThrowableItemProjectile", "net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile")
+            replace("net.minecraft.world.entity.projectile.ThrownExperienceBottle", "net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownExperienceBottle")
+            replace("import net.minecraft.world.item.ArmorMaterials;", "import net.minecraft.world.item.equipment.ArmorMaterials;")
         }
     }
 }

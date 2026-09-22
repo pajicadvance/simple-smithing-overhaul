@@ -1,0 +1,27 @@
+package me.pajic.simple_smithing_overhaul.mixin.compat.penchant;
+
+//? fabric && >=26.1 {
+
+import archives.tater.penchant.registry.PenchantModules;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.moulberry.mixinconstraints.annotations.IfModLoaded;
+import me.pajic.simple_smithing_overhaul.SSO;
+import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
+import net.minecraft.resources.Identifier;
+import org.spongepowered.asm.mixin.Mixin;
+
+@IfModLoaded("penchant")
+@Mixin(PenchantModules.class)
+public class PenchantModulesMixin {
+
+	@WrapMethod(method = "registerPack(Lnet/minecraft/resources/Identifier;Lnet/fabricmc/fabric/api/resource/v1/pack/PackActivationType;)V")
+    private static void controlPackActivationType(Identifier id, PackActivationType activationType, Operation<Void> original) {
+		if (SSO.CONFIG.modIntegration.penchant.get()) {
+			if (id.equals(PenchantModules.DURABILITY_REWORK)) original.call(id, PackActivationType.NORMAL);
+			else original.call(id, activationType);
+		}
+        else original.call(id, activationType);
+    }
+}
+//?}

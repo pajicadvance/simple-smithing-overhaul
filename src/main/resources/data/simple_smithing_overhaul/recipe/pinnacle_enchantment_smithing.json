@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:echo_shard",
+  "base": "#minecraft:enchantable/durability",
+  "result": {
+    "id": "simple_smithing_overhaul:info_pinnacle_enchantment"
+  },
+  "template": "simple_smithing_overhaul:pinnacle_enchantment"
+}

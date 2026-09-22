@@ -1,0 +1,28 @@
+{
+  "parent": "simple_smithing_overhaul:smithing/right_to_repair",
+  "criteria": {
+    "item_repair_count_big": {
+      "trigger": "simple_smithing_overhaul:item_repair_count_big"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.smithing.ship_of_theseus.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:diamond_block"
+    },
+    "title": {
+      "translate": "advancements.smithing.ship_of_theseus.title"
+    },
+    "hidden": true
+  },
+  "requirements": [
+    [
+      "item_repair_count_big"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

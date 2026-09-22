@@ -1,0 +1,30 @@
+{
+  "parent": "simple_smithing_overhaul:smithing/shiny_pockets",
+  "criteria": {
+    "max_whetstone": {
+      "trigger": "simple_smithing_overhaul:max_whetstone"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.smithing.very_shiny.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "simple_smithing_overhaul:whetstone",
+      "components": {
+        "minecraft:enchantment_glint_override": true
+      }
+    },
+    "title": {
+      "translate": "advancements.smithing.very_shiny.title"
+    }
+  },
+  "requirements": [
+    [
+      "max_whetstone"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

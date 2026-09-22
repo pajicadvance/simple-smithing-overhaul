@@ -1,0 +1,206 @@
+package me.pajic.simple_smithing_overhaul.platform.fabric;
+
+//? fabric {
+
+//~ if <26.1 'ServerLevelEvents' -> 'ServerWorldEvents' {
+import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
+import me.pajic.simple_smithing_overhaul.SSO;
+import me.pajic.simple_smithing_overhaul.blocks.ModBlocks;
+import me.pajic.simple_smithing_overhaul.config.ItemSuggestions;
+import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
+import me.pajic.simple_smithing_overhaul.items.ModItems;
+import me.pajic.simple_smithing_overhaul.recipe.ModRecipeSerializers;
+import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
+import me.pajic.simple_smithing_overhaul.util.ModUtil;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
+import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Items;
+
+//? >=26.1 {
+import me.pajic.simple_smithing_overhaul.compat.PenchantCompat;
+import me.pajic.simple_smithing_overhaul.util.CompatFlags;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
+//?} else {
+/*import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.world.InteractionResultHolder;
+*///?}
+
+@Entrypoint("main")
+public class FabricEntrypoint implements ModInitializer {
+
+    @Override
+    public void onInitialize() {
+        SSO.onInitialize();
+        ServerLevelEvents.LOAD.register((server, level) -> ItemSuggestions.update(level));
+        ModBlocks.init();
+        ModItems.init();
+        ModDataComponents.init();
+        ModCriteria.init();
+        ModRecipeSerializers.init();
+        initRegistry();
+        initCreativeTabs();
+        initEvents();
+    }
+
+    private void initRegistry() {
+        Registry.register(
+                BuiltInRegistries.BLOCK,
+                SSO.id("broken_anvil"),
+                ModBlocks.BROKEN_ANVIL
+        );
+        Registry.register(
+                BuiltInRegistries.ITEM,
+                SSO.id("enchantment_upgrade"),
+                ModItems.ENCHANTMENT_UPGRADE_SMITHING_TEMPLATE
+        );
+        Registry.register(
+                BuiltInRegistries.ITEM,
+                SSO.id("pinnacle_enchantment"),
+                ModItems.PINNACLE_ENCHANTMENT_SMITHING_TEMPLATE
+        );
+        Registry.register(
+                BuiltInRegistries.ITEM,
+                SSO.id("whetstone"),
+                ModItems.WHETSTONE
+        );
+        Registry.register(
+                BuiltInRegistries.ITEM,
+                SSO.id("broken_anvil"),
+                ModItems.BROKEN_ANVIL
+        );
+        Registry.register(
+                BuiltInRegistries.ITEM,
+                SSO.id("info_enchantment_upgrade"),
+                ModItems.INFO_ENCHANTMENT_UPGRADE
+        );
+        Registry.register(
+                BuiltInRegistries.ITEM,
+                SSO.id("info_pinnacle_enchantment"),
+                ModItems.INFO_PINNACLE_ENCHANTMENT
+        );
+        Registry.register(
+                BuiltInRegistries.DATA_COMPONENT_TYPE,
+                SSO.id("repair_count"),
+                ModDataComponents.REPAIR_COUNT
+        );
+        Registry.register(
+                BuiltInRegistries.DATA_COMPONENT_TYPE,
+                SSO.id("pinnacle_count"),
+                ModDataComponents.PINNACLE_COUNT
+        );
+        Registry.register(
+                BuiltInRegistries.DATA_COMPONENT_TYPE,
+                SSO.id("broken"),
+                ModDataComponents.BROKEN
+        );
+        Registry.register(
+                BuiltInRegistries.TRIGGER_TYPES,
+                SSO.id("repair_item"), ModCriteria.REPAIR_ITEM
+        );
+        Registry.register(
+                BuiltInRegistries.TRIGGER_TYPES,
+                SSO.id("repair_item_whetstone"), ModCriteria.REPAIR_ITEM_WHETSTONE
+        );
+        Registry.register(
+                BuiltInRegistries.TRIGGER_TYPES,
+                SSO.id("repair_item_whetstone_enchanted"), ModCriteria.REPAIR_ITEM_WHETSTONE_ENCHANTED
+        );
+        Registry.register(
+                BuiltInRegistries.TRIGGER_TYPES,
+                SSO.id("max_whetstone"), ModCriteria.MAX_WHETSTONE
+        );
+        Registry.register(
+                BuiltInRegistries.TRIGGER_TYPES,
+                SSO.id("item_repair_count"), ModCriteria.ITEM_REPAIR_COUNT
+        );
+        Registry.register(
+                BuiltInRegistries.TRIGGER_TYPES,
+                SSO.id("item_repair_count_big"), ModCriteria.ITEM_REPAIR_COUNT_BIG
+        );
+        Registry.register(
+                BuiltInRegistries.TRIGGER_TYPES,
+                SSO.id("disenchant_item"), ModCriteria.DISENCHANT_ITEM
+        );
+        Registry.register(
+                BuiltInRegistries.TRIGGER_TYPES,
+                SSO.id("reduce_repair_cost"), ModCriteria.REDUCE_REPAIR_COST
+        );
+        Registry.register(
+                BuiltInRegistries.TRIGGER_TYPES,
+                SSO.id("apply_enchantment_upgrade"), ModCriteria.APPLY_ENCHANTMENT_UPGRADE
+        );
+        Registry.register(
+                BuiltInRegistries.TRIGGER_TYPES,
+                SSO.id("apply_pinnacle_enchantment"), ModCriteria.APPLY_PINNACLE_ENCHANTMENT
+        );
+        Registry.register(
+                BuiltInRegistries.TRIGGER_TYPES,
+                SSO.id("bad_rng"), ModCriteria.BAD_RNG
+        );
+        Registry.register(
+                BuiltInRegistries.TRIGGER_TYPES,
+                SSO.id("maxed_out"), ModCriteria.MAXED_OUT
+        );
+        Registry.register(
+                BuiltInRegistries.TRIGGER_TYPES,
+                SSO.id("anvil_enchant_combine"), ModCriteria.ANVIL_ENCHANT_COMBINE
+        );
+        Registry.register(
+                BuiltInRegistries.RECIPE_SERIALIZER,
+                SSO.id("portable_repair"),
+                ModRecipeSerializers.PORTABLE_ITEM_REPAIR
+        );
+    }
+
+    private void initCreativeTabs() {
+        //~ if <26.1 'CreativeModeTabEvents.modifyOutputEvent' -> 'ItemGroupEvents.modifyEntriesEvent' {
+        //~ if <26.1 'insertAfter' -> 'addAfter' {
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS).register(contents -> contents.insertAfter(
+                Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE,
+                ModItems.ENCHANTMENT_UPGRADE_SMITHING_TEMPLATE
+        ));
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS).register(contents -> contents.insertAfter(
+                ModItems.ENCHANTMENT_UPGRADE_SMITHING_TEMPLATE,
+                ModItems.PINNACLE_ENCHANTMENT_SMITHING_TEMPLATE
+        ));
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(contents -> contents.insertAfter(
+                Items.NETHERITE_HOE,
+                ModItems.WHETSTONE
+        ));
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS).register(contents -> contents.insertAfter(
+                Items.DAMAGED_ANVIL,
+                ModItems.BROKEN_ANVIL
+        ));
+        //~}
+        //~}
+    }
+
+    private void initEvents() {
+        AttackEntityCallback.EVENT.register((player, l, hand, e, r) -> ModUtil.canUse(player, hand));
+        UseEntityCallback.EVENT.register((player, l, hand, e, r) -> ModUtil.canUse(player, hand));
+        AttackBlockCallback.EVENT.register((player, l, hand, b, d) -> ModUtil.canUse(player, hand));
+        UseBlockCallback.EVENT.register((player, l, hand, r) -> ModUtil.canUse(player, hand));
+        UseItemCallback.EVENT.register((player, l, hand) -> {
+            //? <26.1 {
+            /*return ModUtil.canUse(player, hand) == InteractionResult.PASS ?
+                    InteractionResultHolder.pass(player.getUseItem()) :
+                    InteractionResultHolder.fail(player.getUseItem());
+            *///?} else {
+            return ModUtil.canUse(player, hand);
+            //?}
+        });
+        //? fabric && >=26.1
+        if (CompatFlags.PENCHANT_LOADED) PenchantCompat.init();
+    }
+}
+//~}
+//?}
