@@ -15,7 +15,7 @@ public class NeoforgeLoaderUtil implements MultiLoaderUtil {
 
     @Override
     public boolean isDevEnv() {
-        return !FMLLoader/^? >=1.21.9 {^//^.getCurrent()^//^?}^/.isProduction();
+        return !FMLLoader/^? >=1.21.9 {^/.getCurrent()/^?}^/.isProduction();
     }
 }
 *///?}

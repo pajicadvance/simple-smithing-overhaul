@@ -1,8 +1,6 @@
 package me.pajic.simple_smithing_overhaul.mixin.compat.modestmagic;
 
 import com.baisylia.modestmagic.recipe.custom.TabletSmithingRecipe;
-import com.llamalad7.mixinextras.expression.Definition;
-import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -18,28 +16,30 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(TabletSmithingRecipe.class)
 public class TabletSmithingRecipeMixin {
 
-    //~ if >=26.1 'Lnet/minecraft/world/item/Item;' -> 'Ljava/lang/Object;'
-    @Definition(id = "is", method = "Lnet/minecraft/world/item/ItemStack;is(Ljava/lang/Object;)Z")
-    @Definition(id = "ENCHANTED_BOOK", field = "Lnet/minecraft/world/item/Items;ENCHANTED_BOOK:Lnet/minecraft/world/item/Item;")
-    @Expression("?.is(ENCHANTED_BOOK)")
     @ModifyExpressionValue(
-            //~ if >=26.1 'Lnet/minecraft/core/HolderLookup$Provider;)Lnet/minecraft/world/item/ItemStack;' -> ';)Lnet/minecraft/world/item/ItemStack;'
-            method = "assemble(Lnet/minecraft/world/item/crafting/SmithingRecipeInput;;)Lnet/minecraft/world/item/ItemStack;",
-            at = @At("MIXINEXTRAS:EXPRESSION")
+            //~ if >=26.1 'Lnet/minecraft/core/HolderLookup$Provider;)Lnet/minecraft/world/item/ItemStack;' -> ')Lnet/minecraft/world/item/ItemStack;'
+            method = "assemble(Lnet/minecraft/world/item/crafting/SmithingRecipeInput;)Lnet/minecraft/world/item/ItemStack;",
+            at = @At(
+                    value = "INVOKE",
+                    //~ if >=26.1 'Lnet/minecraft/world/item/Item;' -> 'Ljava/lang/Object;'
+                    target = "Lnet/minecraft/world/item/ItemStack;is(Ljava/lang/Object;)Z",
+                    ordinal = 1
+            )
     )
     private boolean allowWhetstoneEnchantingAssemble(boolean original, @Local ItemStack stack) {
-        return check(stack, original);
+        return sso$check(stack, original);
     }
 
-    @Definition(id = "test", method = "Lnet/minecraft/world/item/crafting/Ingredient;test(Lnet/minecraft/world/item/ItemStack;)Z")
-    @Definition(id = "baseStack", local = @Local(type = ItemStack.class, ordinal = 1))
-    @Expression("?.?.test(baseStack)")
     @ModifyExpressionValue(
             method = "matches(Lnet/minecraft/world/item/crafting/SmithingRecipeInput;Lnet/minecraft/world/level/Level;)Z",
-            at = @At("MIXINEXTRAS:EXPRESSION")
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/item/crafting/Ingredient;test(Lnet/minecraft/world/item/ItemStack;)Z",
+                    ordinal = 1
+            )
     )
     private boolean allowWhetstoneEnchantingMatches(boolean original, @Local(ordinal = 1) ItemStack stack) {
-        return check(stack, original);
+        return sso$check(stack, original);
     }
 
     //? <26.1 {
@@ -48,11 +48,11 @@ public class TabletSmithingRecipeMixin {
             at = @At("RETURN")
     )
     private boolean whetstoneIsBase(boolean original, @Local(argsOnly = true) ItemStack stack) {
-        return check(stack, original);
+        return sso$check(stack, original);
     }
     *///?}
 
-    @Unique private boolean check(ItemStack stack, boolean original) {
+    @Unique private boolean sso$check(ItemStack stack, boolean original) {
         if (SSO.CONFIG.portableItemRepair.enableWhetstone.get()) {
             return original || stack.is(ModItems.WHETSTONE);
         }

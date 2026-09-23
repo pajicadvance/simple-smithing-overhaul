@@ -7,3 +7,7 @@
 2.9.12:
 
 - Fixed incorrect version range info for Modest Magic.
+
+2.9.13:
+
+- Hopefully Modest Magic compatibility should finally work now.
