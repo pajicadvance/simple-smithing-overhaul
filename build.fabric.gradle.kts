@@ -88,7 +88,6 @@ val fabricDepends = jsonObject(
         requiredDeps.forEach { add(it.id to it.range) }
     }
 )
-val fabricSuggests = jsonObject(optionalDeps.map { it.id to it.range })
 
 dependencies {
     minecraft("com.mojang:minecraft:${sc.current.version}")
@@ -157,7 +156,6 @@ tasks {
         val ct = "aw/${sc.current.project.substringBefore('-')}.ct"
         val mixinJava = "JAVA_${requiredJava.majorVersion}"
         val depends = fabricDepends
-        val suggests = fabricSuggests
 
         val props = buildMap {
             register("id", "mod.id")
@@ -176,14 +174,12 @@ tasks {
             inputs.property("ct", ct)
             put("ct", ct)
             inputs.property("depends", depends)
-            inputs.property("suggests", suggests)
         }
 
         filesMatching("fabric.mod.json") { expand(props) }
         filesMatching("fabric.mod.json") {
             filter { line -> line
                 .replace("\"depends\": {}", "\"depends\": $depends")
-                .replace("\"suggests\": {}", "\"suggests\": $suggests")
             }
         }
 

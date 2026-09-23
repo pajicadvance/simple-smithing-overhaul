@@ -2,7 +2,7 @@
 mod.id = "simple_smithing_overhaul"
 mod.name = "Simple Smithing Overhaul"
 mod.group = "me.pajic"
-mod.version = "2.9.11"
+mod.version = "2.9.12"
 mod.description = "Portable item repair, enchantment upgrading, anvil improvements and more"
 mod.authors = "pajic"
 mod.contributors = "Lufurrius, Moonkey"
@@ -44,10 +44,12 @@ dep.fabric-api.coords = "net.fabricmc.fabric-api:$id:$version"
 dep.modmenu.coords = "com.terraformersmc:$id:$version"
 dep.defaulted.coords = "maven.modrinth:$id:$version-Fabric"
 dep.defaulted.range = ">=1.3.8"
+dep.modestmagic.range = ">=1.4.1"
 
 [neoforge]
 dep.defaulted.coords = "maven.modrinth:$id:$version-NeoForge"
 dep.defaulted.range = "[1.3.8,)"
+dep.modestmagic.range = "[1.4.1,)"
 
 
 ["1.21.1"]
