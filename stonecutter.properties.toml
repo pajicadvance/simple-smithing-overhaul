@@ -2,7 +2,7 @@
 mod.id = "simple_smithing_overhaul"
 mod.name = "Simple Smithing Overhaul"
 mod.group = "me.pajic"
-mod.version = "2.9.13"
+mod.version = "2.9.14"
 mod.description = "Portable item repair, enchantment upgrading, anvil improvements and more"
 mod.authors = "pajic"
 mod.contributors = "Lufurrius, Moonkey"

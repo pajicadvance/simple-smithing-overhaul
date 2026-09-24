@@ -31,7 +31,7 @@ public class ItemMixin {
 	) {
 		if (SSO.CONFIG.mendingRework.enabled.get() && SSO.CONFIG.mendingRework.repairOnShiftUse.get() && player.isShiftKeyDown()) {
 			ItemStack stack = player.getItemInHand(hand);
-			if (stack.isDamaged() && ModUtil.hasRepairable(stack) && ModUtil.tryRepairItem(stack, player, level)) {
+			if (stack.isDamaged() && ModUtil.tryRepairItem(stack, player, level)) {
                 //~ if <26.1 'InteractionResult.CONSUME' -> 'InteractionResultHolder.consume(stack)'
 				return InteractionResult.CONSUME;
 			}

@@ -8,7 +8,6 @@ import me.pajic.simple_smithing_overhaul.compat.EDCompat;
 import me.pajic.simple_smithing_overhaul.compat.TFLCompat;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import me.pajic.simple_smithing_overhaul.recipe.PortableItemRepairRecipe;
-import net.atlas.defaulted.extension.ItemExtensions;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
@@ -53,6 +52,7 @@ import net.minecraft.network.chat.TextColor;
 
 //? <26.1 {
 /*import net.atlas.defaulted.component.backport.PhantomDataComponents;
+import net.atlas.defaulted.extension.ItemExtensions;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.world.item.AnimalArmorItem;
 *///?} else {
@@ -136,7 +136,6 @@ public class ModUtil {
         return Math.round(min + (max - min) * ((float) level / e.getMaxLevel()));
     }
 
-	@SuppressWarnings("DataFlowIssue")
 	public static boolean tryRepairItem(ItemStack target, Player player, Level level) {
 		if (
 				target.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY)
@@ -323,20 +322,11 @@ public class ModUtil {
         //?}
     }
 
-    public static boolean hasRepairable(ItemStack stack) {
-        //? <26.1 {
-        /*return ((ItemExtensions) stack.getItem()).defaulted$has(DataComponents.REPAIRABLE);
-        *///?} else {
-        return stack.has(DataComponents.REPAIRABLE);
-        //?}
-    }
-
-    @SuppressWarnings("DataFlowIssue")
     public static boolean isValidRepairItem(ItemStack target, ItemStack repair) {
         //? <26.1 {
-        /*return ((ItemExtensions) target.getItem()).defaulted$get(DataComponents.REPAIRABLE).isValidRepairItem(repair);
+        /*return target.getItem().isValidRepairItem(target, repair);
         *///?} else {
-        return target.get(DataComponents.REPAIRABLE).isValidRepairItem(repair);
+        return target.has(DataComponents.REPAIRABLE) && target.get(DataComponents.REPAIRABLE).isValidRepairItem(repair);
         //?}
     }
 }

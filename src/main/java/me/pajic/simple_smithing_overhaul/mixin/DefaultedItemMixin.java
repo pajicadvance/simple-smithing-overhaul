@@ -4,7 +4,8 @@ package me.pajic.simple_smithing_overhaul.mixin;
 
 /*import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import me.pajic.simple_smithing_overhaul.util.ModUtil;
+import net.atlas.defaulted.component.backport.PhantomDataComponents;
+import net.atlas.defaulted.extension.ItemExtensions;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +15,9 @@ public class DefaultedItemMixin {
 
     @WrapMethod(method = "isValidRepairItem")
     private boolean fixRepairCheck(ItemStack itemStack, ItemStack itemStack2, Operation<Boolean> original) {
-        return ModUtil.hasRepairable(itemStack) ? ModUtil.isValidRepairItem(itemStack, itemStack2) : original.call(itemStack, itemStack2);
+        return ((ItemExtensions) itemStack.getItem()).defaulted$has(DataComponents.REPAIRABLE) ?
+                ((ItemExtensions) itemStack.getItem()).defaulted$get(DataComponents.REPAIRABLE).isValidRepairItem(itemStack2) :
+                original.call(itemStack, itemStack2);
     }
 }
 *///?}

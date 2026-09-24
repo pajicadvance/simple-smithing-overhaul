@@ -98,7 +98,7 @@ public class PortableItemRepairRecipe extends CustomRecipe {
         int damageRepairedPerUnit = Mth.ceil((float) itemToRepair.getMaxDamage() / unitCost);
         int unitsToMaxRepair = itemToRepair.getDamageValue() / damageRepairedPerUnit;
         repairMaterial = input.items().stream().filter(itemStack ->
-                ModUtil.hasRepairable(itemToRepair) && ModUtil.isValidRepairItem(itemToRepair, itemStack)
+                ModUtil.isValidRepairItem(itemToRepair, itemStack)
         ).findFirst().orElse(ItemStack.EMPTY);
         boolean flintMaterialValid = false;
         if (flintCount > 0) for (String s : SSO.CONFIG.portableItemRepair.flintMaterialWhitelist.get()) {

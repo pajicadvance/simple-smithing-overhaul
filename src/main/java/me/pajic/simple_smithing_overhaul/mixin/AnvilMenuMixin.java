@@ -244,7 +244,6 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
         if (
 				SSO.CONFIG.anvilImprovements.noWorkCostIncreaseOnRepair.get() &&
                 inputSlots.getItem(0).isDamageableItem() &&
-                ModUtil.hasRepairable(inputSlots.getItem(0)) &&
                 ModUtil.isValidRepairItem(inputSlots.getItem(0), inputSlots.getItem(1))
         ) {
             return baseCost;

@@ -31,9 +31,9 @@ public abstract class InventoryMixin {
 	private void repairItemUsingInventoryMaterials(CallbackInfo ci, @Local int i) {
 		if (SSO.CONFIG.mendingRework.enabled.get() && SSO.CONFIG.mendingRework.autoRepairOnBreak.get()) {
 			ItemStack stack = getItem(i);
-			if (ModUtil.isBroken(stack) && ModUtil.hasRepairable(stack)) {
-				ModUtil.tryRepairItem(stack, player, player.level());
-			}
+			if (ModUtil.isBroken(stack) && ModUtil.tryRepairItem(stack, player, player.level())) {
+                player.inventoryMenu.broadcastChanges();
+            }
 		}
 	}
 }

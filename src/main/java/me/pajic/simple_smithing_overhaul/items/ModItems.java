@@ -57,7 +57,7 @@ public class ModItems {
                     Identifier.withDefaultNamespace(ModUtil.emptySlotTexturePath("shovel")),
                     Identifier.withDefaultNamespace(ModUtil.emptySlotTexturePath("pickaxe"))
             ),
-            List.of(Identifier.parse("container/slot/lapis_lazuli")),
+            List.of(Identifier.withDefaultNamespace(ModUtil.emptySlotTexturePath("lapis_lazuli"))),
             new Item.Properties().rarity(Rarity.RARE)
                     //? >=26.1
                     .setId(ResourceKey.create(Registries.ITEM, SSO.id("enchantment_upgrade")))
@@ -96,7 +96,7 @@ public class ModItems {
                     Identifier.withDefaultNamespace(ModUtil.emptySlotTexturePath("shovel")),
                     Identifier.withDefaultNamespace(ModUtil.emptySlotTexturePath("pickaxe"))
             ),
-            List.of(SSO.id("container/slot/echo_shard")),
+            List.of(SSO.id(ModUtil.emptySlotTexturePath("echo_shard"))),
             new Item.Properties().rarity(Rarity.EPIC)
                     //? >=26.1
                     .setId(ResourceKey.create(Registries.ITEM, SSO.id("pinnacle_enchantment")))
