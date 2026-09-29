@@ -2,9 +2,14 @@ package me.pajic.simple_smithing_overhaul.defaulted;
 
 import me.pajic.simple_smithing_overhaul.SSO;
 import me.pajic.simple_smithing_overhaul.util.CompatFlags;
-import net.atlas.defaulted.Defaulted;
+//? fabric && >=26.3 {
+import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
+import java.util.LinkedHashMap;
+//?} else {
+/*import net.atlas.defaulted.Defaulted;
 import net.atlas.defaulted.component.ItemPatches;
 import net.atlas.defaulted.component.generators.PhantomDataComponentPatchGenerator;
+*///?}
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
@@ -42,7 +47,28 @@ public class RepairablePatchEvent {
 	);
 
 	public static void register() {
-		Defaulted.builtinPatchCreator((registry, patchApplier) -> {
+        //? fabric && >=26.3 {
+        DefaultItemComponentEvents.MODIFY.register(context -> {
+            Map<String, String> repairables = new LinkedHashMap<>();
+            if (SSO.CONFIG.streamlinedRepairs.vanillaRepairables.get()) {
+                repairables.putAll(vanillaRepairables);
+                if (!CompatFlags.BETTER_TRIDENTS_LOADED) {
+                    repairables.put("minecraft:trident", "minecraft:prismarine_shard");
+                }
+            }
+            // Configured mappings override defaults; explicit items override configured tags.
+            SSO.CONFIG.streamlinedRepairs.modRepairableItems.get().entrySet().stream()
+                    .sorted(Map.Entry.comparingByKey())
+                    .sorted(java.util.Comparator.comparing(entry -> !entry.getKey().startsWith("#")))
+                    .forEach(entry -> {
+                        repairables.remove(entry.getKey());
+                        repairables.put(entry.getKey(), entry.getValue());
+                    });
+            FabricRepairablePatches.apply(context, repairables,
+                    (mapping, error) -> SSO.LOGGER.warn("Unable to apply repairable patch {}, skipping: {}", mapping, error.getMessage()));
+        });
+        //?} else {
+/*		Defaulted.builtinPatchCreator((registry, patchApplier) -> {
 			HolderLookup<Item> lookup = registry.lookupOrThrow(Registries.ITEM);
 			Map<String, PatchData> patches = new HashMap<>();
 			Map<String, String> repairables = new HashMap<>();
@@ -70,17 +96,17 @@ public class RepairablePatchEvent {
 								elements,
                                 List.of(
                                         //? <26.1 {
-                                        /*new PhantomDataComponentPatchGenerator(DataComponentPatch.builder().set(
+                                        /^new PhantomDataComponentPatchGenerator(DataComponentPatch.builder().set(
                                                 DataComponents.REPAIRABLE,
                                                 new Repairable(repairMaterial.startsWith("#") ?
-                                                /^? <26.1 {^//^Either.left(^//^?}^/lookup.getOrThrow(TagKey.create(Registries.ITEM, Identifier.parse(repairMaterial.substring(1))))/^? <26.1 {^//^)^//^?}^/ :
-                                                /^? <26.1 {^//^Either.left(^//^?}^/HolderSet.direct(lookup.getOrThrow(ResourceKey.create(Registries.ITEM, Identifier.parse(repairMaterial))))/^? <26.1 {^//^)^//^?}^/)
+                                                Either.left(lookup.getOrThrow(TagKey.create(Registries.ITEM, Identifier.parse(repairMaterial.substring(1))))) :
+                                                Either.left(HolderSet.direct(lookup.getOrThrow(ResourceKey.create(Registries.ITEM, Identifier.parse(repairMaterial))))))
                                         ).build())
-                                        *///?}
+                                        ^///?}
                                 ),
                                 //? <26.1 {
-                                /*DataComponentPatch.EMPTY,
-                                *///?} else {
+                                /^DataComponentPatch.EMPTY,
+                                ^///?} else {
                                 DataComponentPatch.builder().set(
                                         DataComponents.REPAIRABLE,
                                         new Repairable(repairMaterial.startsWith("#") ?
@@ -98,6 +124,7 @@ public class RepairablePatchEvent {
 				}
 			});
 		});
+*///?}
 	}
 
 	private static void log(String repairMaterial, PatchData data) {

@@ -199,6 +199,28 @@ tasks {
     }
 }
 
+if (sc.current.parsed >= "26.3") {
+    // These regression checks use standalone mains to bootstrap Minecraft's registries.
+    tasks.test { failOnNoDiscoveredTests = false }
+    val lootPoolFormatTest = tasks.register<JavaExec>("lootPoolFormatTest") {
+        group = "verification"
+        description = "Checks the 26.3 loot pool condition and modifier codecs."
+        dependsOn(tasks.testClasses)
+        classpath = sourceSets.test.get().runtimeClasspath
+        mainClass = "me.pajic.simple_smithing_overhaul.mixson.LootPoolFormatTest"
+        javaLauncher = javaToolchains.launcherFor(java.toolchain)
+    }
+    val repairableComponentsTest = tasks.register<JavaExec>("repairableComponentsTest") {
+        group = "verification"
+        description = "Checks repair materials against item and tag reload lookups."
+        dependsOn(tasks.testClasses)
+        classpath = sourceSets.test.get().runtimeClasspath
+        mainClass = "me.pajic.simple_smithing_overhaul.defaulted.RepairableComponentsTest"
+        javaLauncher = javaToolchains.launcherFor(java.toolchain)
+    }
+    tasks.check { dependsOn(lootPoolFormatTest, repairableComponentsTest) }
+}
+
 publishMods {
     file.set(loomx.modJar.get().archiveFile)
     additionalFiles.from(loomx.modSourcesJar.get().archiveFile)

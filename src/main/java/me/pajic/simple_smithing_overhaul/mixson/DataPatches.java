@@ -48,7 +48,7 @@ public class DataPatches {
 			MixsonHelper.registerSingleJson(
 					"Distribute enchantment upgrade templates to end city loot",
 					new Index("minecraft:loot_table/chests/end_city_treasure"),
-					context -> context.getFile().getAsJsonObject().getAsJsonArray("pools").add(pool)
+					context -> context.getFile().getAsJsonObject().getAsJsonArray("pools").add(Constants.prepareLootPool(pool))
 			);
 		}
 
@@ -63,7 +63,7 @@ public class DataPatches {
 			MixsonHelper.registerSingleJson(
 					"Distribute pinnacle enchantment upgrade templates to ancient city loot",
 					new Index("minecraft:loot_table/chests/ancient_city"),
-					context -> context.getFile().getAsJsonObject().getAsJsonArray("pools").add(pool)
+					context -> context.getFile().getAsJsonObject().getAsJsonArray("pools").add(Constants.prepareLootPool(pool))
 			);
 		}
 
@@ -84,7 +84,7 @@ public class DataPatches {
 				MixsonHelper.registerSingleJson(
 						"Distribute additional enchanted book loot to " + location.toString().replace(":", "_"),
 						new Index(location.toString().replace(":", ":loot_table/")),
-						context -> context.getFile().getAsJsonObject().getAsJsonArray("pools").add(pool)
+						context -> context.getFile().getAsJsonObject().getAsJsonArray("pools").add(Constants.prepareLootPool(pool))
 				);
 			});
 		}
@@ -111,10 +111,23 @@ public class DataPatches {
 				MixsonHelper.registerSingleJson(
 						"Distribute additional XP bottle loot to " + location.toString().replace(":", "_"),
 						new Index(location.toString().replace(":", ":loot_table/")),
-						context -> context.getFile().getAsJsonObject().getAsJsonArray("pools").add(pool)
+						context -> context.getFile().getAsJsonObject().getAsJsonArray("pools").add(Constants.prepareLootPool(pool))
 				);
 			});
 		}
+
+        //? >=26.3 {
+        MixsonHelper.registerSingleJson(
+                "Update broken anvil loot conditions for 26.3",
+                new Index("simple_smithing_overhaul:loot_table/blocks/broken_anvil"),
+                context -> {
+                    JsonArray pools = context.getFile().getAsJsonObject().getAsJsonArray("pools");
+                    for (int i = 0; i < pools.size(); i++) {
+                        pools.set(i, Constants.prepareLootPool(pools.get(i)));
+                    }
+                }
+        );
+        //?}
 
         //? <26.1 {
         /*MixsonHelper.registerSingleJson(

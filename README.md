@@ -1,5 +1,32 @@
 # Simple Smithing Overhaul
 
+## Fabric 26.3 development build
+
+This branch completes the existing Fabric 26.3 target. It uses Fabric's default
+item component event for repair-material settings, removing the incompatible
+Defaulted dependency from this target. Older targets retain Defaulted. Loot pool
+conditions and modifiers are converted to the 26.3 format so configured chances,
+book enchantments, stack counts, and explosion checks survive decoding.
+
+Build with a Java 25 JDK:
+
+```sh
+bash gradlew :26.3-fabric:build --configure-on-demand
+```
+
+The `build` task also runs loot-pool regression checks against Minecraft's own
+codecs. The installable JAR is under `versions/26.3-fabric/build/libs/`; use the
+JAR without the `-sources` suffix. This fork's 26.3 build is versioned
+`2.9.14-port.1` to distinguish it from the upstream release.
+
+Install on both client and server with Fabric Loader 0.19.5 or newer, Fabric API
+0.161.0+26.3 or newer, Mixson 2.2.1, Fzzy Config 0.7.7+fix2+26.3, and Fabric
+Language Kotlin (required by Fzzy Config). Defaulted and CodecUI are not required
+by this build. Other mods that use Defaulted need their own compatible version.
+
+See [the isolated server checks](qa/README.md) for runtime verification.
+
+
 Smithing in Minecraft is incredibly stingy. The excessively high cost of managing gear deters players from ever interacting with the mechanic and steers them towards relying exclusively on Mending for item repair. This mod opens up new ways to upgrade and maintain your gear by **improving the usability of vanilla smithing mechanics, introducing new smithing templates, and rebalancing enchantment sources**. The goal is to ease up the harsh costs and restrictions of smithing mechanics and make those mechanics more important for obtaining enchanted gear instead of solely relying on the enchanting table, looted items and villager trades, in turn making them more rewarding.
 
 All the features, changes and rebalances in the mod result in **generally faster enchanted item acquisition** and **higher enchanting flexibility**, all while making the entire process **feel more rewarding** at the same time.
