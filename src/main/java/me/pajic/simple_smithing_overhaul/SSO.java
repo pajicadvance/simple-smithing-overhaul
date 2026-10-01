@@ -7,7 +7,7 @@ import me.pajic.simple_smithing_overhaul.mixson.AssetPatches;
 import me.pajic.simple_smithing_overhaul.mixson.DataPatches;
 import me.pajic.simple_smithing_overhaul.mixson.MixsonHelper;
 import me.pajic.simple_smithing_overhaul.platform.MultiLoaderUtil;
-import me.pajic.simple_smithing_overhaul.util.ModUtil;
+import me.pajic.simple_smithing_overhaul.util.ModClientUtil;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +22,11 @@ public class SSO {
         MixsonHelper.setDebugFlags();
         DataPatches.init();
         RepairablePatchEvent.register();
-        ModUtil.initItemProperties();
     }
 
     public static void onInitializeClient() {
         AssetPatches.init();
+        ModClientUtil.initItemProperties();
     }
 
     public static Identifier id(String path) {

@@ -51,10 +51,7 @@ import net.minecraft.network.chat.TextColor;
 //?}
 
 //? <26.1 {
-/*import net.atlas.defaulted.component.backport.PhantomDataComponents;
-import net.atlas.defaulted.extension.ItemExtensions;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.world.item.AnimalArmorItem;
+/*import net.minecraft.world.item.AnimalArmorItem;
 *///?} else {
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.equipment.Equippable;
@@ -300,16 +297,6 @@ public class ModUtil {
             case NETHERITE_SCRAP -> Items.NETHERITE_SCRAP;
             default -> Items.NETHERITE_INGOT;
         };
-    }
-
-    public static void initItemProperties() {
-        //? <26.1 {
-		/*ItemProperties.register(
-				ModItems.WHETSTONE,
-				SSO.id("damage_state"),
-				(stack, level, entity, i) -> (float) stack.getDamageValue() / stack.getMaxDamage()
-		);
-		*///?}
     }
 
     private static final Set<String> EMPTY_ARMOR_SLOT_NAMES = Set.of("helmet", "chestplate", "leggings", "boots");
