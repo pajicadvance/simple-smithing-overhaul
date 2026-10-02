@@ -3,12 +3,27 @@ package me.pajic.simple_smithing_overhaul.mixson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import me.pajic.simple_smithing_overhaul.SSO;
 import me.pajic.simple_smithing_overhaul.util.CompatFlags;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.ramixin.mixson.util.Index;
 
 public class DataPatches {
+
+    private static final JsonElement SINGLE_ITEM_CHANCE_POOL = JsonParser.parseString("""
+    {
+        "rolls": 1.0,
+        "entries": [
+            {
+                "type": "minecraft:item"
+            },
+            {
+                "type": "minecraft:empty"
+            }
+        ]
+    }
+    """);
 
 	public static void init() {
 		MixsonHelper.registerSingleJson(
@@ -38,13 +53,12 @@ public class DataPatches {
 		);
 
 		if (ModUtil.enchantmentUpgradingEnabled()) {
-			JsonElement pool = Constants.singleItemChancePool.deepCopy();
-			pool.getAsJsonObject()
-					.getAsJsonArray("entries").get(0).getAsJsonObject()
-					.addProperty("name", "simple_smithing_overhaul:enchantment_upgrade");
-			pool.getAsJsonObject()
-					.getAsJsonArray("conditions").get(0).getAsJsonObject()
-					.addProperty("chance", 0.1);
+			JsonElement pool = SINGLE_ITEM_CHANCE_POOL.deepCopy();
+            JsonObject obj = pool.getAsJsonObject().getAsJsonArray("entries").get(0).getAsJsonObject();
+            obj.addProperty("name", "simple_smithing_overhaul:enchantment_upgrade");
+            obj.addProperty("weight", 10);
+            JsonObject obj1 = pool.getAsJsonObject().getAsJsonArray("entries").get(1).getAsJsonObject();
+            obj1.addProperty("weight", 90);
 			MixsonHelper.registerSingleJson(
 					"Distribute enchantment upgrade templates to end city loot",
 					new Index("minecraft:loot_table/chests/end_city_treasure"),
@@ -53,13 +67,12 @@ public class DataPatches {
 		}
 
 		if (SSO.CONFIG.pinnacleEnchantment.enablePinnacleEnchantment.get()) {
-			JsonElement pool = Constants.singleItemChancePool.deepCopy();
-			pool.getAsJsonObject()
-					.getAsJsonArray("entries").get(0).getAsJsonObject()
-					.addProperty("name", "simple_smithing_overhaul:pinnacle_enchantment");
-			pool.getAsJsonObject()
-					.getAsJsonArray("conditions").get(0).getAsJsonObject()
-					.addProperty("chance", 0.1);
+			JsonElement pool = SINGLE_ITEM_CHANCE_POOL.deepCopy();
+            JsonObject obj = pool.getAsJsonObject().getAsJsonArray("entries").get(0).getAsJsonObject();
+            obj.addProperty("name", "simple_smithing_overhaul:pinnacle_enchantment");
+            obj.addProperty("weight", 10);
+            JsonObject obj1 = pool.getAsJsonObject().getAsJsonArray("entries").get(1).getAsJsonObject();
+            obj1.addProperty("weight", 90);
 			MixsonHelper.registerSingleJson(
 					"Distribute pinnacle enchantment upgrade templates to ancient city loot",
 					new Index("minecraft:loot_table/chests/ancient_city"),
@@ -69,18 +82,27 @@ public class DataPatches {
 
 		if (!CompatFlags.PENCHANT_LOADED && SSO.CONFIG.enchantedBookLootTweaks.additionalChestLoot.get()) {
 			SSO.CONFIG.enchantedBookLootTweaks.bookLootLocations.forEach((location, values) -> {
-				JsonElement pool = Constants.enchantedBookPool.deepCopy();
-				pool.getAsJsonObject()
-						.getAsJsonArray("conditions").get(0).getAsJsonObject()
-						.addProperty("chance", values.getChance());
-				if (values.getCount() > 1) {
-					JsonObject function = new JsonObject();
-					function.addProperty("function", "minecraft:set_count");
-					function.addProperty("count", values.getCount());
-					pool.getAsJsonObject()
-							.getAsJsonArray("entries").get(0).getAsJsonObject()
-							.getAsJsonArray("functions").add(function);
-				}
+				JsonElement pool = SINGLE_ITEM_CHANCE_POOL.deepCopy();
+                JsonObject obj = pool.getAsJsonObject().getAsJsonArray("entries").get(0).getAsJsonObject();
+                obj.addProperty("name", "minecraft:book");
+                obj.addProperty("weight", values.getChance());
+                JsonArray arr = new JsonArray();
+                JsonObject obj3 = new JsonObject();
+                //~ if >=26.3 'function' -> 'type'
+                obj3.addProperty("type", "minecraft:enchant_randomly");
+                obj3.addProperty("options", "#minecraft:on_random_loot");
+                arr.add(obj3);
+                if (values.getCount() > 1) {
+                    JsonObject obj2 = new JsonObject();
+                    //~ if >=26.3 'function' -> 'type'
+                    obj2.addProperty("type", "minecraft:set_count");
+                    obj2.addProperty("count", values.getCount());
+                    arr.add(obj2);
+                }
+                //~ if >=26.3 'functions' -> 'modifier'
+                obj.add("modifier", arr);
+                JsonObject obj1 = pool.getAsJsonObject().getAsJsonArray("entries").get(1).getAsJsonObject();
+                obj1.addProperty("weight", 100 - values.getChance());
 				MixsonHelper.registerSingleJson(
 						"Distribute additional enchanted book loot to " + location.toString().replace(":", "_"),
 						new Index(location.toString().replace(":", ":loot_table/")),
@@ -91,23 +113,22 @@ public class DataPatches {
 
 		if (SSO.CONFIG.improvedExperienceBottle.additionalChestLoot.get()) {
 			SSO.CONFIG.improvedExperienceBottle.bottleLootLocations.forEach((location, values) -> {
-				JsonElement pool = Constants.singleItemChancePool.deepCopy();
-				pool.getAsJsonObject()
-						.getAsJsonArray("entries").get(0).getAsJsonObject()
-						.addProperty("name", "minecraft:experience_bottle");
-				pool.getAsJsonObject()
-						.getAsJsonArray("conditions").get(0).getAsJsonObject()
-						.addProperty("chance", values.getChance());
-				if (values.getCount() > 1) {
-					JsonArray functions = new JsonArray();
-					JsonObject function = new JsonObject();
-					function.addProperty("function", "minecraft:set_count");
-					function.addProperty("count", values.getCount());
-					functions.add(function);
-					pool.getAsJsonObject()
-							.getAsJsonArray("entries").get(0).getAsJsonObject()
-							.add("functions", functions);
-				}
+				JsonElement pool = SINGLE_ITEM_CHANCE_POOL.deepCopy();
+                JsonObject obj = pool.getAsJsonObject().getAsJsonArray("entries").get(0).getAsJsonObject();
+                obj.addProperty("name", "minecraft:experience_bottle");
+                obj.addProperty("weight", values.getChance());
+                if (values.getCount() > 1) {
+                    JsonArray arr = new JsonArray();
+                    JsonObject obj2 = new JsonObject();
+                    //~ if >=26.3 'function' -> 'type'
+                    obj2.addProperty("type", "minecraft:set_count");
+                    obj2.addProperty("count", values.getCount());
+                    arr.add(obj2);
+                    //~ if >=26.3 'functions' -> 'modifier'
+                    obj.add("modifier", arr);
+                }
+                JsonObject obj1 = pool.getAsJsonObject().getAsJsonArray("entries").get(1).getAsJsonObject();
+                obj1.addProperty("weight", 100 - values.getChance());
 				MixsonHelper.registerSingleJson(
 						"Distribute additional XP bottle loot to " + location.toString().replace(":", "_"),
 						new Index(location.toString().replace(":", ":loot_table/")),
