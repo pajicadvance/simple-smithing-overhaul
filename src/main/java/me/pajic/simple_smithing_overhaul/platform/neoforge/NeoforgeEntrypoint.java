@@ -7,7 +7,10 @@ import me.pajic.simple_smithing_overhaul.blocks.ModBlocks;
 import me.pajic.simple_smithing_overhaul.config.ItemSuggestions;
 import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
+import me.pajic.simple_smithing_overhaul.platform.MultiLoaderUtil;
 import me.pajic.simple_smithing_overhaul.recipe.ModRecipeSerializers;
+import me.pajic.simple_smithing_overhaul.repair.RepairableOverrides;
+import me.pajic.simple_smithing_overhaul.repair.RepairableSyncPayload;
 import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.registries.Registries;
@@ -20,9 +23,12 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 @Mod(SSO.MOD_ID)
@@ -119,6 +125,22 @@ public class NeoforgeEntrypoint {
                     CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS
             );
         }
+    }
+
+    @SubscribeEvent
+    private static void onSyncDatapacks(OnDatapackSyncEvent event) {
+        if (event.getPlayer() != null) RepairableOverrides.computeAndSet(event.getPlayer().registryAccess());
+        event.getPlayerList().getPlayers().forEach(player ->
+                MultiLoaderUtil.INSTANCE.s2c(player, new RepairableSyncPayload(RepairableOverrides.snapshot()))
+        );
+    }
+
+    @SubscribeEvent
+    private static void initNetworking(RegisterPayloadHandlersEvent event) {
+        PayloadRegistrar registrar = event.registrar("1");
+        registrar.playToClient(RepairableSyncPayload.TYPE, RepairableSyncPayload.CODEC
+                /^? <26.1 {^//^, (payload, c) -> RepairableOverrides.set(payload.repairables())^//^?}^/
+        );
     }
 
     @SubscribeEvent

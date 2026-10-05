@@ -7,6 +7,7 @@ import me.fzzyhmstrs.fzzy_config.annotations.RequiresAction;
 import me.fzzyhmstrs.fzzy_config.annotations.Version;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
+import me.fzzyhmstrs.fzzy_config.event.api.ServerUpdateContext;
 import me.fzzyhmstrs.fzzy_config.util.AllowableStrings;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedMap;
@@ -19,8 +20,10 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import me.pajic.simple_smithing_overhaul.SSO;
 import me.pajic.simple_smithing_overhaul.util.ChanceAndCount;
+import me.pajic.simple_smithing_overhaul.util.ModClientUtil;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.resources.Identifier;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -98,9 +101,8 @@ public class ModConfig extends Config {
         public Armor armor = new Armor();
         public Tools tools = new Tools();
         public UniqueItems uniqueItems = new UniqueItems();
-		@RequiresAction(action = Action.RESTART)
 		public ValidatedBoolean vanillaRepairables = new ValidatedBoolean();
-        @SuppressWarnings("unchecked") @RequiresAction(action = Action.RESTART)
+        @SuppressWarnings("unchecked")
         public ValidatedMap<String, String> modRepairableItems = (new ValidatedMap.Builder())
                 .keyHandler(new ValidatedString("", itemOrItemTagEntry()))
                 .valueHandler(new ValidatedString("diamond", itemOrItemTagEntry()))
@@ -347,5 +349,15 @@ public class ModConfig extends Config {
 
     private static AllowableStrings itemOrItemTagEntry() {
         return new AllowableStrings(ItemSuggestions.get()::contains, ItemSuggestions::get);
+    }
+
+    @Override
+    public void onUpdateServer(@NotNull ServerUpdateContext context) {
+        ModUtil.onUpdateConfig(context.getServer());
+    }
+
+    @Override
+    public void onUpdateClient() {
+        ModClientUtil.onUpdateConfig();
     }
 }

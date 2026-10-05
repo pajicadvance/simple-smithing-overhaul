@@ -2,7 +2,7 @@ package me.pajic.simple_smithing_overhaul.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import me.pajic.simple_smithing_overhaul.recipe.UpgradeRecipeHandler;
-import me.pajic.simple_smithing_overhaul.util.CostAccess;
+import me.pajic.simple_smithing_overhaul.extension.CostAccess;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ItemCombinerMenu;
 import net.minecraft.world.inventory.MenuType;

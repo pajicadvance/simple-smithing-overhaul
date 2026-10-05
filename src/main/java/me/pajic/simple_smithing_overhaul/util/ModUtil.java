@@ -7,7 +7,10 @@ import me.pajic.simple_smithing_overhaul.SSO;
 import me.pajic.simple_smithing_overhaul.compat.EDCompat;
 import me.pajic.simple_smithing_overhaul.compat.TFLCompat;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
+import me.pajic.simple_smithing_overhaul.platform.MultiLoaderUtil;
 import me.pajic.simple_smithing_overhaul.recipe.PortableItemRepairRecipe;
+import me.pajic.simple_smithing_overhaul.repair.RepairableOverrides;
+import me.pajic.simple_smithing_overhaul.repair.RepairableSyncPayload;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
@@ -16,6 +19,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
@@ -226,7 +231,7 @@ public class ModUtil {
 
     public static int calculateNewEnchantmentLevel(int maxLevel, RandomSource randomSource, int original) {
         if (SSO.CONFIG.enchantedBookLootTweaks.weightedLevels.get()) {
-            if (maxLevel == 1) return 1;
+            if (CompatFlags.PENCHANT_LOADED || maxLevel == 1) return 1;
             IntList pool = levelPoolCache.getOrDefault(maxLevel, new IntArrayList());
             if (pool.isEmpty()) {
 	            for (int i = maxLevel, j = 1; i > 0; i--, j += 2) {
@@ -315,5 +320,13 @@ public class ModUtil {
         *///?} else {
         return target.has(DataComponents.REPAIRABLE) && target.get(DataComponents.REPAIRABLE).isValidRepairItem(repair);
         //?}
+    }
+
+    public static void onUpdateConfig(MinecraftServer server) {
+        RepairableOverrides.computeAndSet(server.registryAccess());
+        var payload = new RepairableSyncPayload(RepairableOverrides.snapshot());
+        for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+            MultiLoaderUtil.INSTANCE.s2c(player, payload);
+        }
     }
 }

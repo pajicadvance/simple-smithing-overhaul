@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import me.pajic.simple_smithing_overhaul.SSO;
+import me.pajic.simple_smithing_overhaul.extension.ComponentMapOwner;
 import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.ChatFormatting;
@@ -12,6 +13,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -29,14 +31,26 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.function.BiConsumer;
 
 //? >=26.1 {
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import org.apache.commons.lang3.function.TriConsumer;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //?}
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin implements DataComponentHolder {
 
     @Unique private final ItemStack sso$thisStack = (ItemStack) (Object) this;
+
+    //? >=26.1 {
+    @Inject(
+            method = "<init>(Lnet/minecraft/core/Holder;ILnet/minecraft/core/component/PatchedDataComponentMap;)V",
+            at = @At("TAIL")
+    )
+    private void setOwner(Holder<Item> item, int count, PatchedDataComponentMap components, CallbackInfo ci) {
+        ((ComponentMapOwner) (Object) components).sso$setOwner(item.value());
+    }
+    //?}
 
     @SuppressWarnings("ConstantValue")
     @Inject(

@@ -13,6 +13,8 @@ import org.spongepowered.asm.mixin.Mixin;
 
 //? <26.1 {
 /*import net.minecraft.world.InteractionResultHolder;
+import me.pajic.simple_smithing_overhaul.backport.Repairable;
+import me.pajic.simple_smithing_overhaul.repair.RepairableOverrides;
 *///?} else {
 import net.minecraft.world.InteractionResult;
 //?}
@@ -38,4 +40,12 @@ public class ItemMixin {
 		}
 		return original.call(level, player, hand);
 	}
+
+    //? <26.1 {
+    /*@WrapMethod(method = "isValidRepairItem")
+    private boolean modifyRepairItem(ItemStack itemStack, ItemStack itemStack2, Operation<Boolean> original) {
+        Repairable repairable = RepairableOverrides.get(itemStack.getItem());
+        return (repairable != null && repairable.isValidRepairItem(itemStack2)) || original.call(itemStack, itemStack2);
+    }
+    *///?}
 }

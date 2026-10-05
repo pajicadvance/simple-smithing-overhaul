@@ -1,1 +1,7 @@
-- Fixed dedicated server crash on 1.21.1.
+- Added Fabric 26.3 version.
+- Defaulted is no longer required.
+    - The mod no longer patches item components to add repairs, it now keeps track of repairs on its own and intercepts repair checks instead.
+    - Configuration is unchanged and item tags are still supported in the config.
+    - Changing repairs in the config in-game now applies changes immediately, syncs them to clients, and doesn't require a datapack reload.
+    - Mod compatibility should remain the same, please report any issues if you run into them.
+- Changed how item renames are handled as an attempt to fix a long-standing bug where all text becomes garbled when setting the game to certain languages ([details](https://github.com/pajicadvance/simple-smithing-overhaul/issues/4)).

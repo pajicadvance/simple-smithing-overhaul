@@ -1,4 +1,4 @@
-package me.pajic.simple_smithing_overhaul.util;
+package me.pajic.simple_smithing_overhaul.extension;
 
 public interface CostAccess {
     int sso$getCost();

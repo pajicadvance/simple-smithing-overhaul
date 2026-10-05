@@ -1,4 +1,4 @@
-package me.pajic.simple_smithing_overhaul.util;
+package me.pajic.simple_smithing_overhaul.extension;
 
 import net.minecraft.world.level.Level;
 

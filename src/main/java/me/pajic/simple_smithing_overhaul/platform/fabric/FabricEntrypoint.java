@@ -9,16 +9,22 @@ import me.pajic.simple_smithing_overhaul.blocks.ModBlocks;
 import me.pajic.simple_smithing_overhaul.config.ItemSuggestions;
 import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
+import me.pajic.simple_smithing_overhaul.platform.MultiLoaderUtil;
 import me.pajic.simple_smithing_overhaul.recipe.ModRecipeSerializers;
+import me.pajic.simple_smithing_overhaul.repair.RepairableOverrides;
+import me.pajic.simple_smithing_overhaul.repair.RepairableSyncPayload;
 import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.InteractionResult;
@@ -40,13 +46,13 @@ public class FabricEntrypoint implements ModInitializer {
     @Override
     public void onInitialize() {
         SSO.onInitialize();
-        ServerLevelEvents.LOAD.register((server, level) -> ItemSuggestions.update(level));
         ModBlocks.init();
         ModItems.init();
         ModDataComponents.init();
         ModCriteria.init();
         ModRecipeSerializers.init();
         initRegistry();
+        initNetworking();
         initCreativeTabs();
         initEvents();
     }
@@ -161,6 +167,11 @@ public class FabricEntrypoint implements ModInitializer {
         );
     }
 
+    private void initNetworking() {
+        //~ if <26.1 'clientboundPlay' -> 'playS2C'
+        PayloadTypeRegistry.clientboundPlay().register(RepairableSyncPayload.TYPE, RepairableSyncPayload.CODEC);
+    }
+
     private void initCreativeTabs() {
         //~ if <26.1 'CreativeModeTabEvents.modifyOutputEvent' -> 'ItemGroupEvents.modifyEntriesEvent' {
         //~ if <26.1 'insertAfter' -> 'addAfter' {
@@ -185,6 +196,13 @@ public class FabricEntrypoint implements ModInitializer {
     }
 
     private void initEvents() {
+        CommonLifecycleEvents.TAGS_LOADED.register((registries, client) -> {
+            if (!client) RepairableOverrides.computeAndSet(registries);
+        });
+        ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register((player, j) ->
+                MultiLoaderUtil.INSTANCE.s2c(player, new RepairableSyncPayload(RepairableOverrides.snapshot()))
+        );
+        ServerLevelEvents.LOAD.register((s, level) -> ItemSuggestions.update(level));
         AttackEntityCallback.EVENT.register((player, l, hand, e, r) -> ModUtil.canUse(player, hand));
         UseEntityCallback.EVENT.register((player, l, hand, e, r) -> ModUtil.canUse(player, hand));
         AttackBlockCallback.EVENT.register((player, l, hand, b, d) -> ModUtil.canUse(player, hand));
