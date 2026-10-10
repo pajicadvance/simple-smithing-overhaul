@@ -124,20 +124,6 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
     }
 	//?}
 
-    @Inject(
-            method = "onTake",
-            at = @At("HEAD")
-    )
-    private void noXPCostIfUnenchanted(Player player, ItemStack carried, CallbackInfo ci) {
-        if (
-				SSO.CONFIG.anvilImprovements.freeUnenchantedRepairs.get() &&
-                !carried.isEnchanted() &&
-                carried.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty()
-        ) {
-            cost.set(0);
-        }
-    }
-
     @SuppressWarnings("resource")
     @Inject(
             method = "onTake",
@@ -214,16 +200,16 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
         }
     }
 
-    @ModifyExpressionValue(
-            method = "mayPickup",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/world/inventory/DataSlot;get()I",
-                    ordinal = 1
-            )
-    )
-    private int allowTakingFreeRepairs(int original) {
-        return original == 0 && repairItemCountCost >= 0 ? 1 : original;
+    @WrapMethod(method = "mayPickup")
+    private boolean allowTakingFreeRepairs(Player player, boolean hasItem, Operation<Boolean> original) {
+        if (
+                SSO.CONFIG.anvilImprovements.freeUnenchantedRepairs.get() &&
+                !inputSlots.getItem(0).isEnchanted() &&
+                inputSlots.getItem(0).getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty()
+        ) {
+            cost.set(0);
+        }
+        return (cost.get() == 0 && repairItemCountCost >= 0) || original.call(player, hasItem);
     }
 
     @SuppressWarnings("DataFlowIssue")
