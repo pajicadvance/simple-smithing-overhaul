@@ -45,7 +45,7 @@ public abstract class SmithingScreenMixin extends ItemCombinerScreen<SmithingMen
 				int textColor = (minecraft.player.hasInfiniteMaterials() || minecraft.player.experienceLevel >= repairCost) && repairCost > 0 ? 0xFF80FF20 : 0xFFFF6060;
 				if (!SSO.CONFIG.enchantmentUpgrading.ignoreTooExpensive.get() && repairCost >= 40) {
 					component = Component.translatable("container.repair.expensive");
-					textColor = 0xFF6060;
+					textColor = 0xFFFF6060;
 				}
 				int x = imageWidth - 8 - font.width(component) - 2;
 				graphics.fill(x - 2, 67, imageWidth - 8, 79, 0x4F000000);

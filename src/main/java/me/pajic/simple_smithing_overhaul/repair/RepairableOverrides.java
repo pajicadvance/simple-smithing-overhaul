@@ -59,9 +59,9 @@ public final class RepairableOverrides {
                     .ifPresent(h -> fromItems.put(h.value(), repairable));
         }));
 
-        clear();
-        table.putAll(fromTags);
-        table.putAll(fromItems);
+        Map<Item, Repairable> computed = new Reference2ObjectOpenHashMap<>(fromTags);
+        computed.putAll(fromItems);
+        table = computed;
     }
 
     private static Optional<Repairable> resolveMaterial(HolderLookup.RegistryLookup<Item> lookup, String material) {

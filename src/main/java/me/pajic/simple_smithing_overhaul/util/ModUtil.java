@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import me.pajic.simple_smithing_overhaul.SSO;
 import me.pajic.simple_smithing_overhaul.compat.EDCompat;
 import me.pajic.simple_smithing_overhaul.compat.TFLCompat;
+import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import me.pajic.simple_smithing_overhaul.platform.MultiLoaderUtil;
 import me.pajic.simple_smithing_overhaul.recipe.PortableItemRepairRecipe;
@@ -44,6 +45,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -145,16 +147,28 @@ public class ModUtil {
 						entry.getKey().value().effects().has(EnchantmentEffectComponents.REPAIR_WITH_XP)
 				)
 		) {
-			ItemStackWithSlot whetstone = ModUtil.findItemOnPlayer(player, itemStack -> itemStack.is(ModItems.WHETSTONE) && !ModUtil.isBroken(itemStack));
+			ItemStackWithSlot whetstone = ModUtil.findItemOnPlayer(player, itemStack ->
+					itemStack.is(ModItems.WHETSTONE) && !ModUtil.isBroken(itemStack) && PortableItemRepairRecipe.canWhetstoneRepair(itemStack, target)
+			);
 			ItemStackWithSlot material = ModUtil.findItemOnPlayer(player, itemStack -> ModUtil.isValidRepairItem(target, itemStack));
 			if (!whetstone.stack().isEmpty() && !material.stack().isEmpty()) {
 				PortableItemRepairRecipe recipe = new PortableItemRepairRecipe();
 				CraftingInput input = CraftingInput.of(2, 2, List.of(target, whetstone.stack(), new ItemStack(material.stack().getItem(), 1), ItemStack.EMPTY));
-				if (recipe.matches(input, player.level())) {
+				if (recipe.matches(input, level)) {
+					if (level.isClientSide()) {
+						player.spawnItemParticles(material.stack(), 5);
+						return true;
+					}
 					Inventory inv = player.getInventory();
 					ItemStack repaired = recipe.assemble(input/*? <26.1 {*//*, null*//*?}*/);
 					NonNullList<ItemStack> remainingItems = recipe.getRemainingItems(input);
 					target.setDamageValue(repaired.getDamageValue());
+					int repairCount = repaired.getOrDefault(ModDataComponents.REPAIR_COUNT, 1);
+					target.set(ModDataComponents.REPAIR_COUNT, repairCount);
+					if (player instanceof ServerPlayer p) {
+						if (repairCount == 100) ModCriteria.ITEM_REPAIR_COUNT.trigger(p);
+						if (repairCount == 1000) ModCriteria.ITEM_REPAIR_COUNT_BIG.trigger(p);
+					}
 					inv.setItem(whetstone.slot(), remainingItems.get(1));
 					ItemStack materials = material.stack().copy();
 					materials.setCount(materials.getCount() - 1);
@@ -201,6 +215,10 @@ public class ModUtil {
     public static boolean enchantmentEligible(Holder<Enchantment> enchantment) {
         return SSO.CONFIG.pinnacleEnchantment.excludedFromMaxedOutCheck.stream()
                 .noneMatch(enchantment::is) && (!CompatFlags.ED_LOADED || EDCompat.enchantmentEnabled(enchantment));
+    }
+
+    public static boolean isUnenchanted(ItemStack stack) {
+        return !stack.isEnchanted() && stack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty();
     }
 
     public static boolean isBroken(ItemStack stack) {
@@ -268,7 +286,7 @@ public class ModUtil {
     );
 
 	public static MutableComponent colorText(Component text) {
-		String color = SSO.CONFIG.pinnacleEnchantment.pinnacleItemNameColor.get().replace(" ", "_").toUpperCase();
+		String color = SSO.CONFIG.pinnacleEnchantment.pinnacleItemNameColor.get().replace(" ", "_").toLowerCase(Locale.ROOT);
 		//? <26.2 {
 		/*ChatFormatting formatting = ChatFormatting.getByName(color);
 		return formatting != null ? text.copy().withStyle(formatting) : MutableComponent.create(text.getContents());

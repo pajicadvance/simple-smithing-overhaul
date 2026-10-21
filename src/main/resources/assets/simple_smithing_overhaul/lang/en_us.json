@@ -25,6 +25,9 @@
   "simple_smithing_overhaul.config-v2.pinnacleEnchantment.pinnacleItemNameColor": "Pinnacle item name color",
   "simple_smithing_overhaul.config-v2.pinnacleEnchantment.excludedFromMaxedOutCheck": "Enchantments excluded from \"maxed out\" check",
   "simple_smithing_overhaul.config-v2.pinnacleEnchantment.excludedFromMaxedOutCheck.desc": "Items can be turned into pinnacle items even if they don't have the enchantments in this list",
+  "simple_smithing_overhaul.config-v2.pinnacleEnchantment.exportEnchantmentInfo": "Export enchantment info",
+  "simple_smithing_overhaul.config-v2.pinnacleEnchantment.exportEnchantmentInfo.button": "Export",
+  "simple_smithing_overhaul.config-v2.pinnacleEnchantment.exportEnchantmentInfo.desc": "Writes a text file listing all items that can be pinnacle upgraded and the enchantments they support, to help with configuring the \"maxed out\" check exclusions.",
 
   "simple_smithing_overhaul.config-v2.streamlinedRepairs": "Streamlined repairs",
   "simple_smithing_overhaul.config-v2.streamlinedRepairs.netheriteRepairMaterial": "Netherite repair material",
@@ -149,6 +152,8 @@
   "item.minecraft.simple_smithing_overhaul.smithing_template.pinnacle_enchantment.base_slot_description": "Add maxed out enchanted item",
   "item.minecraft.simple_smithing_overhaul.smithing_template.pinnacle_enchantment.additions_slot_description": "Add Echo Shard",
   "text.item.simple_smithing_overhaul.pinnacleCustomName": "Pinnacle Item: +1 Level to Random Enchantment",
+  "text.simple_smithing_overhaul.enchantmentInfoExported": "Exported enchantment info to %s",
+  "text.simple_smithing_overhaul.enchantmentInfoExportFailed": "Failed to export enchantment info, check the log for details",
 
   "block.simple_smithing_overhaul.broken_anvil": "Broken Anvil",
   "item.simple_smithing_overhaul.broken_anvil": "Broken Anvil",

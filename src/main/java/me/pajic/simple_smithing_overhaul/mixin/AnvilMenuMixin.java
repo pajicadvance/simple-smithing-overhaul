@@ -12,9 +12,9 @@ import me.pajic.simple_smithing_overhaul.criterion.ModCriteria;
 import me.pajic.simple_smithing_overhaul.items.ModItems;
 import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AnvilMenu;
@@ -26,7 +26,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -105,10 +104,10 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
             index = 1
     )
     private int modifyRepairUnitCost(int original, @Local(ordinal = 1) ItemStack result) {
-        return Math.round((float) result.getMaxDamage() / ModUtil.determineUnitCost(result));
+        return Mth.ceil((float) result.getMaxDamage() / ModUtil.determineUnitCost(result));
     }
 
-	//? if fabric {
+	//? if fabric || >=26.1 {
     @ModifyExpressionValue(
             method = {"lambda$onTake$0", "method_24922"},
             at = @At(
@@ -204,8 +203,9 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
     private boolean allowTakingFreeRepairs(Player player, boolean hasItem, Operation<Boolean> original) {
         if (
                 SSO.CONFIG.anvilImprovements.freeUnenchantedRepairs.get() &&
-                !inputSlots.getItem(0).isEnchanted() &&
-                inputSlots.getItem(0).getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty()
+                ModUtil.isUnenchanted(inputSlots.getItem(0)) &&
+                ModUtil.isUnenchanted(inputSlots.getItem(1)) &&
+                ModUtil.isUnenchanted(resultSlots.getItem(0))
         ) {
             cost.set(0);
         }

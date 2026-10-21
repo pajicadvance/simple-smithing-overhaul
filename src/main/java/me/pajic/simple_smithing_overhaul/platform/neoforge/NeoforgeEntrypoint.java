@@ -14,6 +14,7 @@ import me.pajic.simple_smithing_overhaul.repair.RepairableSyncPayload;
 import me.pajic.simple_smithing_overhaul.util.ModDataComponents;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -30,6 +31,10 @@ import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.RegisterEvent;
+
+//? <26.1 {
+/^import net.neoforged.neoforge.event.entity.player.AnvilRepairEvent;
+^///?}
 
 @Mod(SSO.MOD_ID)
 @EventBusSubscriber(modid = SSO.MOD_ID)
@@ -129,7 +134,7 @@ public class NeoforgeEntrypoint {
 
     @SubscribeEvent
     private static void onSyncDatapacks(OnDatapackSyncEvent event) {
-        if (event.getPlayer() != null) RepairableOverrides.computeAndSet(event.getPlayer().registryAccess());
+        RepairableOverrides.computeAndSet(event.getPlayerList().getServer().registryAccess());
         event.getPlayerList().getPlayers().forEach(player ->
                 MultiLoaderUtil.INSTANCE.s2c(player, new RepairableSyncPayload(RepairableOverrides.snapshot()))
         );
@@ -143,16 +148,25 @@ public class NeoforgeEntrypoint {
         );
     }
 
+    //? <26.1 {
+    /^@SubscribeEvent
+    private static void modifyAnvilDegradationChance(AnvilRepairEvent event) {
+        if (SSO.CONFIG.anvilImprovements.modifyDegradationChance.get()) {
+            event.setBreakChance(SSO.CONFIG.anvilImprovements.degradationChance.get() / 100);
+        }
+    }
+    ^///?}
+
     @SubscribeEvent
     private static void handleBrokenItemAttack(AttackEntityEvent event) {
-        if (ModUtil.canUse(event.getEntity(), event.getEntity().getUsedItemHand()) == InteractionResult.FAIL) {
+        if (ModUtil.canUse(event.getEntity(), InteractionHand.MAIN_HAND) == InteractionResult.FAIL) {
             event.setCanceled(true);
         }
     }
 
     @SubscribeEvent
     private static void handleBrokenItemUseEntity(PlayerInteractEvent.EntityInteract event) {
-        if (ModUtil.canUse(event.getEntity(), event.getEntity().getUsedItemHand()) == InteractionResult.FAIL) {
+        if (ModUtil.canUse(event.getEntity(), event.getHand()) == InteractionResult.FAIL) {
             event.setCancellationResult(InteractionResult.FAIL);
             event.setCanceled(true);
         }
@@ -160,14 +174,14 @@ public class NeoforgeEntrypoint {
 
     @SubscribeEvent
     private static void handleBrokenItemAttackBlock(PlayerInteractEvent.LeftClickBlock event) {
-        if (ModUtil.canUse(event.getEntity(), event.getEntity().getUsedItemHand()) == InteractionResult.FAIL) {
+        if (ModUtil.canUse(event.getEntity(), event.getHand()) == InteractionResult.FAIL) {
             event.setCanceled(true);
         }
     }
 
     @SubscribeEvent
     private static void handleBrokenItemUseBlock(PlayerInteractEvent.RightClickBlock event) {
-        if (ModUtil.canUse(event.getEntity(), event.getEntity().getUsedItemHand()) == InteractionResult.FAIL) {
+        if (ModUtil.canUse(event.getEntity(), event.getHand()) == InteractionResult.FAIL) {
             event.setCancellationResult(InteractionResult.FAIL);
             event.setCanceled(true);
         }
@@ -175,7 +189,7 @@ public class NeoforgeEntrypoint {
 
     @SubscribeEvent
     private static void handleBrokenItemUse(PlayerInteractEvent.RightClickItem event) {
-        if (ModUtil.canUse(event.getEntity(), event.getEntity().getUsedItemHand()) == InteractionResult.FAIL) {
+        if (ModUtil.canUse(event.getEntity(), event.getHand()) == InteractionResult.FAIL) {
             event.setCancellationResult(InteractionResult.FAIL);
             event.setCanceled(true);
         }

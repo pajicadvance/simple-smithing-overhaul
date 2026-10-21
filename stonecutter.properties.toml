@@ -2,7 +2,7 @@
 mod.id = "simple_smithing_overhaul"
 mod.name = "Simple Smithing Overhaul"
 mod.group = "me.pajic"
-mod.version = "2.10.1"
+mod.version = "2.10.2"
 mod.description = "Portable item repair, enchantment upgrading, anvil improvements and more"
 mod.authors = "pajic"
 mod.contributors = "Lufurrius, Moonkey"
@@ -113,7 +113,7 @@ required.fzzy_config = "0.7.7+26.2+neoforge"
 
 ["26.3"]
 mod.mc_releases = ["26.3"]
-#loader.neo = "26.2.0.36-beta"
+loader.neo = "26.3.0.95"
 dep.mixson.coords = "maven.modrinth:$id:$version"
 required.mixson = "2.2.1"
 optional.taxfreelevels = "1.5.4"
@@ -127,6 +127,8 @@ required.fzzy_config = "0.7.7+fix3+26.3"
 optional.penchant = "0.5.7+mc26.3"
 runtime.modmenu = "21.0.0"
 
-#[neoforge."26.2"]
-#mod.mc_compat = "[26.3, 26.4)"
-#required.fzzy_config = "0.7.6+26.2+neoforge"
+[neoforge."26.3"]
+mod.mc_compat = "[26.3, 26.4)"
+dep.enchantmentdisabler.coords = "maven.modrinth:enchantment-disabler:$version+26.2-neoforge"
+optional.enchantmentdisabler = "3.4.9"
+required.fzzy_config = "0.7.7+fix3+26.3+neoforge"

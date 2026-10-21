@@ -1,5 +1,7 @@
 package me.pajic.simple_smithing_overhaul.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import me.pajic.simple_smithing_overhaul.recipe.UpgradeRecipeHandler;
 import me.pajic.simple_smithing_overhaul.extension.CostAccess;
@@ -12,11 +14,9 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 //? >=26.1 {
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import me.pajic.simple_smithing_overhaul.SSO;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.world.entity.player.Player;
@@ -32,17 +32,19 @@ public abstract class ItemCombinerMenuMixin extends AbstractContainerMenu implem
 
     @Unique private int sso$cost = 0;
 
-    @ModifyArg(
+    @WrapOperation(
             method = "quickMoveStack",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/inventory/ItemCombinerMenu;moveItemStackTo(Lnet/minecraft/world/item/ItemStack;IIZ)Z",
                     ordinal = 0
-            ),
-            index = 0
+            )
     )
-    private ItemStack upgradeItemAfterQuickMove(ItemStack original, @Local Slot slot) {
-        return UpgradeRecipeHandler.applyPinnacleUpgrade(original, slot, (ItemCombinerMenu) (Object) this, slots);
+    private boolean upgradeItemAfterQuickMove(ItemCombinerMenu instance, ItemStack stack, int startIndex, int endIndex, boolean reverseDirection, Operation<Boolean> original, @Local Slot slot) {
+        ItemStack beforeUpgrade = stack.copy();
+        boolean moved = original.call(instance, UpgradeRecipeHandler.applyPinnacleUpgrade(stack, slot, instance, slots), startIndex, endIndex, reverseDirection);
+        if (!moved) slot.set(beforeUpgrade);
+        return moved;
     }
 
     //? >=26.1 {

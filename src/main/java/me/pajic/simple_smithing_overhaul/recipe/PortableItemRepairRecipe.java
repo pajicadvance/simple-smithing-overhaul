@@ -64,16 +64,8 @@ public class PortableItemRepairRecipe extends CustomRecipe {
                         itemStack.isDamageableItem() && !itemStack.is(ModItems.WHETSTONE)).toList();
                 if (!repairableItems.isEmpty()) {
                     itemToRepair = repairableItems.getFirst();
-                    if (itemToRepair.isDamaged() && whetstone.getDamageValue() < whetstone.getMaxDamage()) {
-                        ItemEnchantments whetstoneEnchantments = whetstone.getOrDefault(
-                                DataComponents.STORED_ENCHANTMENTS,
-                                ItemEnchantments.EMPTY
-                        );
-                        if (itemToRepair.getEnchantments().entrySet().stream().allMatch(
-                                entry -> whetstoneEnchantments.getLevel(entry.getKey()) > 0
-                        )) {
-                            return processRepair(input);
-                        }
+                    if (itemToRepair.isDamaged() && canWhetstoneRepair(whetstone, itemToRepair)) {
+                        return processRepair(input);
                     }
                 }
             } else if (flint.size() == 1) {
@@ -90,6 +82,12 @@ public class PortableItemRepairRecipe extends CustomRecipe {
             }
         }
         return false;
+    }
+
+    public static boolean canWhetstoneRepair(ItemStack whetstone, ItemStack item) {
+        if (whetstone.getDamageValue() >= whetstone.getMaxDamage()) return false;
+        ItemEnchantments whetstoneEnchantments = whetstone.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY);
+        return item.getEnchantments().entrySet().stream().allMatch(entry -> whetstoneEnchantments.getLevel(entry.getKey()) > 0);
     }
 
     @SuppressWarnings("DataFlowIssue")
