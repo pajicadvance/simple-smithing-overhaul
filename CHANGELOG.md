@@ -1,3 +1,5 @@
+2.10.2:
+
 - Added an option to export a text file listing all items that can be pinnacle upgraded and the enchantments they support, to help with configuring the "maxed out" check exclusions.
     - Found in the pinnacle enchantment section of the config.
     - The file is exported to `config/simple_smithing_overhaul/enchantment_info.txt`.
@@ -16,3 +18,7 @@
 - Fixed repair materials defined through item tags not updating after `/reload` on NeoForge.
 - Fixed Mending repairs not counting towards repair count advancements.
 - Fixed a rare thread safety issue when updating repairable items.
+
+2.10.3:
+
+- Fixed dedicated server crash.

@@ -21,6 +21,7 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import me.pajic.simple_smithing_overhaul.SSO;
 import me.pajic.simple_smithing_overhaul.util.ChanceAndCount;
+import me.pajic.simple_smithing_overhaul.util.ClientCallbacks;
 import me.pajic.simple_smithing_overhaul.util.ModClientUtil;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.network.chat.Component;
@@ -77,8 +78,8 @@ public class ModConfig extends Config {
         public ConfigAction exportEnchantmentInfo = new ConfigAction.Builder()
                 .title(Component.translatable("simple_smithing_overhaul.config-v2.pinnacleEnchantment.exportEnchantmentInfo.button"))
                 .desc(Component.translatable("simple_smithing_overhaul.config-v2.pinnacleEnchantment.exportEnchantmentInfo.desc"))
-                .active(ModClientUtil::isInWorld)
-                .build(ModClientUtil::exportEnchantmentInfo);
+                .active(ClientCallbacks::isInWorld)
+                .build(ClientCallbacks::exportEnchantmentInfo);
     }
 
     public static class PortableItemRepair extends ConfigSection {

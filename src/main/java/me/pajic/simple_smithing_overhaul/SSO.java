@@ -6,6 +6,7 @@ import me.pajic.simple_smithing_overhaul.config.ModConfig;
 import me.pajic.simple_smithing_overhaul.mixson.DataPatches;
 import me.pajic.simple_smithing_overhaul.mixson.MixsonHelper;
 import me.pajic.simple_smithing_overhaul.platform.MultiLoaderUtil;
+import me.pajic.simple_smithing_overhaul.util.ClientCallbacks;
 import me.pajic.simple_smithing_overhaul.util.ModClientUtil;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ public class SSO {
     public static void onInitializeClient() {
         ModAssetPacks.init();
         ModClientUtil.initItemProperties();
+        ClientCallbacks.register(ModClientUtil::isInWorld, ModClientUtil::exportEnchantmentInfo);
     }
 
     public static Identifier id(String path) {
