@@ -116,7 +116,6 @@ Integrations are automatically enabled for each supported mod when installed alo
 - Disables the following features in Simple Smithing Overhaul:
     - Enchantment upgrading
     - Enchanted book loot tweaks
-    - Enchantment limits
 - Changes the following in Penchant:
     - Allows adding enchantments to whetstones in the enchanting table
     - Disables the Durability Rework feature by default

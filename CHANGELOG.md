@@ -1,24 +1,4 @@
-2.10.2:
-
-- Added an option to export a text file listing all items that can be pinnacle upgraded and the enchantments they support, to help with configuring the "maxed out" check exclusions.
-    - Found in the pinnacle enchantment section of the config.
-    - The file is exported to `config/simple_smithing_overhaul/enchantment_info.txt`.
-- Added NeoForge 26.3 version.
-- Fixed being able to enchant unenchanted items in the anvil for free when free unenchanted repairs are enabled.
-- Fixed being able to reroll pinnacle upgrades for free by shift-clicking the result with a full inventory.
-- Fixed fully repairing some items in the anvil (e.g. diamond pickaxes, axes and boots) requiring one extra material.
-- Fixed the pinnacle item name color config option being ignored on 26.2+.
-- Fixed broken items in the offhand not being blocked from use on NeoForge.
-- Fixed the anvil degradation chance config option not working on NeoForge.
-- Fixed Mending repairs failing when the first whetstone in the inventory doesn't have the required enchantments, even if a compatible one is present.
-- Fixed Mending repairs on crouch-use not working for bows, crossbows, tridents and fishing rods.
-- Fixed the "Too Expensive!" label not showing in the smithing table on 26.1+.
-- Fixed Mending repairs being performed client-side, causing temporary desyncs.
-- Fixed Mending auto-repair on break not repairing armor and offhand items on 26.1+.
-- Fixed repair materials defined through item tags not updating after `/reload` on NeoForge.
-- Fixed Mending repairs not counting towards repair count advancements.
-- Fixed a rare thread safety issue when updating repairable items.
-
-2.10.3:
-
-- Fixed dedicated server crash.
+- Updated Penchant integration for Penchant 0.6.1.
+- Fixed whetstones not being enchantable in the enchanting table with Penchant installed.
+- Fixed weighted enchantment levels forcing enchanted loot gear to level 1 with Penchant installed, this now only affects enchanted books.
+- Enchantment limits are no longer disabled with Penchant installed.

@@ -247,9 +247,9 @@ public class ModUtil {
         else player.giveExperienceLevels(-cost);
     }
 
-    public static int calculateNewEnchantmentLevel(int maxLevel, RandomSource randomSource, int original) {
+    public static int calculateNewEnchantmentLevel(int maxLevel, RandomSource randomSource, int original, boolean book) {
         if (SSO.CONFIG.enchantedBookLootTweaks.weightedLevels.get()) {
-            if (CompatFlags.PENCHANT_LOADED || maxLevel == 1) return 1;
+            if ((CompatFlags.PENCHANT_LOADED && book) || maxLevel == 1) return 1;
             IntList pool = levelPoolCache.getOrDefault(maxLevel, new IntArrayList());
             if (pool.isEmpty()) {
 	            for (int i = maxLevel, j = 1; i > 0; i--, j += 2) {

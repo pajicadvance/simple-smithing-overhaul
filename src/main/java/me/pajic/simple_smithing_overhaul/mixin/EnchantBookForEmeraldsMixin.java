@@ -48,7 +48,7 @@ public class EnchantBookForEmeraldsMixin {
             )
     )
     private int limitMaxEnchantmentLevel(int original, @Local Holder<Enchantment> enchantment, @Local(argsOnly = true) RandomSource randomSource) {
-        int value = ModUtil.calculateNewEnchantmentLevel(enchantment.value().getMaxLevel(), randomSource, original);
+        int value = ModUtil.calculateNewEnchantmentLevel(enchantment.value().getMaxLevel(), randomSource, original, true);
         if (SSO.CONFIG.enchantmentLimits.limitBookTradeLevel.get() && value > SSO.CONFIG.enchantmentLimits.bookTradeLevelLimit.get()) {
             value = SSO.CONFIG.enchantmentLimits.bookTradeLevelLimit.get();
         }

@@ -59,7 +59,7 @@ public class VillagerTradeMixin {
 			if (ie != null) {
 				ItemEnchantments.Mutable enchantments = new ItemEnchantments.Mutable(ie);
 				enchantments.keySet().forEach(e -> {
-					int value = ModUtil.calculateNewEnchantmentLevel(e.value().getMaxLevel(), lootContext.getRandom(), enchantments.getLevel(e));
+					int value = ModUtil.calculateNewEnchantmentLevel(e.value().getMaxLevel(), lootContext.getRandom(), enchantments.getLevel(e), true);
 					if (SSO.CONFIG.enchantmentLimits.limitBookTradeLevel.get() && value > SSO.CONFIG.enchantmentLimits.bookTradeLevelLimit.get()) {
 						value = SSO.CONFIG.enchantmentLimits.bookTradeLevelLimit.get();
 					}

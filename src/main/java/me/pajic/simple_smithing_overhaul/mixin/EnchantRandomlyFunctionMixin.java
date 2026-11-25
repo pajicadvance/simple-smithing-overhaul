@@ -4,6 +4,8 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import me.pajic.simple_smithing_overhaul.util.ModUtil;
 import net.minecraft.core.Holder;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,11 +29,12 @@ public class EnchantRandomlyFunctionMixin {
     )
     private static int modifyEnchantmentLevel(
             int original,
+            @Local(argsOnly = true) ItemStack itemStack,
             @Local(argsOnly = true) Holder<Enchantment> enchantment,
             //~ if >=26.1 'RandomSource random' -> 'LootContext context'
             @Local(argsOnly = true) LootContext context
     ) {
         //~ if >=26.1 'random' -> 'context.getRandom()'
-        return ModUtil.calculateNewEnchantmentLevel(enchantment.value().getMaxLevel(), context.getRandom(), original);
+        return ModUtil.calculateNewEnchantmentLevel(enchantment.value().getMaxLevel(), context.getRandom(), original, itemStack.is(Items.BOOK) || itemStack.is(Items.ENCHANTED_BOOK));
     }
 }
