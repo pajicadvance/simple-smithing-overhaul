@@ -161,6 +161,10 @@ public class FabricEntrypoint implements ModInitializer {
                 SSO.id("anvil_enchant_combine"), ModCriteria.ANVIL_ENCHANT_COMBINE
         );
         Registry.register(
+                BuiltInRegistries.TRIGGER_TYPES,
+                SSO.id("enchantment_level_up"), ModCriteria.ENCHANTMENT_LEVEL_UP
+        );
+        Registry.register(
                 BuiltInRegistries.RECIPE_SERIALIZER,
                 SSO.id("portable_repair"),
                 ModRecipeSerializers.PORTABLE_ITEM_REPAIR

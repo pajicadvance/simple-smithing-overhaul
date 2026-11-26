@@ -62,7 +62,7 @@ public class DataPatches {
 			MixsonHelper.registerSingleJson(
 					"Distribute enchantment upgrade templates to end city loot",
 					new Index("minecraft:loot_table/chests/end_city_treasure"),
-					context -> context.getFile().getAsJsonObject().getAsJsonArray("pools").add(pool)
+					context -> addPool(context.getFile(), pool)
 			);
 		}
 
@@ -76,7 +76,7 @@ public class DataPatches {
 			MixsonHelper.registerSingleJson(
 					"Distribute pinnacle enchantment upgrade templates to ancient city loot",
 					new Index("minecraft:loot_table/chests/ancient_city"),
-					context -> context.getFile().getAsJsonObject().getAsJsonArray("pools").add(pool)
+					context -> addPool(context.getFile(), pool)
 			);
 		}
 
@@ -106,7 +106,7 @@ public class DataPatches {
 				MixsonHelper.registerSingleJson(
 						"Distribute additional enchanted book loot to " + location.toString().replace(":", "_"),
 						new Index(location.toString().replace(":", ":loot_table/")),
-						context -> context.getFile().getAsJsonObject().getAsJsonArray("pools").add(pool)
+						context -> addPool(context.getFile(), pool)
 				);
 			});
 		}
@@ -132,9 +132,29 @@ public class DataPatches {
 				MixsonHelper.registerSingleJson(
 						"Distribute additional XP bottle loot to " + location.toString().replace(":", "_"),
 						new Index(location.toString().replace(":", ":loot_table/")),
-						context -> context.getFile().getAsJsonObject().getAsJsonArray("pools").add(pool)
+						context -> addPool(context.getFile(), pool)
 				);
 			});
+		}
+
+		if (CompatFlags.PENCHANT_LOADED) {
+			MixsonHelper.registerSingleJson(
+					"Remove anvil enchanted book advancement",
+					new Index("simple_smithing_overhaul:advancement/smithing/booksmith_blackworm"),
+					context -> context.markForDeletion(true)
+			);
+			MixsonHelper.registerSingleJson(
+					"Replace enchantment upgrade advancement with Penchant level up advancement",
+					new Index("simple_smithing_overhaul:advancement/smithing/one_step_at_a_time"),
+					context -> replaceAdvancementCriterion(
+							context.getFile(),
+							"simple_smithing_overhaul:smithing/root",
+							"enchantment_level_up",
+							"simple_smithing_overhaul:enchantment_level_up",
+							"minecraft:experience_bottle",
+							"advancements.smithing.one_step_at_a_time.penchant"
+					)
+			);
 		}
 
         //? <26.1 {
@@ -183,5 +203,30 @@ public class DataPatches {
                 }
         );
         *///?}
+	}
+
+	private static void addPool(JsonElement file, JsonElement pool) {
+		JsonObject obj = file.getAsJsonObject();
+		if (!obj.has("pools")) obj.add("pools", new JsonArray());
+		obj.getAsJsonArray("pools").add(pool);
+	}
+
+	private static void replaceAdvancementCriterion(JsonElement file, String parent, String name, String trigger, String icon, String langKey) {
+		JsonObject obj = file.getAsJsonObject();
+		obj.addProperty("parent", parent);
+		JsonObject criterion = new JsonObject();
+		criterion.addProperty("trigger", trigger);
+		JsonObject criteria = new JsonObject();
+		criteria.add(name, criterion);
+		obj.add("criteria", criteria);
+		JsonArray requirement = new JsonArray();
+		requirement.add(name);
+		JsonArray requirements = new JsonArray();
+		requirements.add(requirement);
+		obj.add("requirements", requirements);
+		JsonObject display = obj.getAsJsonObject("display");
+		display.getAsJsonObject("icon").addProperty("id", icon);
+		display.getAsJsonObject("title").addProperty("translate", langKey + ".title");
+		display.getAsJsonObject("description").addProperty("translate", langKey + ".description");
 	}
 }

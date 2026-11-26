@@ -1,4 +1,2 @@
-- Updated Penchant integration for Penchant 0.6.1.
-- Fixed whetstones not being enchantable in the enchanting table with Penchant installed.
-- Fixed weighted enchantment levels forcing enchanted loot gear to level 1 with Penchant installed, this now only affects enchanted books.
-- Enchantment limits are no longer disabled with Penchant installed.
+- With Penchant installed, the Booksmith Blackworm and One Step at a Time advancements are replaced with Practice Makes Perfect (Level up an enchantment by using the enchanted item), as their original requirements can't be completed with Penchant.
+- Fixed a crash when adding additional XP bottle or enchanted book loot to a loot table without any pools.

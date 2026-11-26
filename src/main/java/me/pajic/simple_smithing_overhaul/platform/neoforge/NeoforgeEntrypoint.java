@@ -91,6 +91,7 @@ public class NeoforgeEntrypoint {
                     registry.register(SSO.id("bad_rng"), ModCriteria.BAD_RNG);
                     registry.register(SSO.id("maxed_out"), ModCriteria.MAXED_OUT);
                     registry.register(SSO.id("anvil_enchant_combine"), ModCriteria.ANVIL_ENCHANT_COMBINE);
+                    registry.register(SSO.id("enchantment_level_up"), ModCriteria.ENCHANTMENT_LEVEL_UP);
                 }
         );
         event.register(

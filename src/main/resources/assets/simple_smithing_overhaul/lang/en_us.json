@@ -200,6 +200,8 @@
   "advancements.smithing.booksmith_blackworm.description": "Combine an item with an enchanted book in the anvil",
   "advancements.smithing.one_step_at_a_time.title": "One Step at a Time",
   "advancements.smithing.one_step_at_a_time.description": "Find an Enchantment Upgrade Smithing Template in an End City and use it to upgrade an item in the smithing table",
+  "advancements.smithing.one_step_at_a_time.penchant.title": "Practice Makes Perfect",
+  "advancements.smithing.one_step_at_a_time.penchant.description": "Level up an enchantment by using the enchanted item",
   "advancements.smithing.limit_break.title": "Limit Break",
   "advancements.smithing.limit_break.description": "Find a Pinnacle Enchantment Smithing Template in an Ancient City and use it to upgrade an item in the smithing table",
   "advancements.smithing.bad_rng.title": "The RNG Gods Are Very Displeased",

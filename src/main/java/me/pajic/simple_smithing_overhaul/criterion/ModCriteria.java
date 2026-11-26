@@ -15,6 +15,7 @@ public class ModCriteria {
 	public static final ModCriterion BAD_RNG = new ModCriterion();
 	public static final ModCriterion MAXED_OUT = new ModCriterion();
 	public static final ModCriterion ANVIL_ENCHANT_COMBINE = new ModCriterion();
+	public static final ModCriterion ENCHANTMENT_LEVEL_UP = new ModCriterion();
 
     public static void init() {}
 }
